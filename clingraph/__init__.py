@@ -14,6 +14,7 @@ class Clingraph(Application):
     type = 'type'
     node = 'node'
     edge = 'edge'
+    attr = 'attr'
 
     def main(self, ctl, files):
         for path in files:
@@ -64,17 +65,53 @@ class Clingraph(Application):
             argument='<name>'
         )
 
+        def parse(value):
+            self.attr = value
+            return True
+        options.add(
+            self.option_group,
+            'attr',
+            'Rename the predicate that defines attributes',
+            parse,
+            argument='<name>'
+        )
+
     def print_model(self, model, printer):
-        if model.contains(Function(self.type, [Function('digraph')])):
-            graph = Digraph()
-        else:
-            graph = Graph()
+        types = []
+        nodes = []
+        edges = []
+        attrs = {}
 
         for atom in model.symbols(shown=True):
-            if atom.name == self.node and len(atom.arguments) in [1, 2]:
-                graph.node(*map(str, atom.arguments))
-            if atom.name == self.edge and len(atom.arguments) in [2, 3]:
-                graph.edge(*map(str, atom.arguments))
+            if atom.match(self.type, 1):
+                types.append(str(atom.arguments[0]))
+
+            elif any((atom.match(self.node, arity) for arity in [1, 2])):
+                nodes.append(tuple(map(str, atom.arguments)))
+
+            elif any((atom.match(self.edge, arity) for arity in [2, 3])):
+                edges.append(tuple(map(str, atom.arguments)))
+
+            elif atom.match(self.attr, 3):
+                if atom.arguments[0].match('', 2):
+                    key = tuple(map(str, atom.arguments[0].arguments))
+                    attrs[key] = { str(atom.arguments[1]): str(atom.arguments[2]) }
+                else:
+                    key = str(atom.arguments[0])
+                    attrs[key] = { str(atom.arguments[1]): str(atom.arguments[2]) }
+
+        if types == ['digraph']:
+            graph = Digraph()
+        elif types == ['graph'] or types == []:
+            graph = Graph()
+        else:
+            pass # TODO: Report an error.
+
+        for node in nodes:
+            graph.node(*node, _attributes=attrs.get(node[0]))
+
+        for edge in edges:
+            graph.edge(*edge, _attributes=attrs.get(edge[0:2]))
 
         print(graph.source)
 
