@@ -1,6 +1,6 @@
 from clingo.application import Application, Flag
 from clingo.symbol import Function
-from graphviz import Graph
+from graphviz import Graph, Digraph
 from tempfile import mktemp
 
 class Clingraph(Application):
@@ -71,13 +71,10 @@ class Clingraph(Application):
             graph = Graph()
 
         for atom in model.symbols(shown=True):
-            if atom.name == self.node and len(atom.arguments) == 1:
-                graph.node(str(atom.arguments[0]))
-            if atom.name == self.edge and len(atom.arguments) == 2:
-                graph.edge(
-                    str(atom.arguments[0]),
-                    str(atom.arguments[1])
-                )
+            if atom.name == self.node and len(atom.arguments) in [1, 2]:
+                graph.node(*map(str, atom.arguments))
+            if atom.name == self.edge and len(atom.arguments) in [2, 3]:
+                graph.edge(*map(str, atom.arguments))
 
         print(graph.source)
 
