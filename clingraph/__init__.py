@@ -3,13 +3,6 @@ from clingo.symbol import Function
 from graphviz import Graph
 from tempfile import mktemp
 
-TYPE = 'clingraph_type'
-TYPE_GRAPH = 'graph'
-TYPE_DIGRAPH = 'digraph'
-
-NODE = 'clingraph_node'
-EDGE = 'clingraph_edge'
-
 class Clingraph(Application):
     program_name = 'clingraph'
     version = '0.1.0-dev'
@@ -17,6 +10,10 @@ class Clingraph(Application):
     option_group = 'Clingraph Options'
 
     view = Flag(False)
+
+    type = 'type'
+    node = 'node'
+    edge = 'edge'
 
     def main(self, ctl, files):
         for path in files:
@@ -34,16 +31,49 @@ class Clingraph(Application):
             self.view
         )
 
+        def parse(str):
+            self.type = str
+            return True
+        options.add(
+            self.option_group,
+            'type',
+            'Rename the predicate that defines whether the graph is directed or undirected',
+            parse,
+            argument='<name>'
+        )
+
+        def parse(str):
+            self.node = str
+            return True
+        options.add(
+            self.option_group,
+            'node',
+            'Rename the predicate that defines nodes',
+            parse,
+            argument='<name>'
+        )
+
+        def parse(str):
+            self.edge = str
+            return True
+        options.add(
+            self.option_group,
+            'edge',
+            'Rename the predicate that defines edges',
+            parse,
+            argument='<name>'
+        )
+
     def print_model(self, model, printer):
-        if model.contains(Function(TYPE, [Function(TYPE_DIGRAPH)])):
+        if model.contains(Function(self.type, [Function('digraph')])):
             graph = Digraph()
         else:
             graph = Graph()
 
         for atom in model.symbols(shown=True):
-            if atom.name == NODE and len(atom.arguments) == 1:
+            if atom.name == self.node and len(atom.arguments) == 1:
                 graph.node(str(atom.arguments[0]))
-            if atom.name == EDGE and len(atom.arguments) == 2:
+            if atom.name == self.edge and len(atom.arguments) == 2:
                 graph.edge(
                     str(atom.arguments[0]),
                     str(atom.arguments[1])
