@@ -31,8 +31,8 @@ class Clingraph(Application):
             self.view
         )
 
-        def parse(str):
-            self.type = str
+        def parse(value):
+            self.type = value
             return True
         options.add(
             self.option_group,
@@ -42,8 +42,8 @@ class Clingraph(Application):
             argument='<name>'
         )
 
-        def parse(str):
-            self.node = str
+        def parse(value):
+            self.node = value
             return True
         options.add(
             self.option_group,
@@ -53,8 +53,8 @@ class Clingraph(Application):
             argument='<name>'
         )
 
-        def parse(str):
-            self.edge = str
+        def parse(value):
+            self.edge = value
             return True
         options.add(
             self.option_group,
