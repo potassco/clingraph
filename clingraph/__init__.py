@@ -1,7 +1,6 @@
 from clingo.application import Application, Flag
 from clingo.symbol import Function
 from graphviz import Graph, Digraph
-from tempfile import mktemp
 
 class Clingraph(Application):
     program_name = 'clingraph'
@@ -9,7 +8,12 @@ class Clingraph(Application):
 
     option_group = 'Clingraph Options'
 
+    render = Flag(False)
     view = Flag(False)
+
+    directory = 'out'
+    format = None
+    engine = None
 
     type = 'type'
     node = 'node'
@@ -27,9 +31,49 @@ class Clingraph(Application):
     def register_options(self, options):
         options.add_flag(
             self.option_group,
-            'show',
-            'Render models and show them with the default viewer',
+            'render',
+            'Render the answers',
+            self.render,
+        )
+
+        options.add_flag(
+            self.option_group,
+            'view',
+            'Render the answers and show them with the default viewer',
             self.view
+        )
+
+        def parse(value):
+            self.directory = value
+            return True
+        options.add(
+            self.option_group,
+            'directory',
+            'Directory for source saving and rendering',
+            parse,
+            argument='<path>'
+        )
+
+        def parse(value):
+            self.format = value
+            return True
+        options.add(
+            self.option_group,
+            'format',
+            'Rendering output format',
+            parse,
+            argument='<format>'
+        )
+
+        def parse(value):
+            self.engine = value
+            return True
+        options.add(
+            self.option_group,
+            'engine',
+            'Layout command used',
+            parse,
+            argument='<engine>'
         )
 
         def parse(value):
@@ -38,7 +82,7 @@ class Clingraph(Application):
         options.add(
             self.option_group,
             'type',
-            'Rename the predicate that defines whether the graph is directed or undirected',
+            'Predicate that defines whether the graph is directed or undirected',
             parse,
             argument='<name>'
         )
@@ -49,7 +93,7 @@ class Clingraph(Application):
         options.add(
             self.option_group,
             'node',
-            'Rename the predicate that defines nodes',
+            'Predicate that defines nodes',
             parse,
             argument='<name>'
         )
@@ -60,7 +104,7 @@ class Clingraph(Application):
         options.add(
             self.option_group,
             'edge',
-            'Rename the predicate that defines edges',
+            'Predicate that defines edges',
             parse,
             argument='<name>'
         )
@@ -71,7 +115,7 @@ class Clingraph(Application):
         options.add(
             self.option_group,
             'attr',
-            'Rename the predicate that defines attributes',
+            'Predicate that defines attributes',
             parse,
             argument='<name>'
         )
@@ -102,12 +146,19 @@ class Clingraph(Application):
 
                 attrs[key] = { str(atom.arguments[1]): str(atom.arguments[2]) }
 
-        if types == ['digraph']:
-            graph = Digraph()
-        elif types == ['graph'] or types == []:
-            graph = Graph()
+        if types in [[], ['graph']]:
+            _Graph = Graph
+        elif types in [['digraph']]:
+            _Graph = Digraph
         else:
             pass # TODO: Report an error.
+
+        graph = _Graph(
+            name = f'{model.number:04d}',
+            directory = self.directory,
+            format = self.format,
+            engine = self.engine,
+        )
 
         for node in nodes:
             graph.node(*node, _attributes=attrs.get(node[0]))
@@ -115,7 +166,12 @@ class Clingraph(Application):
         for edge in edges:
             graph.edge(*edge, _attributes=attrs.get(edge[0:2]))
 
-        print(graph.source)
-
-        if self.view:
-            graph.view(mktemp('.gv')) # TODO: Use a non-deprecated function.
+        if self.render or self.view:
+            path = graph.render(
+                view=self.view,
+                cleanup=True,
+                quiet_view=self.view,
+            )
+            print(f'Saved to {path}')
+        else:
+            print(graph.source)
