@@ -93,12 +93,14 @@ class Clingraph(Application):
                 edges.append(tuple(map(str, atom.arguments)))
 
             elif atom.match(self.attr, 3):
-                if atom.arguments[0].match('', 2):
+                key = atom.arguments[0]
+
+                if key.match('', 2):
                     key = tuple(map(str, atom.arguments[0].arguments))
-                    attrs[key] = { str(atom.arguments[1]): str(atom.arguments[2]) }
                 else:
                     key = str(atom.arguments[0])
-                    attrs[key] = { str(atom.arguments[1]): str(atom.arguments[2]) }
+
+                attrs[key] = { str(atom.arguments[1]): str(atom.arguments[2]) }
 
         if types == ['digraph']:
             graph = Digraph()
