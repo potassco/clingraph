@@ -1,5 +1,4 @@
-from . import Clingraph
-from clingo.application import clingo_main
+from . import main
 
 if __name__ == "__main__":
-    clingo_main(Clingraph())
+    main()

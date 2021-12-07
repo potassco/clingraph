@@ -1,4 +1,4 @@
-from clingo.application import Application, Flag
+from clingo.application import Application, clingo_main, Flag
 from clingo.symbol import Function
 from graphviz import Graph, Digraph
 
@@ -175,3 +175,6 @@ class Clingraph(Application):
             print(f'Saved to {path}')
         else:
             print(graph.source)
+
+def main():
+    clingo_main(Clingraph())
