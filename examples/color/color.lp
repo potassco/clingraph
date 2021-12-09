@@ -16,4 +16,5 @@ color(red; green; blue).
 #show type(graph).
 #show node/1.
 #show edge/2.
-#show attr(N, color, C) : assign(N, C).
+#show attr(node, style, filled).
+#show attr(node(N), color, C) : assign(N, C).

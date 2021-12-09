@@ -124,44 +124,52 @@ class Clingraph(Application):
         types = []
         nodes = []
         edges = []
-        attrs = {}
+        attrs = { 'graph': {}, 'node': {}, 'edge': {} }
 
         for atom in model.symbols(shown=True):
             if atom.match(self.type, 1):
                 types.append(str(atom.arguments[0]))
 
-            elif any((atom.match(self.node, arity) for arity in [1, 2])):
+            elif atom.name == self.node and len(atom.arguments) in [1, 2]:
                 nodes.append(tuple(map(str, atom.arguments)))
 
-            elif any((atom.match(self.edge, arity) for arity in [2, 3])):
+            elif atom.name == self.edge and len(atom.arguments) in [2, 3]:
                 edges.append(tuple(map(str, atom.arguments)))
 
             elif atom.match(self.attr, 3):
-                key = atom.arguments[0]
+                entity = atom.arguments[0]
+                if entity.name in ['graph', 'node', 'edge'] and len(entity.arguments) == 0:
+                    entity = entity.name
+                elif entity.match('node', 1) or entity.match('edge', 2):
+                    entity = tuple(map(str, entity.arguments))
+                else: raise ValueError
 
-                if key.match('', 2):
-                    key = tuple(map(str, atom.arguments[0].arguments))
-                else:
-                    key = str(atom.arguments[0])
+                key = str(atom.arguments[1])
+                val = str(atom.arguments[2])
 
-                attrs[key] = { str(atom.arguments[1]): str(atom.arguments[2]) }
+                if entity not in attrs:
+                    attrs[entity] = {}
+
+                attrs[entity][key] = val
 
         if types in [[], ['graph']]:
             _Graph = Graph
         elif types in [['digraph']]:
             _Graph = Digraph
-        else:
-            pass # TODO: Report an error.
+        else: raise ValueError
 
         graph = _Graph(
             name = f'{model.number:04d}',
             directory = self.directory,
             format = self.format,
             engine = self.engine,
+            graph_attr = attrs['graph'],
+            node_attr = attrs['node'],
+            edge_attr = attrs['edge'],
         )
 
         for node in nodes:
-            graph.node(*node, _attributes=attrs.get(node[0]))
+            graph.node(*node, _attributes=attrs.get(node[0:1]))
 
         for edge in edges:
             graph.edge(*edge, _attributes=attrs.get(edge[0:2]))

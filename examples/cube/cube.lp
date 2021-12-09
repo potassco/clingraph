@@ -10,6 +10,6 @@ edge(X, Y, Y - X) :-
     Y = Y1 + 2 * Y2 + 4 * Y4,
     X < Y.
 
-attr((X, Y), color, red  ) :- edge(X, Y, 1).
-attr((X, Y), color, green) :- edge(X, Y, 2).
-attr((X, Y), color, blue ) :- edge(X, Y, 4).
+attr(edge(X, Y), color, red  ) :- edge(X, Y, 1).
+attr(edge(X, Y), color, green) :- edge(X, Y, 2).
+attr(edge(X, Y), color, blue ) :- edge(X, Y, 4).
