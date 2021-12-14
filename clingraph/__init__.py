@@ -7,6 +7,7 @@ from collections import defaultdict
 import networkx as nx
 import copy
 import os
+import imageio
 
 class Clingraph(Application):
     program_name = 'clingraph'
@@ -16,6 +17,7 @@ class Clingraph(Application):
 
     render = Flag(False)
     view = Flag(False)
+    gif = Flag(False)
 
     directory = 'out'
     format = 'pdf'
@@ -23,7 +25,7 @@ class Clingraph(Application):
 
     prefix = ''
 
-    graphs = []
+    graphs = {}
 
 
     def main(self, ctl, files):
@@ -35,18 +37,25 @@ class Clingraph(Application):
         ctl.solve(on_model=self.model2graphs)
 
         #Save graphs
-        for graph in self.graphs:
-            if self.render or self.view:
-                path = graph.render(
-                    view=self.view,
-                    cleanup=True,
-                    quiet_view=self.view,
-                )
-            else:
-                f = open(graph.filepath, "a")
-                f.write(graph.source)
-                f.close()
+        for model_numnber, graphs in self.graphs.items():
+            for graph in graphs:
+                if self.render or self.view or self.gif:
+                    path = graph.render(
+                        view=self.view,
+                        cleanup=True,
+                        quiet_view=self.view,
+                    )
+                else:
+                    f = open(graph.filepath, "a")
+                    f.write(graph.source)
+                    f.close()
                 
+            if self.gif:
+                images = []
+                for graph in graphs:
+                    images.append(imageio.imread(graph.filepath+"."+graph.format))
+                imageio.mimsave(os.path.join(graph.directory,'movie.gif'), images, fps=1)
+
     def _parse_directory(self, dir):
         self.directory = dir
         return True
@@ -71,6 +80,8 @@ class Clingraph(Application):
             'Render the answers', self.render)
         options.add_flag(self.option_group, 'view', 
             'Render the answers and show them with the default viewer', self.view)
+        options.add_flag(self.option_group, 'gif', 
+            'Generate a gif from all graphs', self.gif)
         options.add(self.option_group, 'directory', 
             'Directory for source saving and rendering', self._parse_directory, argument='<path>' )
         options.add(self.option_group, 'format', 
@@ -123,6 +134,7 @@ class Clingraph(Application):
                     structure[e][s2id(atom.arguments[0],e)]
                     continue
                 if atom.match(self.prefix+e,2):
+                    print(atom)
                     structure[e][s2id(atom.arguments[0],e)]['graph']=s2id(atom.arguments[1])
                     continue
 
@@ -192,13 +204,13 @@ class Clingraph(Application):
             graphs[g_parent]
             graphs[g_parent].subgraph(g)  
         
-        self.graphs = self.graphs + final_graphs
+        print(structure)
+        self.graphs[model.number] = final_graphs
 
     def print_model(self, model, printer):
         print(model)
-        
         print("\n" + "-"*20 +' Clingraph ' + "-"*20 + "\n")
-        for graph in self.graphs:
+        for graph in self.graphs[model.number]:
             print(f"Output saved in {graph.filepath}")
 
 def main():

@@ -7,8 +7,11 @@ def join(base,*args):
     return String(str(base).strip('"').join([str(x).strip('"') for x in args]))
 #end.
 
+time0(0).
+time0(T):-time(T).
 % One graph per time
-viz_graph(T):-time(T).
+viz_graph(T):-time0(T).
+viz_graph(0).
 viz_attr(graph, G, label, ""):- viz_graph(G).
 viz_attr(graph, G, style, invis):- viz_graph(G).
 viz_attr(graph, G, type, digraph):- viz_graph(G).
@@ -34,8 +37,8 @@ viz_edge(((X,Y,T),(X+DX,Y+DY,T)),T):-
 
 size(X,Y):- #max{X':position((X',Y'))}=X, #max{Y':position((X',Y'))}=Y.
 % One node per position
-viz_node((X,Y,T),T):-position((X,Y)),time(T).
-viz_attr(node, (X,Y,T),pos,@pos(X,YMax-Y)):-position((X,Y)),time(T),size(XMax,YMax).
+viz_node((X,Y,T),T):-position((X,Y)),time0(T).
+viz_attr(node, (X,Y,T),pos,@pos(X,YMax-Y)):- position((X,Y)), time0(T), size(XMax,YMax).
 
 % Shape
 viz_attr(node, (X,Y,T),shape,"doublecircle"):-
@@ -103,20 +106,20 @@ viz_attr(node, (X,Y,T),fillcolor,@join("","/pubu9/",1+R,":","gold")):-
     position(station(_),(X,Y)).
 viz_attr(node, (X,Y,T),color,white):- 
     position((X,Y)), not position(_,(X,Y),T),
-    not position(station(_),(X,Y)),time(T).
+    not position(station(_),(X,Y)),time0(T).
 viz_attr(node, (X,Y,T),fillcolor,gray):- 
     position((X,Y)), not position(_,(X,Y),T),
     highway((X,Y)),
-    not position(station(_),(X,Y)),time(T).
+    not position(station(_),(X,Y)),time0(T).
 viz_attr(node, (X,Y,T),fillcolor,black):- 
     position((X,Y)), not position(_,(X,Y),T),
     not highway((X,Y)),
-    not position(station(_),(X,Y)),time(T).
+    not position(station(_),(X,Y)),time0(T).
 
 % Penwidth
 viz_attr(node, (X,Y,T),penwidth,30):- 
     position((X,Y)), not position(_,(X,Y),T),
-    not position(station(_),(X,Y)),time(T).
+    not position(station(_),(X,Y)),time0(T).
 viz_attr(node, (X,Y,T),penwidth,2):-
     position(shelf(S),(X,Y),T), 
     position(robot(R),(X,Y),T),
