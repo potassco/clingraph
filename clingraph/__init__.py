@@ -1,6 +1,7 @@
 from clingo.application import Application, clingo_main, Flag
 from clingo.symbol import Function
 from graphviz import Graph, Digraph
+from collections import defaultdict
 
 class Clingraph(Application):
     program_name = 'clingraph'
@@ -15,10 +16,7 @@ class Clingraph(Application):
     format = None
     engine = None
 
-    type = 'type'
-    node = 'node'
-    edge = 'edge'
-    attr = 'attr'
+    prefix = ''
 
     def main(self, ctl, files):
         for path in files:
@@ -28,97 +26,91 @@ class Clingraph(Application):
         ctl.ground([('base', [])], context=self)
         ctl.solve()
 
+    def parse_directory(self, dir):
+        self.directory = dir
+        #TODO check that it is actually a directory
+        return True
+    
+    def parse_format(self, format):
+        self.format = format
+        return format in ['pdf','svg','png']
+
+    def parse_engine(self, engine):
+        self.engine = engine
+        return engine in ["dot", "neato", "twopi", "circo", "fdp", "osage", "patchwork", "sfdp"]
+
+    def parse_prefix(self, prefix):
+        self.prefix = prefix
+        return not " " in prefix
+
     def register_options(self, options):
-        options.add_flag(
-            self.option_group,
-            'render',
-            'Render the answers',
-            self.render,
-        )
+        # TODO add default
+        options.add_flag(self.option_group, 'render', 
+            'Render the answers', self.render)
+        options.add_flag(self.option_group, 'view', 
+            'Render the answers and show them with the default viewer', self.view)
+        options.add(self.option_group, 'directory', 
+            'Directory for source saving and rendering', self._parse_directory, argument='<path>' )
+        options.add(self.option_group, 'format', 
+            'Rendering output format', self._parse_format, argument='<format>' )
+        options.add(self.option_group, 'engine', 
+            'Layout command used', self._parse_engine, argument='<engine>' )
+        options.add(self.option_group, 'prefix', 
+            'Prefix used for the predicates that the package will consider', self._parse_prefix, argument='<engine>' )
 
-        options.add_flag(
-            self.option_group,
-            'view',
-            'Render the answers and show them with the default viewer',
-            self.view
-        )
+    def model2graphs(self, model):
+        elements = ['graph','cluster','class','node','edge']
+        basic_info = {'graph': 'default','cluster': None, 'attr': {}}
+        structure = {
+            'graph': defaultdict(lambda: {'attr': [('type','graph')]}.copy()),
+            'cluster': defaultdict(lambda: basic_info.copy()),
+            'class': defaultdict(lambda: basic_info.copy()),
+            'node': defaultdict(lambda: basic_info.copy()),
+            'edge': defaultdict(lambda: basic_info.copy())
+        }
+        structure['graph']['default']
+        structure['class']['node']
+        structure['class']['edge']
 
-        def parse(value):
-            self.directory = value
-            return True
-        options.add(
-            self.option_group,
-            'directory',
-            'Directory for source saving and rendering',
-            parse,
-            argument='<path>'
-        )
+        for atom in model.symbols(atoms=True):
+            if not atom.startswith(self.prefix):
+                continue
+            name = atom.name
+            if atom.match(self.prefix+"attr", 4):
+                #TODO maybe nicer way to treat integers
+                element_type = str(atom[0]).strip('"')
+                element_id = str(atom[1]).strip('"')
+                attr_name = str(atom[2]).strip('"')
+                attr_value = str(atom[3]).strip('"')
+                if attr_name in ['graph','cluster']:
+                    structure[attr_name][attr_value]
+                    structure[element_type][element_id][attr_name]=attr_value
+                else:
+                    structure[element_type][element_id]['attr'][attr_name]=attr_value
+                continue
+            for e in elements:
+                if atom.match(self.prefix+e,1):
+                    structure[e]
+                    continue
 
-        def parse(value):
-            self.format = value
-            return True
-        options.add(
-            self.option_group,
-            'format',
-            'Rendering output format',
-            parse,
-            argument='<format>'
-        )
+        for g_id, g in structure['graph'].items():
+            if g['attr']['type'] == 'graph':
+                _Graph = Graph
+            elif g['attr']['type'] == 'digraph':
+                _Graph = Digraph
+            else: raise ValueError
 
-        def parse(value):
-            self.engine = value
-            return True
-        options.add(
-            self.option_group,
-            'engine',
-            'Layout command used',
-            parse,
-            argument='<engine>'
-        )
-
-        def parse(value):
-            self.type = value
-            return True
-        options.add(
-            self.option_group,
-            'type',
-            'Predicate that defines whether the graph is directed or undirected',
-            parse,
-            argument='<name>'
-        )
-
-        def parse(value):
-            self.node = value
-            return True
-        options.add(
-            self.option_group,
-            'node',
-            'Predicate that defines nodes',
-            parse,
-            argument='<name>'
-        )
-
-        def parse(value):
-            self.edge = value
-            return True
-        options.add(
-            self.option_group,
-            'edge',
-            'Predicate that defines edges',
-            parse,
-            argument='<name>'
-        )
-
-        def parse(value):
-            self.attr = value
-            return True
-        options.add(
-            self.option_group,
-            'attr',
-            'Predicate that defines attributes',
-            parse,
-            argument='<name>'
-        )
+            graph_name = g['attr']['name'] if 'name' in  g['attr'] else g_id
+            graph = _Graph(
+                name = f'{graph_name}_{model.number:04d}',
+                directory = self.directory,
+                format = self.format,
+                engine = self.engine,
+                graph_attr = g['attr'],
+                node_attr = structure['class']['node'],
+                edge_attr = structure['class']['edge']
+            )
+        
 
     def print_model(self, model, printer):
         types = []
