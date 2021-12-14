@@ -122,7 +122,7 @@ class Clingraph(Application):
             if not name.startswith(self.prefix):
                 continue
             if atom.match(self.prefix+"attr", 4):
-                #TODO maybe nicer way to treat integers
+                #TODO maybe nicer way to treat integers than s2id function
                 args = atom.arguments
                 element_type = s2id(args[0])
                 element_id = s2id(args[1],element_type)
@@ -204,7 +204,6 @@ class Clingraph(Application):
             graphs[g_parent]
             graphs[g_parent].subgraph(g)  
         
-        print(structure)
         self.graphs[model.number] = final_graphs
 
     def print_model(self, model, printer):
