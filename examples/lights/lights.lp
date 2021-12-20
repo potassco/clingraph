@@ -35,7 +35,6 @@ attr(graph, bathroom_1, label, "Bathroom").
 attr(graph, bathroom_1, style, "dotted").
 
 
-
 %%%%%%%%%%%%%% Classes %%%%%%%%%%%%%%
 
 % To reuse attributes for nodes and edges using a name
@@ -78,10 +77,10 @@ attr(node, llivingroom2_1, label, "Kitchen light").
 
 % Edges between nodes assigned to a graph
 % No need to attach a cluster as the edges pass between clusters
-edge((lhub_1,lbathroom_1),house_1).
-edge((lhub_1,lbedroom_1),house_1).
-edge((lhub_1,llivingroom1_1),house_1).
-edge((lhub_1,llivingroom2_1),house_1).
+edge((lhub_1,lbathroom_1), house_1).
+edge((lhub_1,lbedroom_1), house_1).
+edge((lhub_1,llivingroom1_1), house_1).
+edge((lhub_1,llivingroom2_1), house_1).
 
 
 
