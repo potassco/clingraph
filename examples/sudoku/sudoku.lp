@@ -29,19 +29,17 @@ def pos(x,y):
     return String(f"{str(x)},{str(y)}!")
 #end.
 
-% Type of graph
-viz_attr(graph, default, type, graph).
 % Name of graph
-viz_attr(graph, default, name, "Sudoku").
+viz_attr(graph, sudoku, name, "Sudoku").
 
 % Global graph attributes
-viz_attr(graph, default, nodesep, 1).
-viz_attr(graph, default, newrank, true).
+viz_attr(graph, sudoku, nodesep, 1).
+viz_attr(graph, sudoku, newrank, true).
 
 % Global node attributes
-viz_attr(class, node, shape, square).
-viz_attr(class, node, style, filled).
-viz_attr(class, node, fillcolor, white).
+viz_attr(graph_nodes, sudoku, shape, square).
+viz_attr(graph_nodes, sudoku, style, filled).
+viz_attr(graph_nodes, sudoku, fillcolor, white).
 
 % Nodes
 viz_node(pos(X,Y)):- pos(X,Y).

@@ -20,14 +20,14 @@ viz_attr(graph, G, newrank, true):- viz_graph(G).
 
 
 % Global node/edge attributes
-viz_attr(class, node, width, "0.5").
-viz_attr(class, node, height, "0.5").
-viz_attr(class, node, fixedsize, "shape").
-viz_attr(class, node, fontsize, "8").
-viz_attr(class, node, style, "filled").
-viz_attr(class, edge, shape, vee).
-viz_attr(class, edge, style, dotted).
-viz_attr(class, edge, arrowsize, "0.5").
+viz_attr(graph_nodes, G, width, "0.5"):- viz_graph(G).
+viz_attr(graph_nodes, G, height, "0.5"):- viz_graph(G).
+viz_attr(graph_nodes, G, fixedsize, "shape"):- viz_graph(G).
+viz_attr(graph_nodes, G, fontsize, "8"):- viz_graph(G).
+viz_attr(graph_nodes, G, style, "filled"):- viz_graph(G).
+viz_attr(graph_edges, G, shape, vee):- viz_graph(G).
+viz_attr(graph_edges, G, style, dotted):- viz_graph(G).
+viz_attr(graph_edges, G, arrowsize, "0.5"):- viz_graph(G).
 
 
 % Movements as edges
