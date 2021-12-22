@@ -1,7 +1,3 @@
-% attr(graph, default, type, digraph).
-
-prop(graph, default, type, digraph).
-
 node(0..7).
 
 edge((X, Y)) :-

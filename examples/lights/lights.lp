@@ -35,18 +35,12 @@ attr(graph, bathroom_1, label, "Bathroom").
 attr(graph, bathroom_1, style, "dotted").
 
 
-%%%%%%%%%%%%%% Classes %%%%%%%%%%%%%%
+%%%%%%%%%%%%%% Global Node/Edge attrubutes %%%%%%%%%%%%%%
 
 % To reuse attributes for nodes and edges using a name
 
-% 'node' and 'edge' apply to all node and edges of all graphs
-attr(class,node,shape,record).
-attr(class,edge,style,dotted).
-
-%  other names can also be defined and they will be available in all graphs
-attr(class,light,shape,circle).
-attr(class,light,color,lightblue).
-attr(class,light,style,filled).
+attr(graph_nodes,house_1,node,shape,record).
+attr(graph_edges,house_1,style,dotted).
 
 
 %%%%%%%%%%%%%% Nodes %%%%%%%%%%%%%%
@@ -59,11 +53,14 @@ node(llivingroom1_1,livingroom_1).
 node(llivingroom2_1,livingroom_1).
 
 
-% Use special attribute class to use the class previously defined
-attr(node, lbathroom_1, class, light).
-attr(node, lbedroom_1, class, light).
-attr(node, llivingroom1_1, class, light).
-attr(node, llivingroom2_1, class, light).
+is_light(lbathroom_1).
+is_light(lbedroom_1).
+is_light(llivingroom1_1).
+is_light(llivingroom2_1).
+
+attr(node,ID,shape,circle):-is_light(ID).
+attr(node,ID,color,lightblue):-is_light(ID).
+attr(node,ID,style,filled):-is_light(ID).
 
 % Any other attributes
 attr(node, lhub_1, label, "HUB").
@@ -115,15 +112,20 @@ attr(graph, bedroom_2, style, "dashed").
 attr(graph, bathroom_2, label, "Bathroom").
 attr(graph, bathroom_2, style, "dotted").
 
+%%%%%%%%%%%%%% Global Node/Edge attrubutes %%%%%%%%%%%%%%
+
+% To reuse attributes for nodes and edges using a name
+
+attr(graph_nodes,house_2,node,shape,record).
+attr(graph_edges,house_2,style,dotted).
+
 %%%%%%%%%%%%%% Nodes %%%%%%%%%%%%%%
 
 % Define nodes
 node(lbathroom_2,bedroom_2).
 node(lbedroom_2,bathroom_2).
 
-% Use special attribute class to referenciate a class previously defined
-attr(node, lbathroom_2, class, light).
-attr(node, lbedroom_2, class, light).
+is_light(lbathroom_2;lbedroom_2).
 
 % Any other attributes
 attr(node, lbathroom_2, label, "Light").
