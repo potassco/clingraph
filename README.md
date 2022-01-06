@@ -8,7 +8,7 @@ The graphs are defined via fixed predicates in the logic program.
 
 ## Installation 
 
-Install all dependencies 
+Standing on the root folder install all dependencies:
 
 ```
 pip install .
@@ -125,10 +125,10 @@ To define the graphs one must use predicates `node`, `edge`, `graph` and `attr` 
   The attributes of an element (graph, node or edge) are defined using predicate `attr/4`. This predicate will add any attributes accepted by graphviz ([see here](https://graphviz.org/doc/info/attrs.html)) specified by name-value pairs to the element.
 
   - `attr(ELEMENT_TYPE, ELEMENT_ID, ATTR_NAME, ATTR_VALUE).`
+    - `ELEMENT_TYPE` The type of element: can be `graph`, `node` or `edge`. Additionally, the element types `graph_nodes` and `graph_edges` assign an attribute to all nodes/edges of a graph identified with `ELEMENT_ID`.
+    - `ELEMENT_ID` The identifier of the element
     - `ATTR_NAME` The name of the graphviz attribute 
     - `ATTR_VALUE` The value of the graphviz attribute
-    - `ELEMENT_ID` The identifier of the element
-    - `ELEMENT_TYPE` The type of element: can be `graph`, `node` or `edge`. Additionally, the element types `graph_nodes` and `graph_edges` assign an attribute to all nodes/edges of a graph identified with `ELEMENT_ID`.
 
   ###### *Example 3 (continuation)*
 
@@ -167,4 +167,3 @@ For more advanced examples look into the [examples](./examples) directory. Each 
 #### Dynamic applications
 
 For visualizing dynamic applications one can create multiple graphs for each time step to generate a gif. See example [examples/asprilo](./examples/asprilo/README.md).
-

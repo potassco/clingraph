@@ -39,7 +39,7 @@ class Clingraph(Application):
         Function to replace clingo's default main function.
         Arguments:
             ctl : Clingos control object
-            files: The files passed to the application, that will generate the 
+            files: The files passed to the application, that will generate the
                     predicates representing the graph
         """
         for path in files:
@@ -81,7 +81,7 @@ class Clingraph(Application):
         """
 
         options.add(self.option_group, 'directory',
-                    """Directory for saving and rendering 
+                    """Directory for saving and rendering
          * Default: \out""",
                     self._parse_directory, argument='<str>')
         options.add(self.option_group, 'format',
@@ -146,7 +146,7 @@ class Clingraph(Application):
             if s_type == 'edge':
                 if len(symbol.arguments) != 2:
                     return ValueError("Edge should be a tuple of arity 2")
-                return tuple([str(a).strip('"') for a in symbol.arguments])
+                return tuple(str(a).strip('"') for a in symbol.arguments)
             return str(symbol).strip('"')
 
         for atom in model.symbols(atoms=True, shown=True):
