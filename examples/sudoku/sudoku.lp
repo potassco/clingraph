@@ -1,7 +1,3 @@
-% Compute visualization with 
-%   cat sudoku.lp| python graspviz.py | dot -Kfdp -n -Tpng -o sudoku.png
-
-
 % %%%%%%%%%%%%%%%%%%%%%%%%% Encoding
 
 #const dim = 3.

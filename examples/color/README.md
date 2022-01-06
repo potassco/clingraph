@@ -1,4 +1,4 @@
 ### Run example
 
 
-`clingraph examples/color/color.lp --view --dir='out/color'`
+`clingraph examples/color/color.lp --view --dir='out/color' --format=png`
