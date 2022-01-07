@@ -1,8 +1,8 @@
-import imageio
 import os
 import copy
-import networkx as nx
 from collections import defaultdict
+import imageio
+import networkx as nx
 from graphviz import Graph, Digraph
 from clingo.application import Application, clingo_main, Flag
 from clingo.symbol import Function, String
@@ -49,13 +49,13 @@ class Clingraph(Application):
         ctl.ground([('base', [])])
         ctl.solve()
 
-    def _parse_directory(self, dir):
-        self.directory = dir
+    def _parse_directory(self, directory):
+        self.directory = directory
         return True
 
-    def _parse_format(self, format):
-        self.format = format
-        return format in ['gv', 'pdf', 'svg', 'png']
+    def _parse_format(self, format_arg):
+        self.format = format_arg
+        return format_arg in ['gv', 'pdf', 'svg', 'png']
 
     def _parse_engine(self, engine):
         self.engine = engine
@@ -69,9 +69,9 @@ class Clingraph(Application):
         self.default_graph = default_graph
         return not " " in default_graph
 
-    def _parse_type(self, type):
-        self.type = type
-        return type in ['graph', 'digraph']
+    def _parse_type(self, type_arg):
+        self.type = type_arg
+        return type_arg in ['graph', 'digraph']
 
     def register_options(self, options):
         """
@@ -82,7 +82,7 @@ class Clingraph(Application):
 
         options.add(self.option_group, 'directory',
                     """Directory for saving and rendering
-         * Default: \out""",
+         * Default: out""",
                     self._parse_directory, argument='<str>')
         options.add(self.option_group, 'format',
                     """Rendering output format
@@ -117,8 +117,8 @@ class Clingraph(Application):
                          'Generate a gif from all graphs',
                          self.gif)
         options.add_flag(self.option_group, 'flat',
-                         """Flattens the output by saving it in the same directory 
-                         using the model number as postfix on the file name insted 
+                         """Flattens the output by saving it in the same directory
+                         using the model number as postfix on the file name insted
                          of a folder
          * Default: each stable model is saved in a different directory.""",
                          self.flat)
@@ -276,7 +276,7 @@ class Clingraph(Application):
                 else:
                     if not os.path.exists(graph.directory):
                         os.makedirs(graph.directory)
-                    with open(graph.filepath, "w+") as f:
+                    with open(graph.filepath, "w+",encoding="utf8") as f:
                         f.write(graph.source)
 
             if self.gif:
@@ -303,4 +303,7 @@ class Clingraph(Application):
 
 
 def main():
+    """
+    Runs the main function
+    """
     clingo_main(Clingraph())
