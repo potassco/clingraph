@@ -45,7 +45,7 @@ viz_attr(node, (X,Y,T),shape,"doublecircle"):-
     viz_node((X,Y,T),T),
     position(station(S),(X,Y)).
 viz_attr(node, (X,Y,T),shape,"circle"):-
-    position(robot(R),(X,Y),T), 
+    position(robot(R),(X,Y),T),
     not position(shelf(_),(X,Y),T),
     not position(station(_),(X,Y)).
 viz_attr(node, (X,Y,T),shape,"box"):-
@@ -56,7 +56,7 @@ viz_attr(node, (X,Y,T),shape,"square"):-
     position(shelf(S),(X,Y),T),
     position(robot(R),(X,Y),T),
     not position(station(_),(X,Y)).
-viz_attr(node, (X,Y,T),shape,"point"):- 
+viz_attr(node, (X,Y,T),shape,"point"):-
     viz_node((X,Y,T),T),
     not position(_,(X,Y),T),
     not position(station(_),(X,Y)).
@@ -89,39 +89,39 @@ viz_attr(node, (X,Y,T),fillcolor,@join("","/orrd9/",1+S)):-
     not position(station(_),(X,Y)),
     not position(robot(_),(X,Y),T).
 viz_attr(node, (X,Y,T),fillcolor,@join("","/pubu9/",1+R,":","/orrd9/",1+S)):-
-    position(shelf(S),(X,Y),T), 
+    position(shelf(S),(X,Y),T),
     position(robot(R),(X,Y),T),
     not position(station(_),(X,Y)).
 viz_attr(node, (X,Y,T),fillcolor,@join("","/pubu9/",1+R,":","/orrd9/",1+S,":","gold")):-
-    position(shelf(S),(X,Y),T), 
+    position(shelf(S),(X,Y),T),
     position(robot(R),(X,Y),T),
     position(station(_),(X,Y)).
 viz_attr(node, (X,Y,T),fillcolor,@join("","/orrd9/",1+S,":","gold")):-
-    position(shelf(S),(X,Y),T), 
+    position(shelf(S),(X,Y),T),
     not position(robot(_),(X,Y),T),
     position(station(_),(X,Y)).
 viz_attr(node, (X,Y,T),fillcolor,@join("","/pubu9/",1+R,":","gold")):-
-    not position(shelf(_),(X,Y),T), 
+    not position(shelf(_),(X,Y),T),
     position(robot(R),(X,Y),T),
     position(station(_),(X,Y)).
-viz_attr(node, (X,Y,T),color,white):- 
+viz_attr(node, (X,Y,T),color,white):-
     position((X,Y)), not position(_,(X,Y),T),
     not position(station(_),(X,Y)),time0(T).
-viz_attr(node, (X,Y,T),fillcolor,gray):- 
+viz_attr(node, (X,Y,T),fillcolor,gray):-
     position((X,Y)), not position(_,(X,Y),T),
     highway((X,Y)),
     not position(station(_),(X,Y)),time0(T).
-viz_attr(node, (X,Y,T),fillcolor,black):- 
+viz_attr(node, (X,Y,T),fillcolor,black):-
     position((X,Y)), not position(_,(X,Y),T),
     not highway((X,Y)),
     not position(station(_),(X,Y)),time0(T).
 
 % Penwidth
-viz_attr(node, (X,Y,T),penwidth,30):- 
+viz_attr(node, (X,Y,T),penwidth,30):-
     position((X,Y)), not position(_,(X,Y),T),
     not position(station(_),(X,Y)),time0(T).
 viz_attr(node, (X,Y,T),penwidth,2):-
-    position(shelf(S),(X,Y),T), 
+    position(shelf(S),(X,Y),T),
     position(robot(R),(X,Y),T),
     carries(robot(R),shelf(S),T).
 

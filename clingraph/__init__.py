@@ -86,18 +86,18 @@ class Clingraph(Application):
                     self._parse_directory, argument='<str>')
         options.add(self.option_group, 'format',
                     """Rendering output format
-        <arg>: {gv|pdf|png|svg} 
+        <arg>: {gv|pdf|png|svg}
          * Default: gv (the graphsviz text format)""",
                     self._parse_format, argument='<arg>')
         options.add(self.option_group, 'type',
                     """Type of graph
         <arg> : {graph|digraph}
-            graph: not-directed 
-            digraph: directed 
+            graph: not-directed
+            digraph: directed
          * Default: digraph""",
                     self._parse_type, argument='<arg>')
         options.add(self.option_group, 'engine',
-                    """Layout command used 
+                    """Layout command used
         <arg>: {dot|neato|twopi|circo|fdp|osage|patchwork|sfdp}
          * Default: dot""",
                     self._parse_engine, argument='<arg>')
@@ -105,7 +105,7 @@ class Clingraph(Application):
                     """Prefix used for the predicates to consider""",
                     self._parse_prefix, argument='<str>')
         options.add(self.option_group, 'default-graph',
-                    """The name of the default graph 
+                    """The name of the default graph
         All nodes and edges with arity 1 will be assigned to this graph
          * Default: default""",
                     self._parse_default_graph, argument='<str>')
@@ -117,7 +117,7 @@ class Clingraph(Application):
                          'Generate a gif from all graphs',
                          self.gif)
         options.add_flag(self.option_group, 'postfix',
-                         """Saves output in the same directory using the model 
+                         """Saves output in the same directory using the model
         number as postfix on the file name
          * Default: each stable model is saved in a different directory.""",
                          self.model_as_postfix)
