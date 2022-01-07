@@ -46,8 +46,9 @@ Clingraph Options:
   --[no-]view             : Render the answers and show them with the default
         viewer if they are images
   --[no-]gif              : Generate a gif from all graphs
-  --[no-]postfix          : Saves output in the same directory using the model
-        number as postfix on the file name
+  --[no-]flat             : Flattens the output by saving it in the same directory
+                         using the model number as postfix on the file name insted
+                         of a folder
          * Default: each stable model is saved in a different directory.
 ```
 To define the graphs one must use predicates `node`, `edge`, `graph` and `attr` as explained below (a custom prefix for these names can be defined in the command line). All the following examples can be found in the [examples/basic](./examples/basic) directory.

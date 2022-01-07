@@ -24,7 +24,7 @@ class Clingraph(Application):
         # Flags
         self.view = Flag(False)
         self.gif = Flag(False)
-        self.model_as_postfix = Flag(False)
+        self.flat = Flag(False)
 
         # Arguments
         self.directory = 'out'
@@ -116,11 +116,12 @@ class Clingraph(Application):
         options.add_flag(self.option_group, 'gif',
                          'Generate a gif from all graphs',
                          self.gif)
-        options.add_flag(self.option_group, 'postfix',
-                         """Saves output in the same directory using the model
-        number as postfix on the file name
+        options.add_flag(self.option_group, 'flat',
+                         """Flattens the output by saving it in the same directory 
+                         using the model number as postfix on the file name insted 
+                         of a folder
          * Default: each stable model is saved in a different directory.""",
-                         self.model_as_postfix)
+                         self.flat)
 
     def model2structure(self, model):
         """
@@ -185,7 +186,7 @@ class Clingraph(Application):
         # Create graphs
         graphs = {}
         dir_path = os.path.join(self.directory, f'model_{model_number}')
-        if self.model_as_postfix:
+        if self.flat:
             dir_path = self.directory
         for g_id, g in structure['graph'].items():
             if self.type == 'graph':
@@ -196,7 +197,7 @@ class Clingraph(Application):
                 raise ValueError
 
             graph_name = g['attr']['name'] if 'name' in g['attr'] else g_id
-            if self.model_as_postfix:
+            if self.flat:
                 graph_name += f'_{model_number}'
 
             graph = _Graph(
