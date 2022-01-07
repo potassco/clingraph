@@ -1,12 +1,12 @@
 # clingraph
 
-A visualizer for graphs defined as logic programs. 
+A visualizer for graphs defined as logic programs.
 
-It extends [clingo](https://potassco.org/clingo/) with the automatic generation of graphs using [graphviz](https://graphviz.org). 
+It extends [clingo](https://potassco.org/clingo/) with the automatic generation of graphs using [graphviz](https://graphviz.org).
 The graphs are defined via fixed predicates in the logic program.
 
 
-## Installation 
+## Installation
 
 Standing on the root folder install all dependencies:
 
@@ -18,7 +18,7 @@ This will make the command `clingraph` available for usage.
 
 ## Usage
 
-*Clingraph* will pass the provided files to clingo and generate a graph for each stable model that is printed. The graphs can be saved in several formats using a valid engine. 
+*Clingraph* will pass the provided files to clingo and generate a graph for each stable model that is printed. The graphs can be saved in several formats using a valid engine.
 
 ```shell
 clingraph --help
@@ -76,14 +76,14 @@ To define the graphs one must use predicates `node`, `edge`, `graph` and `attr` 
 
 - #### **Graphs**
 
-  A graph `A` is defined using predicate `graph/1`. 
+  A graph `A` is defined using predicate `graph/1`.
 
   ###### *Example*
   ```
   graph(family).
   ```
 
-  - **Multiple graphs** can be defined within the same logic program. Each of them will generate a different file. In order to assign a node or edge to an specific graph we add the identifier of the graph in the second argument. All nodes and edges defined with a single argument are assigned to the default graph called `default`. A different graph can be defined as the default in the command line. 
+  - **Multiple graphs** can be defined within the same logic program. Each of them will generate a different file. In order to assign a node or edge to an specific graph we add the identifier of the graph in the second argument. All nodes and edges defined with a single argument are assigned to the default graph called `default`. A different graph can be defined as the default in the command line.
 
     ###### *Example 2*
 
@@ -127,7 +127,7 @@ To define the graphs one must use predicates `node`, `edge`, `graph` and `attr` 
   - `attr(ELEMENT_TYPE, ELEMENT_ID, ATTR_NAME, ATTR_VALUE).`
     - `ELEMENT_TYPE` The type of element: can be `graph`, `node` or `edge`. Additionally, the element types `graph_nodes` and `graph_edges` assign an attribute to all nodes/edges of a graph identified with `ELEMENT_ID`.
     - `ELEMENT_ID` The identifier of the element
-    - `ATTR_NAME` The name of the graphviz attribute 
+    - `ATTR_NAME` The name of the graphviz attribute
     - `ATTR_VALUE` The value of the graphviz attribute
 
   ###### *Example 3 (continuation)*
@@ -159,7 +159,7 @@ To define the graphs one must use predicates `node`, `edge`, `graph` and `attr` 
   attr(node, jane, label, "Jane Doe").
   ```
   ![image](./examples/basic/example1/example_1.2.png)
-  
+
 ### Advanced usage
 
 For more advanced examples look into the [examples](./examples) directory. Each folder contains a readme on how to run the example.

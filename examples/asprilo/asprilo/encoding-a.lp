@@ -11,5 +11,3 @@
 
 % Output conversion
 #include "./output-MPPD.lp".
-
-

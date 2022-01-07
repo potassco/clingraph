@@ -26,4 +26,3 @@ position(  robot(R),(X,Y),0) :- init(object(robot,R),          value(at,(X,Y))).
 position(  shelf(S),(X,Y),0) :- init(object(shelf,S),          value(at,(X,Y))).
 
 highway(            C    )   :- init(object(highway,_),        value(at,C)).
-
