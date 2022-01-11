@@ -12,7 +12,7 @@ node(literal_tuple(I)) :- literal_tuple(I).
 attr(node, literal_tuple(E), shape, house):- node(literal_tuple(E)).
 
 node(rule(H,B)):-rule(H,B).
-attr(node, rule(H,B), shape, rectangle):- node(rule(H,B)).
+attr(node, rule(H,B), shape, none):- node(rule(H,B)).
 
 node(output(S,L)):- output(S,L).
 attr(node, output(S,L), shape, underline):- node(output(S,L)).

@@ -42,7 +42,7 @@ attr(graph, legend4, label, "Rules").
 node(rule,legend4).
 node(rule_head,legend4).
 node(rule_body,legend4).
-attr(node, rule, shape, rectangle).
+attr(node, rule, shape, none).
 attr(node, rule_head, shape, invhouse).
 attr(node, rule_body, shape, house).
 

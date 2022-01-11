@@ -21,7 +21,7 @@ attr(node,theory_symbol(I),label,theory_string(S)):-theory_string(I,S).
 attr(node,theory_symbol(I),label,theory_function(I)):-theory_function(I,S,T).
 attr(node,theory_symbol(I),label,theory_sequence(I)):-theory_sequence(I,tuple,T).
 
-attr(node,theory_symbol(I),shape,note):-node(theory_symbol(I)).
+attr(node,theory_symbol(I),shape,rectangle):-node(theory_symbol(I)).
 
 edge((theory_symbol(I),theory_tuple(T))):-theory_function(I,S,T).
 edge((theory_symbol(I),theory_symbol(S))):-theory_function(I,S,T).
@@ -40,7 +40,7 @@ attr(edge,(theory_tuple(I),theory_symbol(E)),label,P):-theory_tuple(I,P,E).
 % Elements
 node(theory_element(I)):-theory_element(I,T,C).
 theory_node(theory_element(I)):-theory_element(I,T,C).
-attr(node,theory_element(I),shape, invtrapezium):-theory_element(I,T,C).
+attr(node,theory_element(I),shape, note):-theory_element(I,T,C).
 edge((theory_element(I),theory_tuple(T))):-theory_element(I,T,C).
 edge((theory_element(I),literal_tuple(C))):-theory_element(I,T,C), C!=true.
 attr(edge,(theory_element(I),literal_tuple(C)),arrowtail,curve):-theory_element(I,T,C), C!=true.
