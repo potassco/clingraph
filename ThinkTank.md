@@ -25,6 +25,7 @@
 >**ISSUE:**
 >`edge(A,B)` is faster to write but then the elements have different arities
 >`edge((A,B))` is anoying but `(A,B)` is used as a tuple in `attr` anyway
+>    You can add more elements
 
 
 - #### **Graphs**
@@ -37,6 +38,7 @@
   ```
 
   - **Multiple graphs** can be defined within the same logic program. Each of them will generate a different file. In order to assign a node or edge to an specific graph we add the identifier of the graph in the second argument. All nodes and edges defined with a single argument are assigned to the default graph called `default`. A different graph can be defined as the default in the command line.
+
 
     ###### *Example 2*
 
@@ -73,6 +75,7 @@
     ```
     ![](./examples/basic/example3/house.png)
 
+> Can you add an edge from/to a subgraph?
 - #### **Attributes**
 
   The attributes of an element (graph, node or edge) are defined using predicate `attr/4`. This predicate will add any attributes accepted by graphviz ([see here](https://graphviz.org/doc/info/attrs.html)) specified by name-value pairs to the element.
@@ -134,6 +137,17 @@
 > attr(node,X,(label,1),L):- person(X), last_name(X,L).
 > attr(node,X,(label,"sep")," ").
 > ```
+>  - Idea using tuples attributes as for
+> ```
+> person(1).
+> first_name("Michel").
+> last_name("Scott").
+> node(1).
+> attr(node,X,label,N):- person(X), first_name(X,N).
+> attr(node,X,label,L):- person(X), last_name(X,L).
+> attr(node,X,(label,"sep")," ").
+> ```
+> Have an option for a set where you don't define the index
 > - Idea have some predefined utils python scripts  
 > ```
 > #script (python)
@@ -159,17 +173,67 @@
 from clingraph import Clingraph
 
 # From a string/encoding containing facts
-g = Clingraph(prg ="node(a). node(b).", 
+g = Clingraph.from_program(prg ="node(a). node(b).", 
              type= "digraph", engine = "dot", prefix= "viz_", default_graph= "sudoku")
 # From a list of files containing facts
-g = Clingraph(files = ["out.lp"])
+g = Clingraph.from_files(files = ["out.lp"])
 # From a clorm factbase
-g = Clingraph(fb = factbase)
+g = Clingraph.from_clorm_factbase(fb = factbase)
+# From a model
+g = Clingraph(clingo_model = model)
+ctl.solve(on_model= lambda m: Clingraph(clingo_model=m))
+
+# From a clingo json output
+json = {
+  "Solver": "clingo version 5.4.0",
+  "Input": ["stdin"],
+  "Call": [
+    {
+      "Witnesses": [
+        {
+          "Value": [
+
+          ]
+        },
+        {
+          "Value": [
+            "c"
+          ]
+        },
+        {
+          "Value": [
+            "b", "a"
+          ]
+        },
+        {
+          "Value": [
+            "b", "c", "a"
+          ]
+        }
+      ]
+    }
+  ],
+  "Result": "SATISFIABLE",
+  "Models": {
+    "Number": 4,
+    "More": "no"
+  },
+  "Calls": 1,
+  "Time": {
+    "Total": 0.001,
+    "Solve": 0.000,
+    "Model": 0.000,
+    "Unsat": 0.000,
+    "CPU": 0.001
+  }
+}
+g_dic = clingraph.from_json(json="")
 ```
 
 > **ISSUES**:
 > - Do we want to define a prefix for all predicates or something individual?
 > - Do we want to keep all arguments in the creation, like directory and engine or leave it for the save?
+> - Why not just a function instead of a class?
 #### Access attributes
 
 -We consider saving multiple graphs in the same encoding so the output would be a dictionary of all graphs by name
