@@ -1,4 +1,5 @@
 
+from fileinput import filename
 import os
 import clorm
 import imageio
@@ -8,7 +9,8 @@ from clorm import FactBase
 from clingo import Model
 from graphviz import Graph, Digraph
 from clingraph.clorm_orm import ClormORM
-
+import logging
+LOG = logging.getLogger('custom')
 
 class Clingraph:
 
@@ -35,7 +37,7 @@ class Clingraph:
         String representation of the clingraph
         """
         if len(self.graphs) == 0:
-            return "Clingraph not yet computed (Generate graphs by calling the compute_graphs method)"
+            return "Clingraph not yet computed (Generate graphs by calling the compute_graphs method)\n\n"+self.facts 
         s = ""
         for g_name, g in self.graphs.items():
             s += "//"+"-"*10 + g_name + "-"*10 + "\n"
@@ -77,6 +79,14 @@ class Clingraph:
             GraphClass = Digraph
 
         return GraphClass()
+
+    @property
+    def facts(self):
+        """
+        Returns the facts as a string
+        """
+        return self.orm.get_fact_string()
+
 
     def compute_graphs(self):
         """
@@ -140,20 +150,20 @@ class Clingraph:
 
         return nested_graphs
 
-    def save(self, directory, graph_names=None, format="pdf", name_prefix="", **kwargs):
+    def save(self, directory, selected_graphs=None, format="pdf", name_prefix="", **kwargs):
         """
         Saves the graphs in the given directory.
         The files will be named using the graph identifier from the code.
         Arguments:
             directory: The path to save the files
-            graph_names: The names of the graphs to be saved. By default all are saved
+            selected_graphs: The names of the graphs to be saved. By default all are saved
             format: Output format: 'pdf', 'svg', 'png'
             name_prefix: A prefix for the names of the file
 
             Any additional arguments are massed to the graphviz.render method
         """
         for graph_name, graph in self.graphs.items():
-            if graph_names and graph_name not in graph_names:
+            if selected_graphs and graph_name not in selected_graphs:
                 continue
             file_name = os.path.join(
                 directory, f"{name_prefix}{graph_name}.{format}")
@@ -162,8 +172,9 @@ class Clingraph:
                 outfile=file_name,
                 **kwargs,
                 cleanup=True)
-
-    def save_gif(self, directory, name="clingraph", engine="dot", **kwargs):
+            LOG.info(f"Image saved in {file_name}")
+    
+    def save_gif(self, directory, name="clingraph", engine="dot",selected_graphs=None, **kwargs):
         """
         Creates a gif of all the graphs
         Arguments:
@@ -174,13 +185,16 @@ class Clingraph:
             Any additional arguments are massed to the  imageio.mimsave method
         """
         images_dir = os.path.join(directory, 'images')
-        self.save(images_dir, format="png", engine=engine)
+        self.save(images_dir,selected_graphs=selected_graphs, format="png", engine=engine)
         images = []
+        file_name = os.path.join(directory, f'{name}.gif')
         for graph_name, graph in self.graphs.items():
             images.append(imageio.imread(
                 os.path.join(images_dir, graph_name+".png")))
-        imageio.mimsave(os.path.join(directory, f'{name}.gif'),
+        imageio.mimsave(file_name,
                         images, **kwargs)
+
+        LOG.info(f"Gif saved in {file_name}")
 
     def save_tex(self, directory, name_prefix=""):
         """
@@ -188,18 +202,18 @@ class Clingraph:
         """
         return NotImplementedError
 
-    def show(self, graph_names=None, **kwargs):
+    def show(self, selected_graphs=None, **kwargs):
         """
         Shows the graphs in a frontend, such as jupyter
         Arguments:
-            graph_names: The names of the graphs to be shown. By default all are shown
+            selected_graphs: The names of the graphs to be shown. By default all are shown
 
         """
         images_dir = 'out'
-        self.save(images_dir, graph_names=graph_names, format="png", **kwargs)
+        self.save(images_dir, selected_graphs=selected_graphs, format="png", **kwargs)
         d = []
         for graph_name, graph in self.graphs.items():
-            if graph_names and graph_name not in graph_names:
+            if selected_graphs and graph_name not in selected_graphs:
                 continue
             d.append(graph_name)
             d.append(display.Image(os.path.join('out', graph_name+".png")))
@@ -210,7 +224,7 @@ class Clingraph:
         Shows the a gif of the graphs
         Arguments:
             engine: A valid graphviz engine
-            graph_names: The names of the graphs to be shown. By default all are shown
+            selected_graphs: The names of the graphs to be shown. By default all are shown
 
             Any additional arguments are massed to the  imageio.mimsave method
         """

@@ -2,6 +2,8 @@ import clorm
 from clorm import Predicate, RawField, ComplexTerm, IntegerField, StringField, refine_field, ConstantField, SimpleField, Raw, FactBase
 from clingo.symbol import parse_term, Number, String, Function
 from clingraph.orm import ClingraphORM
+import logging
+LOG = logging.getLogger('custom')
 
 
 class AttrID(ComplexTerm):
@@ -95,6 +97,13 @@ class ClormORM(ClingraphORM):
 
         self.fb = FactBase()
 
+    def get_fact_string(self):
+        """
+        Returns the current set of facts as a string
+        """
+        return self.fb.asp_str()
+
+
     @property
     def unifiers(self):
         """
@@ -124,17 +133,27 @@ class ClormORM(ClingraphORM):
         Arguments:
             program (str): A string consisting of only facts, devided by a '.'
         """
-        fb = clorm.parse_fact_string(program, self.unifiers)
-        self.add_to_fb(fb)
-
+        try:
+            fb = clorm.parse_fact_string(program, self.unifiers,raise_nonfact=True)
+            self.add_to_fb(fb)
+        except clorm.orm.symbols_facts.NonFactError as e:
+            LOG.warning(f"The input string contains a complex structure that is not a fact. The whole input string was ignored. \n{str(e)}")
+        except RuntimeError as e:
+            LOG.warning(f"Syntactic error the input string can't be read as facts. The whole input string was ignored. \n{str(e)}")
+            
     def add_fact_files(self, file):
         """
         Adds a file containing facts to the database
         Arguments:
             file (str): The path to the file
         """
-        fb = clorm.parse_fact_files([file], self.unifiers)
-        self.add_to_fb(fb)
+        try:
+            fb = clorm.parse_fact_files([file], self.unifiers,raise_nonfact=True)
+            self.add_to_fb(fb)
+        except clorm.orm.symbols_facts.NonFactError as e:
+            LOG.warning(f"The file {file} contains a complex structure that is not a fact. The file was ignored. \n{str(e)}")
+        except RuntimeError as e:
+            LOG.warning(f"Syntactic error the file can't be read as facts. The whole file was ignored. \n{str(e)}")
 
     def add_clingo_model(self, model):
         """
