@@ -1,5 +1,11 @@
 ### Run example
 
-NOTE: Here we use a prefix `viz_` in all predicates handled by the package
+**Features used:**
+- Multi model
+- Multi model rendering
+- Predicate prefix
+- Engine
+- Default graph
 
-`clingraph examples/sudoku/sudoku.lp --prefix='viz_' --view --dir=out/sudoku --engine=neato --type=graph --default-graph=sudoku --format=pdf`
+
+`clingo examples/sudoku/sudoku.lp  -n 0 --outf=2 | clingraph  --view --dir='out/sudoku' --format=pdf --json --render --prefix=viz_ --engine=neato --default-graph=sudoku`

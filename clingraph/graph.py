@@ -1,15 +1,17 @@
-
-from fileinput import filename
-import os
+"""
+    Definition of Clingraphs
+"""
 import clorm
 import imageio
+import logging
+import os
 import networkx as nx
 from IPython import display
+from fileinput import filename
 from clorm import FactBase
 from clingo import Model
 from graphviz import Graph, Digraph
 from clingraph.clorm_orm import ClormORM
-import logging
 LOG = logging.getLogger('custom')
 
 class Clingraph:
@@ -17,7 +19,7 @@ class Clingraph:
     """
     A class to handndle graphs defined by facts
     """
-    
+
     def __init__(self, type_: str = "graph", prefix: str = "", default_graph: str = "default"):
         """
         Creates a Clingraph object with the basic arguments
@@ -36,14 +38,8 @@ class Clingraph:
         """
         String representation of the clingraph
         """
-        if len(self.graphs) == 0:
-            return "Clingraph not yet computed (Generate graphs by calling the compute_graphs method)\n\n"+self.facts 
-        s = ""
-        for g_name, g in self.graphs.items():
-            s += "//"+"-"*10 + g_name + "-"*10 + "\n"
-            s += g.source
 
-        return s
+        return self.source()
 
     def add_fact_string(self,  program: str):
         """
@@ -51,6 +47,7 @@ class Clingraph:
         Arguments:
             - program (str): An string containing a list of facts separated with a `.`
         """
+        LOG.debug(f"Adding string: {program}")
         self.orm.add_fact_string(program)
 
     def add_fact_file(self,  file: str):
@@ -86,6 +83,24 @@ class Clingraph:
         Returns the facts as a string
         """
         return self.orm.get_fact_string()
+
+    def source(self,selected_graphs=None):
+        """
+        Returns the source code of the select graphs
+        """
+        if len(self.graphs) == 0:
+            return "// Graph hasn't been computed yet\n"
+        if not selected_graphs:
+            selected_graphs = list(self.graphs.keys())
+        s = ""
+        for g_name in selected_graphs:
+            if g_name not in self.graphs:
+                LOG.warn(f"Graph name: {g_name} not found, ignored")
+                continue
+            s += "//"+ "-"*10 + g_name + "-"*10 + "\n"
+            s += self.graphs[g_name].source
+
+        return s
 
 
     def compute_graphs(self):
@@ -173,7 +188,7 @@ class Clingraph:
                 **kwargs,
                 cleanup=True)
             LOG.info(f"Image saved in {file_name}")
-    
+
     def save_gif(self, directory, name="clingraph", engine="dot",selected_graphs=None, **kwargs):
         """
         Creates a gif of all the graphs
@@ -188,7 +203,7 @@ class Clingraph:
         self.save(images_dir,selected_graphs=selected_graphs, format="png", engine=engine)
         images = []
         file_name = os.path.join(directory, f'{name}.gif')
-        for graph_name, graph in self.graphs.items():
+        for graph_name, _ in self.graphs.items():
             images.append(imageio.imread(
                 os.path.join(images_dir, graph_name+".png")))
         imageio.mimsave(file_name,
