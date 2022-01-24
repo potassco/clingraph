@@ -3,8 +3,9 @@
 **Features used:**
 - Piping
 - Multi model
-- Rendering
 - Model selection 
-- View
+- Gif generation
+- Gif special parameter
+- Quiet mode
 
-`clingo examples/color/color.lp  --outf=2| clingraph  --view --dir='out/color' --format=png --json --select-model=0 -log=info --render`
+`clingo examples/elevator/encoding.lp examples/elevator/viz.lp examples/elevator/instance.lp --outf=2 | clingraph --gif --json --select-model=0 --dir='out/elevator' --gif-param="fps=1" -q`

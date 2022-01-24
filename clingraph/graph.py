@@ -82,7 +82,7 @@ class Clingraph:
         """
         Returns the facts as a string
         """
-        return self.orm.get_fact_string()
+        return str(self.orm)
 
     def source(self,selected_graphs=None):
         """
@@ -177,6 +177,8 @@ class Clingraph:
 
             Any additional arguments are massed to the graphviz.render method
         """
+        if selected_graphs is not None:
+            selected_graphs = [str(s) for s in selected_graphs]
         for graph_name, graph in self.graphs.items():
             if selected_graphs and graph_name not in selected_graphs:
                 continue
@@ -200,10 +202,14 @@ class Clingraph:
             Any additional arguments are massed to the  imageio.mimsave method
         """
         images_dir = os.path.join(directory, 'images')
+        if selected_graphs is not None:
+            selected_graphs = [str(s) for s in selected_graphs]
         self.save(images_dir,selected_graphs=selected_graphs, format="png", engine=engine)
         images = []
         file_name = os.path.join(directory, f'{name}.gif')
         for graph_name, _ in self.graphs.items():
+            if selected_graphs and graph_name not in selected_graphs:
+                continue
             images.append(imageio.imread(
                 os.path.join(images_dir, graph_name+".png")))
         imageio.mimsave(file_name,
@@ -225,6 +231,8 @@ class Clingraph:
 
         """
         images_dir = 'out'
+        if selected_graphs is not None:
+            selected_graphs = [str(s) for s in selected_graphs]
         self.save(images_dir, selected_graphs=selected_graphs, format="png", **kwargs)
         d = []
         for graph_name, graph in self.graphs.items():
@@ -234,15 +242,14 @@ class Clingraph:
             d.append(display.Image(os.path.join('out', graph_name+".png")))
         return display.display(*tuple(d))
 
-    def show_gif(self, engine="dot", **kwargs):
+    def show_gif(self, selected_graphs=None, engine="dot", **kwargs):
         """
         Shows the a gif of the graphs
         Arguments:
             engine: A valid graphviz engine
             selected_graphs: The names of the graphs to be shown. By default all are shown
-
             Any additional arguments are massed to the  imageio.mimsave method
         """
         images_dir = 'out'
-        self.save_gif(images_dir, engine=engine, **kwargs)
+        self.save_gif(images_dir, engine=engine,selected_graphs=selected_graphs, **kwargs)
         return display.Image(os.path.join('out', "clingraph.gif"))

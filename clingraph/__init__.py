@@ -111,14 +111,14 @@ Special features for integration with clingo.
                     nargs='+',
                     metavar="")
 
-    # render_params.add_argument('--render-params',
-    #                 default = '',
-    #                 help = textwrap.dedent('''\
-    #                 A string containing parameters for the graphviz rendering.
-    #                 Must be pairs of key values separated by a space.
-    #                 Example: key1:value1 key2:value2'''),
-    #                 type=str,
-    #                 metavar='')
+    render_params.add_argument('--render-param',
+                    default = '',
+                    help = textwrap.dedent('''\
+                    A string containing a parameter for graphviz rendering.
+                    String should have the form arg_name=arg_value '''),
+                    type=str,
+                    nargs='*',
+                    metavar='')
 
     render_params.add_argument('--gif', 
                     help = """Flag to generate a giv from all the generated files""",
@@ -131,14 +131,14 @@ Special features for integration with clingo.
                 type=str,
                 metavar='')
 
-    # render_params.add_argument('--gif-params',
-    #             default = '',
-    #             help = textwrap.dedent('''\
-    #             A string containing parameters for the gif generation by imageio.
-    #             Must be pairs of key values separated by a space.
-    #             Example: key1:value1 key2:value2'''),
-    #             type=str,
-    #             metavar='')
+    render_params.add_argument('--gif-param',
+                default = '',
+                help = textwrap.dedent('''\
+                A string containing a parameter for the gif generation by imageio.
+                String should have the form arg_name=arg_value '''),
+                type=str,
+                nargs='*',
+                metavar='')
 
     multi_params = parser.add_argument_group('Multi model graphs')
 
@@ -204,9 +204,18 @@ def main():
 
     
     if args.render:
+        render_params = []
+        if args.render_param is not None:
+            render_params = args.render_param
+        render_param_dic = { s.split('=')[0]:s.split('=')[1] for s in render_params}
         g.save(args.dir,format=args.format,name_prefix=args.out_file_prefix,selected_graphs=args.select_graph, view=args.view, engine=args.engine)
     if args.gif:
-        g.save_gif(args.dir,name=args.gif_name,engine=args.engine,selected_graphs=args.select_graph)
+        gif_params = []
+        if args.gif_param is not None:
+            gif_params = args.gif_param
+        gif_param_dic = { s.split('=')[0]:s.split('=')[1] for s in gif_params}
+
+        g.save_gif(args.dir,name=args.gif_name,engine=args.engine,selected_graphs=args.select_graph, **gif_param_dic)
     
     if not args.q:
         print(g.source(args.select_graph))

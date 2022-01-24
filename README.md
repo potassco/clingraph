@@ -76,16 +76,24 @@ clingraph --help
     --select-graph  [ ...]
                           Select one of the graphs for output or rendering by name
                           Can appear multiple times to select multiple graphs
+    --render-param [ ...]
+                          A string containing a parameter for graphviz rendering.
+                          String should have the form arg_name=arg_value
     --gif                 Flag to generate a giv from all the generated files
     --gif-name            Name for the gif file that will be saved in the given directory
+    --gif-param [ ...]    A string containing a parameter for the gif generation by imageio.
+                          String should have the form arg_name=arg_value
 
   Multi model graphs:
     --json                Flag to indicate the creation of multiple models from a json.
                           The graphs will be generated for each stable model.
-                          The json is expected to be the output of clingo using the option `--outf=2`
+                          The json is exptected to be the output of clingo using the option `--outf=2`
     --select-model []     Select only one of the models outputed by clingo defined by a number
 ```
 
+#### ORM
+
+The generation of clingraphs requires som type of ORM to load the facts and query them. As default ORM we use [clorm](https://clorm.readthedocs.io/en/latest/), but the user might create their own ORM by extending th class [orm.py](clingraph/orm.py).
 
 ### Syntax
 
@@ -189,7 +197,7 @@ Graphs are defined via facts using predicates `node`, `edge`, `graph` and `attr`
   ```
   ![image](./examples/basic/example1/example_1.2.png)
 
-  ##### Special multi attribute
+  #####  Multi-attribute
   
   If multiple occurrences of the same attribute name for a specific element are present, then the values will be concatenated in no specific order. To define an order the attribute name can be a tuple where the second value is the position where the value will be considered. Furthermore, if the position is the special word `"sep"`  the value will be cosidered as the separator of the strings in the concatenation
 
@@ -216,4 +224,5 @@ For more advanced examples look into the [examples](./examples) directory. Each 
 
 #### Dynamic applications
 
-For visualizing dynamic applications one can create multiple graphs for each time step to generate a gif. See example [examples/asprilo](./examples/asprilo/README.md).
+For visualizing dynamic applications one can create multiple graphs for each time step to generate a gif. See examples [examples/asprilo](./examples/asprilo/README.md) and [examples/elevator](./examples/elevator/README.md).
+
