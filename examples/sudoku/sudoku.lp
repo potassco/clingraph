@@ -25,6 +25,8 @@ def pos(x,y):
     return String(f"{str(x)},{str(y)}!")
 #end.
 
+viz_graph(sudoku).
+
 % Name of graph
 viz_attr(graph, sudoku, name, "Sudoku").
 
@@ -38,14 +40,14 @@ viz_attr(graph_nodes, sudoku, style, filled).
 viz_attr(graph_nodes, sudoku, fillcolor, white).
 
 % Nodes
-viz_node(pos(X,Y)):- pos(X,Y).
+viz_node(pos(X,Y), sudoku):- pos(X,Y).
 viz_attr(node, pos(X,Y), label, V):- pos(X,Y), sudoku(X,Y,V).
 viz_attr(node, pos(X,Y), fillcolor, gray):- initial(X,Y,_).
 viz_attr(node, pos(X,Y), pos, @pos(X,Y)):- pos(X,Y).
 
 % Edges to show subgrids
-viz_edge((pos(X,Y),pos(X+1,Y))):- pos(X,Y), pos(X+1,Y), subgrid(X,Y,S), subgrid(X+1,Y,S).
-viz_edge((pos(X,Y),pos(X,Y+1))):- pos(X,Y), pos(X,Y+1), subgrid(X,Y,S), subgrid(X,Y+1,S).
+viz_edge((pos(X,Y),pos(X+1,Y)),sudoku):- pos(X,Y), pos(X+1,Y), subgrid(X,Y,S), subgrid(X+1,Y,S).
+viz_edge((pos(X,Y),pos(X,Y+1)),sudoku):- pos(X,Y), pos(X,Y+1), subgrid(X,Y,S), subgrid(X,Y+1,S).
 
 
 

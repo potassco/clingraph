@@ -53,14 +53,22 @@ node(llivingroom1_1,livingroom_1).
 node(llivingroom2_1,livingroom_1).
 
 
-is_light(lbathroom_1).
-is_light(lbedroom_1).
-is_light(llivingroom1_1).
-is_light(llivingroom2_1).
 
-attr(node,ID,shape,circle):-is_light(ID).
-attr(node,ID,color,lightblue):-is_light(ID).
-attr(node,ID,style,filled):-is_light(ID).
+attr(node,lbathroom_1,shape,circle).
+attr(node,lbathroom_1,color,lightblue).
+attr(node,lbathroom_1,style,filled).
+
+attr(node,lbedroom_1,shape,circle).
+attr(node,lbedroom_1,color,lightblue).
+attr(node,lbedroom_1,style,filled).
+
+attr(node,llivingroom1_1,shape,circle).
+attr(node,llivingroom1_1,color,lightblue).
+attr(node,llivingroom1_1,style,filled).
+
+attr(node,llivingroom2_1,shape,circle).
+attr(node,llivingroom2_1,color,lightblue).
+attr(node,llivingroom2_1,style,filled).
 
 % Any other attributes
 attr(node, lhub_1, label, "HUB").
@@ -125,7 +133,14 @@ attr(graph_edges,house_2,style,dotted).
 node(lbathroom_2,bedroom_2).
 node(lbedroom_2,bathroom_2).
 
-is_light(lbathroom_2;lbedroom_2).
+attr(node,lbathroom_2,shape,circle).
+attr(node,lbathroom_2,color,lightblue).
+attr(node,lbathroom_2,style,filled).
+
+attr(node,lbedroom_2,shape,circle).
+attr(node,lbedroom_2,color,lightblue).
+attr(node,lbedroom_2,style,filled).
+
 
 % Any other attributes
 attr(node, lbathroom_2, label, "Light").

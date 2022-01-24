@@ -1,5 +1,9 @@
 ### Run example
 
-Example with subgraphs
+**Features used:**
+- Subgraphs
+- Load from file
+- Select graph
+- View
 
-`clingraph examples/lights/lights.lp --view -n 0 --dir='out/lights'`
+`clingraph examples/lights/lights.lp --render --dir='out/lights' --view --select-graph=house_1`

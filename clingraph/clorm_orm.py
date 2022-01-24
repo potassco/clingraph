@@ -1,8 +1,12 @@
+"""
+    Defines an ORM for clingraphs using clorm
+"""
+
 import clorm
+import logging
 from clorm import Predicate, RawField, ComplexTerm, IntegerField, StringField, refine_field, ConstantField, SimpleField, Raw, FactBase
 from clingo.symbol import parse_term, Number, String, Function
 from clingraph.orm import ClingraphORM
-import logging
 LOG = logging.getLogger('custom')
 
 
@@ -97,7 +101,7 @@ class ClormORM(ClingraphORM):
 
         self.fb = FactBase()
 
-    def get_fact_string(self):
+    def __str__(self):
         """
         Returns the current set of facts as a string
         """
@@ -140,7 +144,7 @@ class ClormORM(ClingraphORM):
             LOG.warning(f"The input string contains a complex structure that is not a fact. The whole input string was ignored. \n{str(e)}")
         except RuntimeError as e:
             LOG.warning(f"Syntactic error the input string can't be read as facts. The whole input string was ignored. \n{str(e)}")
-            
+
     def add_fact_files(self, file):
         """
         Adds a file containing facts to the database

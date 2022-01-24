@@ -1,5 +1,10 @@
 ### Run example
 
-Compute a gif
+**Features used:**
+- Multi model
+- Model selection
+- Predicate Prefix
+- Engine
+- Give
 
-`clingraph examples/asprilo/asprilo_viz.lp examples/asprilo/asprilo/asprilo.lp --render examples/asprilo/asprilo/instance2.lp --prefix='viz_' -c horizon=20 --engine=neato --gif --format=png --dir='out/asprilo'`
+`clingo examples/asprilo/asprilo_viz.lp examples/asprilo/asprilo/asprilo.lp examples/asprilo/asprilo/instance2.lp -c horizon=20 --outf=2| clingraph  --render  --prefix='viz_' --engine=neato --gif --dir='out/asprilo' --select-model=0`
