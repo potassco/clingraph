@@ -176,7 +176,7 @@ def main():
               'warning': logging.WARNING, 'info': logging.INFO, 'debug': logging.DEBUG}
     setup_logger(levels.get(args.log.lower()))
 
-    LOG.info(args)
+    LOG.debug(args)
     ####### Load input
     input_str=""
     if not sys.stdin.isatty():
