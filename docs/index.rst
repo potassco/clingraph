@@ -10,6 +10,8 @@ A visualizer for graphs defined as a set of facts computed from logic programs. 
 
 It contains special features for integration with `clingo <https://potassco.org/clingo>`_!
 
+.. note:: Clingraph is part the Potassco umbrella (which is the home of Clingo and the other ASP tools)
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
@@ -20,9 +22,3 @@ It contains special features for integration with `clingo <https://potassco.org/
    clingraph/api 
    clingraph/console
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
