@@ -1,11 +1,13 @@
 from ast import parse
 import sys
-from clingraph.clingraph import Clingraph
+import pkg_resources
 import logging
 import argparse, textwrap
+from clingraph.clingraph import Clingraph
 from clingraph.logger import setup_logger
 from clingraph.multigraph import MultiModelClingraph
 from clingraph.orm import ClingraphORM
+version = pkg_resources.require("clingraph")[0].version
 
 def get_parser():
     parser = argparse.ArgumentParser(description=textwrap.dedent("""
@@ -32,6 +34,8 @@ def get_parser():
                             (default: %(default)s)'''),
                     type=str,
                     metavar='')
+    parser.add_argument('--version','-v', action='version',
+                    version=f'%(prog)s {version}')
 
 
     input_params = parser.add_argument_group('Graph generation')
