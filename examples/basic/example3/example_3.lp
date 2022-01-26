@@ -4,6 +4,7 @@ graph(bedroom, house).
 
 node(toilet,bathroom).
 node(bed,bedroom).
+node(desk,bedroom).
 
 edge((toilet,bed),house).
 
@@ -19,5 +20,6 @@ attr(graph_nodes, house, color, cyan).
 
 attr(node, toilet, shape, circle).
 attr(node, bed, shape, square).
+attr(node, desk, shape, square).
 
 attr(edge, (toilet,bed), color, red).

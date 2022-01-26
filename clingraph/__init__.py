@@ -1,23 +1,24 @@
 from ast import parse
 import sys
-from clingraph.graph import Clingraph
+from clingraph.clingraph import Clingraph
 import logging
 import argparse, textwrap
 from clingraph.logger import setup_logger
 from clingraph.multigraph import MultiModelClingraph
+from clingraph.orm import ClingraphORM
 
 def get_parser():
-    parser = argparse.ArgumentParser(description="""
-     _ _                         _    
-  __| (_)_ _  __ _ _ _ __ _ _ __| |_  
- / _| | | ' \/ _` | '_/ _` | '_ \ ' \ 
- \__|_|_|_||_\__, |_| \__,_| .__/_||_|
-             |___/         |_|        
+    parser = argparse.ArgumentParser(description=textwrap.dedent("""
+        _ _                         _    
+    __| (_)_ _  __ _ _ _ __ _ _ __| |_  
+    / _| | | ' \/ _` | '_/ _` | '_ \ ' \ 
+    \__|_|_|_||_\__, |_| \__,_| .__/_||_|
+                |___/         |_|        
 
-Clingraph is a package to generate graph visualizations 
-based on facts that can be computed by logic programs.
-Special features for integration with clingo.
-    """,
+    Clingraph is a package to generate graph visualizations 
+    based on facts that can be computed by logic programs.
+    Special features for integration with clingo.
+    """),
     formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('files', type=argparse.FileType('r'), nargs='*')
     parser.add_argument('-q', 
@@ -195,14 +196,12 @@ def main():
 
         g.load_json(input_str)
         
-
     g.compute_graphs()
 
     ####### Output
     if not args.select_model is None and args.json:
         g=g.get_cligraph(args.select_model)
 
-    
     if args.render:
         render_params = []
         if args.render_param is not None:
