@@ -200,7 +200,7 @@ def main():
 
     ####### Output
     if not args.select_model is None and args.json:
-        g=g.get_cligraph(args.select_model)
+        g=g.get_clingraph(args.select_model)
 
     if args.render:
         render_params = []
