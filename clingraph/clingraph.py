@@ -33,7 +33,7 @@ class Clingraph:
         self.type_ = type_
         self.prefix = prefix
         self.default_graph = default_graph
-        self._orm = orm_class(self.prefix)
+        self._orm = orm_class(self.prefix, default_graph=default_graph)
         self._computed = False
 
         self._graphs = {}  # All main graphs with corresponding nested subgraphs

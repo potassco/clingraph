@@ -195,7 +195,7 @@ def main():
         g = MultiModelClingraph(type_ = args.type, prefix=args.prefix, default_graph=args.default_graph)
 
         g.load_json(input_str)
-        
+    
     g.compute_graphs()
 
     ####### Output

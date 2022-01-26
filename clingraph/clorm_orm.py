@@ -27,7 +27,7 @@ class ClormORM(ClingraphORM):
     Uses clorm as an ORM to query the facts defining the graph
     """
 
-    def __init__(self, prefix: str = ""):
+    def __init__(self, prefix: str = "", default_graph:str ="default"):
         """
         Defines the unifier classes based on the prefix
         
@@ -100,6 +100,7 @@ class ClormORM(ClingraphORM):
         self.EdgeSugar = EdgeSugar
         self.AttrSugar = AttrSugar
 
+        self.default_graph = default_graph
         self.fb = FactBase()
 
     def __str__(self):
@@ -204,11 +205,11 @@ class ClormORM(ClingraphORM):
             for node in set(q.all()):
                 using_default = True
                 e = C(id=node.id,
-                      graph=Raw(Function("default")))
+                      graph=Raw(Function(self.default_graph)))
                 fb.remove(node)
                 fb.add(e)
         if using_default:
-            fb.add(self.Graph(id=Raw(Function("default"))))
+            fb.add(self.Graph(id=Raw(Function(self.default_graph))))
 
         return fb
 
