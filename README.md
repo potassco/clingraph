@@ -8,13 +8,40 @@ It contains special features for integration with [clingo](https://potassco.org/
 
 ## Installation
 
-Standing on the root folder install all dependencies:
+### Requirements
+
+- Python (version 3.8, 3.9, or 3.10)
+
+##### Install with conda
+We advise the user to install the dependencies using the provided conda environment:
+
+```
+conda env create -f environment.yml
+conda activate clingraph
+```
+
+##### Manually install graphviz
+Otherwise the user must manually install the dependencies:
+
+This package requires the installation of 
+- [pygraphviz](https://pygraphviz.github.io/documentation/stable/install.html)
+  - [graphviz](https://www.graphviz.org) installed via [python-graphviz](https://anaconda.org/conda-forge/python-graphviz)
+
+### Package
+
+Standing on the root folder install the project and python dependencies:
 
 ```
 pip install .
 ```
 
-This will make the command `clingraph` available for usage.
+This will make the command `clingraph` available for usage as well as the python package with `import clingraph`.
+
+## Run tests
+
+```
+pytest -v
+```
 
 ## Usage
 

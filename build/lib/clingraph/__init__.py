@@ -1,12 +1,8 @@
-"""
-    Package inports and command line functionality
-"""
 from ast import parse
 import sys
-import logging
-import argparse
-import textwrap
 import pkg_resources
+import logging
+import argparse, textwrap
 from clingraph.clingraph import Clingraph
 from clingraph.logger import setup_logger
 from clingraph.multigraph import MultiModelClingraph
@@ -15,27 +11,23 @@ from clingraph.exception import InvalidSyntax
 version = pkg_resources.require("clingraph")[0].version
 
 def get_parser():
-    """
-    Get the parser for the command line
-    """
-    # pylint: disable=anomalous-backslash-in-string
     parser = argparse.ArgumentParser(description=textwrap.dedent("""
-        _ _                         _
-    __| (_)_ _  __ _ _ _ __ _ _ __| |_
-    / _| | | ' \/ _` | '_/ _` | '_ \ ' \
+        _ _                         _    
+    __| (_)_ _  __ _ _ _ __ _ _ __| |_  
+    / _| | | ' \/ _` | '_/ _` | '_ \ ' \ 
     \__|_|_|_||_\__, |_| \__,_| .__/_||_|
-                |___/         |_|
+                |___/         |_|        
 
-    Clingraph is a package to generate graph visualizations
+    Clingraph is a package to generate graph visualizations 
     based on facts that can be computed by logic programs.
     Special features for integration with clingo.
     """),
     formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('files', type=argparse.FileType('r'), nargs='*')
-    parser.add_argument('-q',
+    parser.add_argument('-q', 
                     help = """Flag to have a quiet output where the graphs soruce wont be rendered""",
                     action='store_true')
-    parser.add_argument('-log', default="warning",
+    parser.add_argument('-log', default="warning", 
                     choices=['debug', 'info', 'error', 'warning'],
                     help=textwrap.dedent('''\
                         Provide logging level.
@@ -62,7 +54,7 @@ def get_parser():
                     help = textwrap.dedent('''\
                         Prefix expected in all the considered facts'''),
                     type=str,
-                    metavar='')
+                    metavar='') 
     input_params.add_argument('--default-graph',
                     default = 'default',
                     help = textwrap.dedent('''\
@@ -73,7 +65,7 @@ def get_parser():
                     metavar='')
 
     render_params = parser.add_argument_group('Graph rendering')
-    render_params.add_argument('--render',
+    render_params.add_argument('--render', 
                     help = """Flag to render the graphs and save in files""",
                     action='store_true')
 
@@ -84,7 +76,7 @@ def get_parser():
                             (default: %(default)s)'''),
                     type=str,
                     metavar='')
-
+    
     render_params.add_argument('--out-file-prefix',
                     default = '',
                     help = textwrap.dedent('''\
@@ -134,7 +126,7 @@ def get_parser():
                     nargs='*',
                     metavar='')
 
-    render_params.add_argument('--gif',
+    render_params.add_argument('--gif', 
                     help = """Flag to generate a giv from all the generated files""",
                     action='store_true')
 
@@ -156,7 +148,7 @@ def get_parser():
 
     multi_params = parser.add_argument_group('Multi model graphs')
 
-    multi_params.add_argument('--json',
+    multi_params.add_argument('--json', 
                 help = textwrap.dedent('''\
                 Flag to indicate the creation of multiple models from a json.
                 The graphs will be generated for each stable model.
@@ -178,37 +170,37 @@ def main():
     ####### Parser
     parser= get_parser()
     args = parser.parse_args()
-
+    
     ####### Logger
-    log = logging.getLogger('custom')
+    LOG = logging.getLogger('custom')
     levels = {'error': logging.ERROR, 'warn': logging.WARNING,
               'warning': logging.WARNING, 'info': logging.INFO, 'debug': logging.DEBUG}
     setup_logger(levels.get(args.log.lower()))
 
-    log.debug(args)
+    LOG.debug(args)
     ####### Load input
     input_str=""
     if not sys.stdin.isatty():
         input_str = sys.stdin.read()
-
+    
     g = None
     if not args.json:
         g = Clingraph(type_ = args.type, prefix=args.prefix, default_graph=args.default_graph)
 
         for f in args.files:
-            log.info("Adding file %s",f.name)
+            LOG.info(f"Adding file {f.name}")
             g.add_fact_file(f.name)
 
         if input_str:
             g.add_fact_string(input_str)
 
     else:
-        log.info("Loading a multi model graph from json")
+        LOG.info("Loading a multi model graph from json")
 
         g = MultiModelClingraph(type_ = args.type, prefix=args.prefix, default_graph=args.default_graph)
 
         g.load_json(input_str)
-
+    
     g.compute_graphs()
 
     ####### Output
@@ -220,19 +212,15 @@ def main():
         if args.render_param is not None:
             render_params = args.render_param
         render_param_dic = { s.split('=')[0]:s.split('=')[1] for s in render_params}
-        g.save(directory=args.dir,format=args.format,name_prefix=args.out_file_prefix,
-            selected_graphs=args.select_graph,
-            view=args.view, engine=args.engine,
-            **render_param_dic)
+        g.save(args.dir,format=args.format,name_prefix=args.out_file_prefix,selected_graphs=args.select_graph, view=args.view, engine=args.engine)
     if args.gif:
         gif_params = []
         if args.gif_param is not None:
             gif_params = args.gif_param
         gif_param_dic = { s.split('=')[0]:s.split('=')[1] for s in gif_params}
 
-        g.save_gif(directory=args.dir,name=args.gif_name,
-            engine=args.engine,
-            selected_graphs=args.select_graph, **gif_param_dic)
-
+        g.save_gif(args.dir,name=args.gif_name,engine=args.engine,selected_graphs=args.select_graph, **gif_param_dic)
+    
     if not args.q:
         print(g.source(args.select_graph))
+
