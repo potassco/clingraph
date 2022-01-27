@@ -1,34 +1,34 @@
 """
     Definition of Clingraphs
 """
+import clorm
+import imageio
 import logging
 import os
-import imageio
 import networkx as nx
 from IPython import display
+from fileinput import filename
+from clorm import FactBase
 from clingo import Model
 from graphviz import Graph, Digraph
 from clingraph.clorm_orm import ClormORM
-log = logging.getLogger('custom')
+LOG = logging.getLogger('custom')
 
 class Clingraph:
 
     """
-    Clingraph contains the functionalities to transform sets of facts into graphviz objects that can be redered.
+    Clingraph contains the functionalities to transform sets of facts into graphviz objects that can be redered. 
     """
 
     def __init__(self, type_: str = "graph", prefix: str = "", default_graph: str = "default", orm_class=ClormORM):
         """
         Creates a Clingraph object with the basic arguments
-
+        
         Args:
             type (str): Type of Graph, either `graph` or `digraph`
-            prefix (str): Prefix used in all the predicates \
-                cosidered in the module
-            default_graph (str): The name of the default graph \
-                to which all nodes and edges with arity 1 will be assigned
-            orm_class (ClingraphORM): A class that implements the :py:class:`ClingraphORM` class. \
-                By default an implementation based on the tool ``clorm`` is used.
+            prefix (str): Prefix used in all the predicates cosidered in the module
+            default_graph (str): The name of the default graph to which all nodes and edges with arity 1 will be assigned
+            orm_class (ClingraphORM): A class that implements the :py:class:`ClingraphORM` class. By default an implementation based on the tool ``clorm`` is used.
         """
         self.type_ = type_
         self.prefix = prefix
@@ -48,33 +48,33 @@ class Clingraph:
     def add_fact_string(self,  program: str):
         """
         Adds a program to the graph
-
+        
         Args:
             program (str): An string containing a list of facts separated with a dot(``.``)
 
         Raises:
             InvalidSyntax: If the string can't be read as facts
         """
-        log.debug("Adding string: %s", program)
+        LOG.debug(f"Adding string: {program}")
         self._orm.add_fact_string(program)
 
     def add_fact_file(self,  file: str):
         """
         Adds files to the graph
-
+        
         Args:
             file (str): The path to a file containing facts separated with a a dot(``.``)
-
+        
         Raises:
             InvalidSyntax: If the file contains something other than facts
         """
-        self._orm.add_fact_file(file)
+        self._orm.add_fact_files(file)
 
     def add_model(self,  model: Model):
         """
         Adds a model to the graph. Can be use on the `on_model` function of clingo.
         To handle multiple models see :py:class`MultiModelClingraph`.
-
+        
         Args:
             model (clingo.Model): A clingo model
         """
@@ -98,7 +98,7 @@ class Clingraph:
 
         if not self._computed:
             raise RuntimeError("Can't obtain the graphviz object before computing the graphs")
-
+    
     def get_graphviz(self, graph_name=None):
         """
         Obtains a graphviz object for the given graph name.
@@ -106,7 +106,7 @@ class Clingraph:
 
         Args:
             graph_name (str): The graph name defined in predicate ``graph(NAME).``
-
+        
         Returns:
             A graphviz object
 
@@ -150,7 +150,7 @@ class Clingraph:
         s = ""
         for g_name in selected_graphs:
             if g_name not in self._graphs:
-                log.warning("Graph name: %s not found, ignored",g_name)
+                LOG.warn(f"Graph name: {g_name} not found, ignored")
                 continue
             s += "//"+ "-"*10 + g_name + "-"*10 + "\n"
             s += self._graphs[g_name].source
@@ -160,12 +160,12 @@ class Clingraph:
 
     def compute_graphs(self):
         """
-        Compute the graphs for the current list of facts.
+        Compute the graphs for the current list of facts. 
         It creates a Graphviz instance for each graph defined by the facts.
         Graphs can then be obtained by name using the method :py:meth:`get_graphviz`.
         """
         if self._computed:
-            log.warning("Graph already computed, but will be computed again")
+            LOG.warn("Graph already computed, but will be computed again")
 
         graphs = self._orm.get_all_graphs()
         all_graphs = {}
@@ -196,7 +196,7 @@ class Clingraph:
     def _nest_graphs(self, all_graphs):
         """
         Nests all_graphs by assigning subgraphs to graphs
-
+        
         Args:
             all_graphs (dict): Dicionary of all the graphs to be nested
         """
@@ -228,18 +228,16 @@ class Clingraph:
         return nested_graphs
 
     def save(self, directory='out', selected_graphs=None, format="pdf", name_prefix="", **kwargs):
-        # pylint: disable=redefined-builtin
-
         """
         Saves the graphs in the given directory.
         The files will be named using the graph identifier in the predicate.
-
+        
         Args:
             directory (str): The path to save the files
             selected_graphs (list): The names of the graphs to be saved. By default all are saved
             format (str): Output format: `pdf`, `svg` or `png`
             name_prefix (str): A prefix for the names of the file
-
+        
         Any additional arguments are passed to the `graphviz.render` method
 
         Raises:
@@ -259,12 +257,12 @@ class Clingraph:
                 outfile=file_name,
                 **kwargs,
                 cleanup=True)
-            log.info("Image saved in %s",file_name)
+            LOG.info(f"Image saved in {file_name}")
 
-    def save_gif(self, directory='out', name="clingraph", engine="dot",selected_graphs=None, **kwargs):
+    def save_gif(self, directory, name="clingraph", engine="dot",selected_graphs=None, **kwargs):
         """
         Creates a gif of all the graphs
-
+        
         Args:
             directory: The path to save the files
             name: The name of the gif
@@ -286,7 +284,7 @@ class Clingraph:
         imageio.mimsave(file_name,
                         images, **kwargs)
 
-        log.info("Gif saved in %s", file_name)
+        LOG.info(f"Gif saved in {file_name}")
 
     # def save_tex(self, directory, name_prefix=""):
     #     """
@@ -298,7 +296,7 @@ class Clingraph:
     def _show(self, selected_graphs=None, **kwargs):
         """
         Shows the graphs in a frontend, such as jupyter
-
+        
         Args:
             selected_graphs: The names of the graphs to be shown. By default all are shown
 
@@ -310,7 +308,7 @@ class Clingraph:
             selected_graphs = [str(s) for s in selected_graphs]
         self.save(images_dir, selected_graphs=selected_graphs, format="png", **kwargs)
         d = []
-        for graph_name in self._graphs:
+        for graph_name, graph in self._graphs.items():
             if selected_graphs and graph_name not in selected_graphs:
                 continue
             d.append(graph_name)
@@ -326,11 +324,11 @@ class Clingraph:
     def show_gif(self, selected_graphs=None, engine="dot", **kwargs):
         """
         Shows the a gif of the graphs
-
+        
         Args:
             engine (str): A valid graphviz engine
             selected_graphs (list): The names of the graphs to be shown. By default all are shown
-
+        
         Any additional arguments are passed to the ``imageio.mimsave`` method
         """
         images_dir = 'out'

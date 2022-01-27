@@ -1,0 +1,38 @@
+name: CI Test for clingraph
+
+on: [push]
+
+jobs:
+  build-linux:
+    name: Test clingraph
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-latest', 'macos-latest','windows-latest']
+        python-version: ["3.9","3.8"]
+    steps:
+      - name: Checkout code into workspace directory
+        uses: actions/checkout@v2
+      - name: setup miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          python-version: ${{ matrix.python-version }}
+          environment-file: environment.yml
+          activate-environment: clingraph
+          auto-activate-base: false
+      
+      - name: Install
+        shell: pwsh
+        run: pip install .
+
+      - name: Run tests
+        shell: pwsh
+        run: |  
+          pytest -v
+
+      - name: Run lintern
+        shell: pwsh
+        run: |  
+          pylint clingraph
