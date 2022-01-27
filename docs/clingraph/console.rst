@@ -1,10 +1,10 @@
-Console usage
-#############
+Command line functionality
+##########################
 
-Clingraphs also comes with command line functionality.
-Graphs can be from files or by a piping. 
-The output will be the dot source code of the graphs defined by the input.
-Graphs can also be rendered and saved with additional options for gif generation.
+Clingraph also comes with command line functionality.
+The graphs can be generated from files or by a piping some output.
+Then, clingraph will output be the source dot code of the graphs defined by the input.
+Graphs can also be rendered and saved, with additional options for gif generation.
 
 Special integration for `clingo <https://potassco.org/clingo/>`_ includes the creation of graphs for multiple stable models from a clingos’ json output format.
 
@@ -240,7 +240,7 @@ Clingo integration
   
 .. code:: shell
 
-  $ cat examples/basic/example5/clingo_prg.lp
+  $ cat examples/basic/example5/example_5.lp
 
 *Output:*
 
@@ -255,7 +255,7 @@ Clingo integration
 
 .. code:: shell
 
-  $ clingo examples/basic/example5/clingo_prg.lp -n 0 --outf=2
+  $ clingo examples/basic/example5/example_5.lp -n 0 --outf=2
 
 *Output:*
 
@@ -264,7 +264,7 @@ Clingo integration
   {
     "Solver": "clingo version 5.5.0",
     "Input": [
-      "examples/basic/example5/clingo_prg.lp"
+      "examples/basic/example5/example_5.lp"
     ],
     "Call": [
       {
@@ -302,7 +302,7 @@ Clingo integration
 
 .. code:: shell
 
-  $ clingo examples/basic/example5/clingo_prg.lp -n 0 --outf=2 | clingraph --json
+  $ clingo examples/basic/example5/example_5.lp -n 0 --outf=2 | clingraph --json
 
 *Output:*
 
@@ -332,7 +332,7 @@ Clingo integration
 
 .. code:: shell
 
-  $ clingo examples/basic/example5/clingo_prg.lp -n 0 --outf=2 | clingraph --json --select-model=1 --render --format=png -log=info
+  $ clingo examples/basic/example5/example_5.lp -n 0 --outf=2 | clingraph --json --select-model=1 --render --format=png -log=info
 
 *Output:*
 

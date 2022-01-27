@@ -1,0 +1,8 @@
+name: clingraph
+channels:
+  - conda-forge
+  - defaults
+  - potassco
+dependencies:
+  - pygraphviz
+  - python-graphviz=0.19.1
