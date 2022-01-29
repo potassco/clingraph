@@ -146,6 +146,8 @@ class ClormORM(ClingraphORM):
         Args:
             program (str): A string consisting of only facts, devided by a '.'
         """
+        program = program.replace( '\\' ,'\\\\')
+
         try:
             fb = clorm.parse_fact_string(program, self.unifiers,raise_nonfact=True)
             self.add_to_fb(fb)
@@ -303,5 +305,5 @@ class ClormORM(ClingraphORM):
                         info["idxs"] = info["idxs"] + \
                             [""]*(1+i-len(info["idxs"]))
                     info["idxs"][i] = val_str
-            attrs[str(name)] = info["sep"].join(info["set"]+info["idxs"])
+            attrs[str(name)] = info["sep"].join(info["set"]+info["idxs"]).replace('\\\\','\\')
         return attrs

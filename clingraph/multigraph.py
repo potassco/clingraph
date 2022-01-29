@@ -134,7 +134,8 @@ class MultiModelClingraph:
             json_str (str): A string representing the json
         """
         try:
-            j = json.loads(json_str)
+
+            j = json.loads(json_str.encode())
             log.debug("Loading json %s",json.dumps(j))
             if "Call" not in j:
                 raise InvalidSyntax('The json should have key "Call"')
