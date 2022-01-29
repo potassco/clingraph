@@ -1,17 +1,15 @@
 """
     Defines an ORM for clingraphs using clorm
 """
-
 import clorm
-import logging
-from clorm import Predicate, RawField, ComplexTerm, IntegerField, StringField, refine_field, ConstantField, SimpleField, Raw, FactBase
-from clingo.symbol import parse_term, Number, String, Function
+from clorm import Predicate, RawField, ComplexTerm, refine_field, ConstantField, SimpleField, Raw, FactBase
+from clingo.symbol import Function
 from clingraph.orm import ClingraphORM
 from clingraph.exception import InvalidSyntax
-LOG = logging.getLogger('custom')
 
 
 class AttrID(ComplexTerm):
+    # pylint: disable=missing-class-docstring
     attr_name = SimpleField
     attr_pos = SimpleField
 
@@ -27,14 +25,16 @@ class ClormORM(ClingraphORM):
     """
     Uses clorm as an ORM to query the facts defining the graph
     """
+    # pylint: disable=too-many-instance-attributes
 
     def __init__(self, prefix: str = "", default_graph:str ="default"):
         """
         Defines the unifier classes based on the prefix
-        
+
         Args:
             prefix (str): The prefix to all predicate names
         """
+        # pylint: disable=missing-class-docstring
         class Graph(Predicate):
             id = RawField
 
@@ -91,6 +91,7 @@ class ClormORM(ClingraphORM):
 
             class Meta:
                 name = prefix+"edge"
+        # pylint: disable=invalid-name
 
         self.Graph = Graph
         self.SubGraph = SubGraph
@@ -103,6 +104,7 @@ class ClormORM(ClingraphORM):
 
         self.default_graph = default_graph
         self.fb = FactBase()
+        ClingraphORM.__init__(self,prefix)
 
     def __str__(self):
         """
@@ -124,7 +126,7 @@ class ClormORM(ClingraphORM):
     def get_element_class(self, element_type):
         """
         Obtains an element class for a type given as a string
-        
+
         Args:
             element_type (str): graph, edge or node
         """
@@ -135,13 +137,17 @@ class ClormORM(ClingraphORM):
         if element_type == "graph":
             return self.Graph
 
+        raise ValueError("Invailid element type")
+
     def add_fact_string(self, program):
         """
         Adds a string containing facts to the database
-        
+
         Args:
             program (str): A string consisting of only facts, devided by a '.'
         """
+        program = program.replace( '\\' ,'\\\\')
+
         try:
             fb = clorm.parse_fact_string(program, self.unifiers,raise_nonfact=True)
             self.add_to_fb(fb)
@@ -152,10 +158,10 @@ class ClormORM(ClingraphORM):
             msg = "Syntactic error the input string can't be read as facts."
             raise InvalidSyntax(msg,str(e)) from None
 
-    def add_fact_files(self, file):
+    def add_fact_file(self, file):
         """
         Adds a file containing facts to the database
-        
+
         Args:
             file (str): The path to the file
         """
@@ -172,7 +178,7 @@ class ClormORM(ClingraphORM):
     def add_clingo_model(self, model):
         """
         Adds a clingo model to the database
-        
+
         Args:
             model (clingo.Model): A model retured by clingo
         """
@@ -233,7 +239,7 @@ class ClormORM(ClingraphORM):
         """
         Gets the parent graph for a given graph_id.
         Returns None if there is not such supertype
-        
+
         Args:
             graph_id: Identifier of the subgraph
         """
@@ -241,15 +247,14 @@ class ClormORM(ClingraphORM):
         q = q.select(self.SubGraph.graph)
         if len(list(q.all())) == 0:
             return None
-        else:
-            return list(q.all())[0]
+        return list(q.all())[0]
 
     def get_graph_global_element_attr(self, element_type, graph_id):
         """
         Gets the attributes for a global element: graph_nodes or graph_edges.
         Returns a dictionary where the keys are attribute name and values are
         attribute values.
-        
+
         Args:
             element_type (str): The element type: 'edge' or 'node'
             graph_id: Identifier of the graph
@@ -260,7 +265,7 @@ class ClormORM(ClingraphORM):
     def get_graph_elements(self, element_type, graph_id):
         """
         Gets the list of elements for a graph
-        
+
         Args:
             element_type (str): The element type: 'edge' or 'node'
             graph_id: Identifier of the graph
@@ -274,7 +279,7 @@ class ClormORM(ClingraphORM):
         Gets the attributes a specific element
         Returns a dictionary where the keys are attribute name and values are
         attribute values.
-        
+
         Args:
             element_type (str): The element type: 'graph', 'edge' or 'node'
             element_id: Identifier of the element
@@ -282,6 +287,7 @@ class ClormORM(ClingraphORM):
         q = self.fb.query(self.Attr)
         q = q.where(self.Attr.element_type == element_type,
                     self.Attr.element_id == element_id)
+        # pylint: disable=no-member
         q = q.group_by(self.Attr.attr_id.attr_name)
         q = q.select(self.Attr.attr_id.attr_pos, self.Attr.attr_value)
         attrs = {}
@@ -299,5 +305,5 @@ class ClormORM(ClingraphORM):
                         info["idxs"] = info["idxs"] + \
                             [""]*(1+i-len(info["idxs"]))
                     info["idxs"][i] = val_str
-            attrs[str(name)] = info["sep"].join(info["set"]+info["idxs"])
+            attrs[str(name)] = info["sep"].join(info["set"]+info["idxs"]).replace('\\\\','\\')
         return attrs

@@ -3,6 +3,7 @@
 """
 import logging
 import os
+import dot2tex
 import imageio
 import networkx as nx
 from IPython import display
@@ -114,12 +115,31 @@ class Clingraph:
             RuntimeError: When the graph hasn't been computed yet
             ValueError: If the graph name is not valid
         """
+        self._check_computed()
         if graph_name is None:
             graph_name = self.default_graph
-        self._check_computed()
         if not graph_name in self._graphs:
             raise ValueError(f"No graph with name '{graph_name}' found.")
         return self._graphs[graph_name]
+
+    def _get_graphvizs(self, graph_names=None):
+        """
+        Obtains a list of graphvizs by name
+
+        Args:
+            graph_names (list): A list with the graph names defined in predicate ``graph(NAME).``
+
+        Returns:
+            A dictionary of graphviz object. A subset of the graphs attribute.
+
+        Raises:
+            RuntimeError: When the graph hasn't been computed yet
+            ValueError: If the graph name is not valid
+        """
+        self._check_computed()
+        if graph_names is None:
+            return self._graphs
+        return {str(g_name):self.get_graphviz(g_name) for g_name in graph_names}
 
     def get_facts(self):
         """
@@ -145,13 +165,9 @@ class Clingraph:
             return "// Graph hasn't been computed yet\n"
         if len(self._graphs) == 0:
             return "// Empty clingraph\n"
-        if not selected_graphs:
-            selected_graphs = list(self._graphs.keys())
+        graphs = self._get_graphvizs(selected_graphs)
         s = ""
-        for g_name in selected_graphs:
-            if g_name not in self._graphs:
-                log.warning("Graph name: %s not found, ignored",g_name)
-                continue
+        for g_name in graphs:
             s += "//"+ "-"*10 + g_name + "-"*10 + "\n"
             s += self._graphs[g_name].source
 
@@ -246,12 +262,9 @@ class Clingraph:
             RuntimeError: When the graph hasn't been computed yet
 
         """
-        self._check_computed()
-        if selected_graphs is not None:
-            selected_graphs = [str(s) for s in selected_graphs]
-        for graph_name, graph in self._graphs.items():
-            if selected_graphs and graph_name not in selected_graphs:
-                continue
+        graphs = self._get_graphvizs(selected_graphs)
+
+        for graph_name, graph in graphs.items():
             file_name = os.path.join(
                 directory, f"{name_prefix}{graph_name}.{format}")
             graph.render(
@@ -272,15 +285,13 @@ class Clingraph:
 
             Any additional arguments are passed to the  imageio.mimsave method
         """
+        graphs = self._get_graphvizs(selected_graphs)
+
         images_dir = os.path.join(directory, 'images')
-        if selected_graphs is not None:
-            selected_graphs = [str(s) for s in selected_graphs]
         self.save(images_dir,selected_graphs=selected_graphs, format="png", engine=engine)
         images = []
         file_name = os.path.join(directory, f'{name}.gif')
-        for graph_name, _ in self._graphs.items():
-            if selected_graphs and graph_name not in selected_graphs:
-                continue
+        for graph_name in graphs:
             images.append(imageio.imread(
                 os.path.join(images_dir, graph_name+".png")))
         imageio.mimsave(file_name,
@@ -288,11 +299,23 @@ class Clingraph:
 
         log.info("Gif saved in %s", file_name)
 
-    # def save_tex(self, directory, name_prefix=""):
-    #     """
-    #     Creates a tex file ussing dot2tex
-    #     """
-    #     return NotImplementedError
+    def save_tex(self, directory="out", name_prefix="", selected_graphs=None, **kwargs):
+        """
+        Creates a tex file ussing dot2tex
+        """
+        graphs = self._get_graphvizs(selected_graphs)
+        for graph_name, g in graphs.items():
+            source = g.source
+
+            texcode = dot2tex.dot2tex(source, **kwargs)
+
+            file_name = os.path.join(directory, f'{name_prefix}{graph_name}.tex')
+
+            with open(file_name,'w',encoding='utf-8') as f:
+                f.write(texcode)
+
+            log.info("Latex file saved in %s",file_name)
+
 
 
     def _show(self, selected_graphs=None, **kwargs):
@@ -303,16 +326,11 @@ class Clingraph:
             selected_graphs: The names of the graphs to be shown. By default all are shown
 
         """
-        if not self._computed:
-            return display.display("Clingraph not yet computed. Call compute_graphs().")
+        graphs = self._get_graphvizs(selected_graphs)
         images_dir = 'out'
-        if selected_graphs is not None:
-            selected_graphs = [str(s) for s in selected_graphs]
         self.save(images_dir, selected_graphs=selected_graphs, format="png", **kwargs)
         d = []
-        for graph_name in self._graphs:
-            if selected_graphs and graph_name not in selected_graphs:
-                continue
+        for graph_name in graphs:
             d.append(graph_name)
             d.append(display.Image(os.path.join('out', graph_name+".png")))
         return display.display(*tuple(d))

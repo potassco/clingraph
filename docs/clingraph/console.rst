@@ -18,63 +18,67 @@ Special integration for `clingo <https://potassco.org/clingo/>`_ includes the cr
 
          _ _                         _
        __| (_)_ _  __ _ _ _ __ _ _ __| |_
-     / _| | | ' \/ _` | '_/ _` | '_ \ ' \
+     / _| | | ' \/ _` | '_/ _` | '_ \ '  \
      \__|_|_|_||_\__, |_| \__,_| .__/_||_|
                  |___/         |_|
 
-     Clingraph is a package to generate graph visualizations
-     based on facts that can be computed by logic programs.
-     Special features for integration with clingo!
+        
+    Clingraph is a package to generate graph visualizations
+    based on facts that can be computed by logic programs.
+    Special features for integration with clingo.
 
+    positional arguments:
+      files
 
-     positional arguments:
-       files
+    options:
+      -h, --help            show this help message and exit
+      -q                    Flag to have a quiet output where the graphs soruce wont be rendered
+      -log                  Provide logging level.
+                            {debug|info|error|warning}
+                                (default: warning)
+      --version, -v         show program's version number and exit
 
-     optional arguments:
-       -h, --help            show this help message and exit
-       -q                    Flag to have a quiet output where the graphs soruce wont be rendered
-       -log                  Provide logging level.
-                             {debug|info|error|warning}
-                                 (default: warning)
+    Graph generation:
+      --type                The type of the graph: digraph or graph
+                            {graph|digraph}
+                                (default: graph)
+      --prefix              Prefix expected in all the considered facts
+      --default-graph       The name of the default graph.
+                            All nodes and edges with arity 1 will be assigned to this graph
+                            (default: default)
 
-     Graph generation:
-       --type                The type of the graph: digraph or graph
-                             {graph|digraph}
-                                 (default: graph)
-       --prefix              Prefix expected in all the considered facts
-       --default-graph       The name of the default graph.
-                             All nodes and edges with arity 1 will be assigned to this graph
-                             (default: default)
+    Graph rendering:
+      --render              Flag to render the graphs and save in files
+      --dir                 Directory for saving and rendering
+                                (default: out)
+      --out-file-prefix     A prefix for the names of the generated files
+                                (default: )
+      --format              Format to save the graph
+                            {pdf|png|svg}
+                                (default: pdf)
+      --engine              Layout command used by graphviz
+                            {dot|neato|twopi|circo|fdp|osage|patchwork|sfdp}
+                                (default: dot)
+      --view                Opens the generated files
+      --select-graph  [ ...]
+                            Select one of the graphs for output or rendering by name
+                            Can appear multiple times to select multiple graphs
+      --render-param [ ...]
+                            A string containing a parameter for graphviz rendering.
+                            String should have the form arg_name=arg_value
+      --gif                 Flag to generate a gif from all the generated files
+      --gif-name            Name for the gif file that will be saved in the given directory
+      --gif-param [ ...]    A string containing a parameter for the gif generation by imageio.
+                            String should have the form arg_name=arg_value
+      --tex                 Flag to generate a latex tex file
+      --tex-param [ ...]    A string containing a parameter for the tex file generation by dot2tex.
+                            String should have the form arg_name=arg_value
 
-     Graph rendering:
-       --render              Flag to render the graphs and save in files
-       --dir                 Directory for saving and rendering
-                                 (default: out)
-       --out-file-prefix     A prefix for the names of the generated files
-                                 (default: )
-       --format              Format to save the graph
-                             {pdf|png|svg}
-                                 (default: pdf)
-       --engine              Layout command used by graphviz
-                             {dot|neato|twopi|circo|fdp|osage|patchwork|sfdp}
-                                 (default: dot)
-       --view                Opens the generated files
-       --select-graph  [ ...]
-                             Select one of the graphs for output or rendering by name
-                             Can appear multiple times to select multiple graphs
-       --render-param [ ...]
-                             A string containing a parameter for graphviz rendering.
-                             String should have the form arg_name=arg_value
-       --gif                 Flag to generate a giv from all the generated files
-       --gif-name            Name for the gif file that will be saved in the given directory
-       --gif-param [ ...]    A string containing a parameter for the gif generation by imageio.
-                             String should have the form arg_name=arg_value
-
-     Multi model graphs:
-       --json                Flag to indicate the creation of multiple models from a json.
-                             The graphs will be generated for each stable model.
-                             The json is exptected to be the output of clingo using the option `--outf=2`
-       --select-model []     Select only one of the models outputed by clingo defined by a number
+    Multi model graphs:
+      --json                Flag to indicate the creation of multiple models from a json.
+                            The graphs will be generated for each stable model.
+                            The json is exptected to be the output of clingo using the option `--outf=2`
+      --select-model []     Select only one of the models outputed by clingo defined by a number
 
 
 Basic example
@@ -344,3 +348,49 @@ Clingo integration
   graph default {
     a [color=blue]
   }
+
+Latex integration
+=================
+
+.. code:: shell
+
+  $ cat examples/basic/example5/example_5.lp
+
+*Output:*
+
+.. code:: shell
+  
+  node(sum).
+  attr(node,sum,label,"Sum").
+  attr(node,sum,texlbl,"$\\Sigma $").
+  attr(node,sum,shape,circle).
+  attr(node,sum,color,blue).
+  edge((sum,sum)).
+  attr(edge,(sum,sum),texlbl,"$\\forall x\\in \\Theta$").
+  attr(edge,(sum,sum),label,"x in Theta").
+
+- Run cligraph to obtain the latex ``.tex`` file using the ``--tex`` option. We use additional (optional) parameters in ``--tex-param`` to crop the image.
+
+.. code:: shell
+
+  $ clingraph examples/basic/example6/example_6.lp --tex --render --type=digraph --tex-param="crop=True"
+
+This will save the normal ``pdf`` as before (because of the flag ``--render``), and a latex ``.tex`` file that can be compiled into a pdf. The compilation can be done using a package like ``pdflatex``:
+
+.. code:: shell
+
+  $ pdflatex out/default.tex ; open default.pdf
+
+Leading to two different pdfs:
+
+.. list-table:: 
+
+    * - .. figure:: ../../examples/basic/example6/default.png
+
+           *Graph pdf computed by graphviz*
+
+      - .. figure:: ../../examples/basic/example6/latex.png
+
+           *Graph pdf compiled by latex*
+
+.. warning:: To use math notation (``$``) in labels, we advise the user to use the ``texlbl`` special attribute for the latex label instead of the normal ``label`` attribute. This will avoid problems with the escape characters. Note that edges require a ``label`` attribute to be defined (even if it is empty) in order for the ``texlbl`` attribute to have an effect.
