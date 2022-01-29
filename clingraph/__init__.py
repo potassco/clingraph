@@ -21,8 +21,8 @@ def get_parser():
     # pylint: disable=anomalous-backslash-in-string
     parser = argparse.ArgumentParser(description=textwrap.dedent("""
         _ _                         _
-    __| (_)_ _  __ _ _ _ __ _ _ __| |_
-    / _| | | ' \/ _` | '_/ _` | '_ \ ' \
+     __| (_)_ _  __ _ _ _ __ _ _ __| |_
+    / _| | | ' \/ _` | '_/ _` | '_ \ ' \\
     \__|_|_|_||_\__, |_| \__,_| .__/_||_|
                 |___/         |_|
 
@@ -135,7 +135,7 @@ def get_parser():
                     metavar='')
 
     render_params.add_argument('--gif',
-                    help = """Flag to generate a giv from all the generated files""",
+                    help = """Flag to generate a gif from all the generated files""",
                     action='store_true')
 
     render_params.add_argument('--gif-name',
@@ -149,6 +149,20 @@ def get_parser():
                 default = '',
                 help = textwrap.dedent('''\
                 A string containing a parameter for the gif generation by imageio.
+                String should have the form arg_name=arg_value '''),
+                type=str,
+                nargs='*',
+                metavar='')
+
+
+    render_params.add_argument('--tex',
+                    help = """Flag to generate a latex tex file""",
+                    action='store_true')
+
+    render_params.add_argument('--tex-param',
+                default = '',
+                help = textwrap.dedent('''\
+                A string containing a parameter for the tex file generation by dot2tex.
                 String should have the form arg_name=arg_value '''),
                 type=str,
                 nargs='*',
@@ -233,6 +247,15 @@ def main():
         g.save_gif(directory=args.dir,name=args.gif_name,
             engine=args.engine,
             selected_graphs=args.select_graph, **gif_param_dic)
+
+    if args.tex:
+        tex_params = []
+        if args.tex_param is not None:
+            tex_params = args.tex_param
+        tex_param_dic = { s.split('=')[0]:s.split('=')[1] for s in tex_params}
+
+        g.save_tex(directory=args.dir,
+            selected_graphs=args.select_graph, **tex_param_dic)
 
     if not args.q:
         print(g.source(args.select_graph))

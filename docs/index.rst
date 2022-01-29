@@ -8,7 +8,7 @@ Clingraph: A declarative graph visualizer
 
 A visualizer for graphs defined as a set of facts that can be computed from logic programs. The graphs are generated using `graphviz <https://graphviz.org>`_ but are defined via fixed predicates from a list of facts.
 
-The package also contains special features for integration with `clingo <https://potassco.org/clingo>`_!
+The package also contains special features for integration with `clingo <https://potassco.org/clingo>`_ as well as to create gifs and latex code!
 
 **Here is a motivation example:**
 
