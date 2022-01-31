@@ -36,7 +36,7 @@ class MultiModelClingraph:
         Returns the name of a clingraph related to a model
 
         Args:
-            numeber (int): The model number. Will be used to access the model
+            number (int): The model number. Will be used to access the model
             costs (list): A list of costs for the model
 
         Returns:
@@ -53,7 +53,7 @@ class MultiModelClingraph:
     def source(self, selected_graphs=None, selected_models=None):
         """
         Obtains the source code for the graphs in all the models.
-        A selecttion is also allowed as parameters, if no selection is
+        A selection is also allowed as parameters, if no selection is
         added all models and graphs are returned.
 
         Args:
@@ -128,7 +128,7 @@ class MultiModelClingraph:
     def load_json(self, json_str):
         """
         Loads multiple models from a json that is the output of clingo
-        The json oput is obtained using the option `--outf=2`
+        The json output is obtained using the option `--outf=2`
 
         Args:
             json_str (str): A string representing the json
@@ -144,7 +144,7 @@ class MultiModelClingraph:
             if len(j["Call"]) != 1:
                 raise InvalidSyntax('The json key "Call" should have an array as value with only one element')
             if "Witnesses" not in j["Call"][0]:
-                raise InvalidSyntax('The json key "Call" should have an array as value with only one element with the key "Wintnesses"')
+                raise InvalidSyntax('The json key "Call" should have an array as value with only one element with the key "Witnesses"')
 
             for i, w in enumerate(j["Call"][0]["Witnesses"]):
                 model_number = i+1
@@ -172,7 +172,7 @@ class MultiModelClingraph:
     def save(self, selected_models=None, directory='out', **kargs):
         """
         Saves all the clingraphs using one directory per model
-        A selecttion is also allowed as parameters, if no selection is
+        A selection is also allowed as parameters, if no selection is
         added all models and graphs are saved.
 
         Args:
