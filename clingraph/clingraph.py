@@ -83,7 +83,7 @@ class Clingraph:
 
     def _new_single_graph(self):
         """
-        Creates a graphviz instance with the attribues
+        Creates a graphviz instance with the attributes
         """
         if self.type_ == 'graph':
             GraphClass = Graph
@@ -146,7 +146,7 @@ class Clingraph:
         Returns the current set of facts as a string
 
         Returns:
-            A string containing all the facts after prepocessing
+            A string containing all the facts after preprocessing
         """
         return str(self._orm)
 
@@ -214,7 +214,7 @@ class Clingraph:
         Nests all_graphs by assigning subgraphs to graphs
 
         Args:
-            all_graphs (dict): Dicionary of all the graphs to be nested
+            all_graphs (dict): Dictionary of all the graphs to be nested
         """
         nested_graphs = {}
         graphs_ids = self._orm.get_all_graphs()

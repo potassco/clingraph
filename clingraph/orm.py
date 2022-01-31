@@ -24,7 +24,7 @@ class ClingraphORM():
         Adds a string containing facts to the database
 
         Args:
-            program (str): A string consisting of only facts, devided by a '.'
+            program (str): A string consisting of only facts, divided by a '.'
         """
         return NotImplementedError
 
@@ -44,7 +44,7 @@ class ClingraphORM():
         Adds a clingo model to the database
 
         Args:
-            model (clingo.Model): A model retured by clingo
+            model (clingo.Model): A model returned by clingo
         """
         return NotImplementedError
 
