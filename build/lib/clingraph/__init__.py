@@ -12,11 +12,7 @@ from clingraph.logger import setup_logger
 from clingraph.multigraph import MultiModelClingraph
 from clingraph.orm import ClingraphORM
 from clingraph.exception import InvalidSyntax
-
-try:
-    VERSION = pkg_resources.require("clingraph")[0].version
-except pkg_resources.DistributionNotFound:
-    VERSION = '0.0.0'
+version = pkg_resources.require("clingraph")[0].version
 
 def get_parser():
     """
@@ -48,7 +44,7 @@ def get_parser():
                     type=str,
                     metavar='')
     parser.add_argument('--version','-v', action='version',
-                    version=f'%(prog)s {VERSION}')
+                    version=f'%(prog)s {version}')
 
 
     input_params = parser.add_argument_group('Graph generation')
@@ -190,15 +186,12 @@ def get_parser():
     return parser
 
 def setup_clingraph_log(log_str):
-    '''
-    Setup the clingraph log to get given level
-    '''
     ####### Logger
     log = logging.getLogger('custom')
     levels = {'error': logging.ERROR, 'warn': logging.WARNING,
               'warning': logging.WARNING, 'info': logging.INFO, 'debug': logging.DEBUG}
     setup_logger(levels.get(log_str.lower()))
-    log.debug("Log level set to %s",log_str)
+    log.debug(f"Log level set to {log_str}")
     return log
 
 def main():

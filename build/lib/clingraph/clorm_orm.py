@@ -148,8 +148,12 @@ class ClormORM(ClingraphORM):
         Args:
             program (str): A string consisting of only facts, divided by a '.'
         """
+        log.debug("Program before encode")
+        log.debug(program)
         # program = program.encode('unicode_escape').decode("utf-8")
         program = program.replace('\\','\\\\')
+        log.debug("Program after encode")
+        log.debug(program)
 
         try:
             fb = clorm.parse_fact_string(program, self.unifiers,raise_nonfact=True)
@@ -308,6 +312,5 @@ class ClormORM(ClingraphORM):
                         info["idx"] = info["idx"] + \
                             [""]*(1+i-len(info["idx"]))
                     info["idx"][i] = val_str
-            attrs[str(name)] = info["sep"].join(info["set"]+info["idx"]).replace('\\\\','\\')
-
+            attrs[str(name)] = info["sep"].join(info["set"]+info["idx"]).encode('utf-8').decode('unicode_escape')
         return attrs
