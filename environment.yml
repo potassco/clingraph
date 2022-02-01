@@ -1,8 +1,10 @@
 name: clingraph
 channels:
   - conda-forge
-  - defaults
-  - potassco
 dependencies:
-  - pygraphviz
-  - python-graphviz=0.19.1
+  - clingo
+  - clorm=1.3.6
+  - dot2tex
+  - imageio
+  - networkx
+  - python-graphviz

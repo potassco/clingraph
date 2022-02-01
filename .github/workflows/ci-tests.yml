@@ -5,34 +5,41 @@ on: [push]
 jobs:
   build-linux:
     name: Test clingraph
+
     runs-on: ${{ matrix.os }}
+
     strategy:
       fail-fast: false
       matrix:
         os: ['ubuntu-latest', 'macos-latest','windows-latest']
-        python-version: ["3.9","3.8"]
+        python-version: ["3.8", "3.9"]
+
     steps:
       - name: Checkout code into workspace directory
         uses: actions/checkout@v2
+
       - name: setup miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
-          auto-update-conda: true
-          python-version: ${{ matrix.python-version }}
-          environment-file: environment.yml
           activate-environment: clingraph
-          auto-activate-base: false
-      
-      - name: Install
+          python-version: ${{ matrix.python-version }}
+          channels: conda-forge
+          channel-priority: strict
+          auto-update-conda: true
+          environment-file: environment.yml
+
+      - name: Install Development Tools
         shell: pwsh
-        run: pip install .
+        run: |
+          conda install pylint pytest
 
       - name: Run tests
         shell: pwsh
-        run: |  
+        run: |
+          $env:PYTHONPATH = "."
           pytest -v
 
-      - name: Run lintern
+      - name: Run linter
         shell: pwsh
-        run: |  
+        run: |
           pylint clingraph

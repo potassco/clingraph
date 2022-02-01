@@ -12,7 +12,11 @@ from clingraph.logger import setup_logger
 from clingraph.multigraph import MultiModelClingraph
 from clingraph.orm import ClingraphORM
 from clingraph.exception import InvalidSyntax
-version = pkg_resources.require("clingraph")[0].version
+
+try:
+    VERSION = pkg_resources.require("clingraph")[0].version
+except pkg_resources.DistributionNotFound:
+    VERSION = '0.0.0'
 
 def get_parser():
     """
@@ -44,7 +48,7 @@ def get_parser():
                     type=str,
                     metavar='')
     parser.add_argument('--version','-v', action='version',
-                    version=f'%(prog)s {version}')
+                    version=f'%(prog)s {VERSION}')
 
 
     input_params = parser.add_argument_group('Graph generation')
