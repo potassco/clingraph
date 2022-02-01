@@ -1,16 +1,32 @@
 """
     Definition of Clingraphs
 """
+
 import logging
 import os
-import dot2tex
-import imageio
 import networkx as nx
-from IPython import display
 from clingo import Model
 from graphviz import Graph, Digraph
 from clingraph.clorm_orm import ClormORM
 log = logging.getLogger('custom')
+
+try:
+    from IPython import display
+    HAS_IPYTHON=True
+except ImportError:
+    HAS_IPYTHON=False
+
+try:
+    import dot2tex
+    HAS_DOT2TEX=True
+except ImportError:
+    HAS_DOT2TEX=False
+
+try:
+    import imageio
+    HAS_IMAGEIO=True
+except ImportError:
+    HAS_IMAGEIO=False
 
 class Clingraph:
 
@@ -285,6 +301,9 @@ class Clingraph:
 
             Any additional arguments are passed to the  imageio.mimsave method
         """
+        if not HAS_IMAGEIO:
+            raise RuntimeError("imageio module has to be installed to save gifs")
+
         graphs = self._get_graphvizs(selected_graphs)
 
         images_dir = os.path.join(directory, 'images')
@@ -303,6 +322,8 @@ class Clingraph:
         """
         Creates a tex file ussing dot2tex
         """
+        if not HAS_DOT2TEX:
+            raise RuntimeError("imageio module has to be installed to export to tex")
         graphs = self._get_graphvizs(selected_graphs)
         for graph_name, g in graphs.items():
             source = g.source
@@ -316,8 +337,6 @@ class Clingraph:
 
             log.info("Latex file saved in %s",file_name)
 
-
-
     def _show(self, selected_graphs=None, **kwargs):
         """
         Shows the graphs in a frontend, such as jupyter
@@ -326,6 +345,8 @@ class Clingraph:
             selected_graphs: The names of the graphs to be shown. By default all are shown
 
         """
+        if not HAS_IPYTHON:
+            raise RuntimeError("ipython module has to be installed to display images")
         graphs = self._get_graphvizs(selected_graphs)
         images_dir = 'out'
         self.save(images_dir, selected_graphs=selected_graphs, format="png", **kwargs)
