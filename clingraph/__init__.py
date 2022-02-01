@@ -186,12 +186,15 @@ def get_parser():
     return parser
 
 def setup_clingraph_log(log_str):
+    '''
+    Setup the clingraph log to get given level
+    '''
     ####### Logger
     log = logging.getLogger('custom')
     levels = {'error': logging.ERROR, 'warn': logging.WARNING,
               'warning': logging.WARNING, 'info': logging.INFO, 'debug': logging.DEBUG}
     setup_logger(levels.get(log_str.lower()))
-    log.debug(f"Log level set to {log_str}")
+    log.debug("Log level set to %s",log_str)
     return log
 
 def main():
