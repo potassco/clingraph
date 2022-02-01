@@ -146,7 +146,7 @@ class ClormORM(ClingraphORM):
         Args:
             program (str): A string consisting of only facts, divided by a '.'
         """
-        program = program.encode('unicode_escape')
+        program = program.encode('unicode_escape').decode("utf-8")
 
         try:
             fb = clorm.parse_fact_string(program, self.unifiers,raise_nonfact=True)
