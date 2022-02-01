@@ -22,7 +22,7 @@ def get_parser():
     parser = argparse.ArgumentParser(description=textwrap.dedent("""
         _ _                         _
      __| (_)_ _  __ _ _ _ __ _ _ __| |_
-    / _| | | ' \/ _` | '_/ _` | '_ \ ' \\ 
+    / _| | | ' \/ _` | '_/ _` | '_ \ ' \\
     \__|_|_|_||_\__, |_| \__,_| .__/_||_|
                 |___/         |_|
 
@@ -185,6 +185,15 @@ def get_parser():
                 metavar="")
     return parser
 
+def setup_clingraph_log(log_str):
+    ####### Logger
+    log = logging.getLogger('custom')
+    levels = {'error': logging.ERROR, 'warn': logging.WARNING,
+              'warning': logging.WARNING, 'info': logging.INFO, 'debug': logging.DEBUG}
+    setup_logger(levels.get(log_str.lower()))
+    log.debug(f"Log level set to {log_str}")
+    return log
+
 def main():
     '''
     Runs the main function
@@ -194,10 +203,7 @@ def main():
     args = parser.parse_args()
 
     ####### Logger
-    log = logging.getLogger('custom')
-    levels = {'error': logging.ERROR, 'warn': logging.WARNING,
-              'warning': logging.WARNING, 'info': logging.INFO, 'debug': logging.DEBUG}
-    setup_logger(levels.get(args.log.lower()))
+    log = setup_clingraph_log(args.log)
 
     log.debug(args)
     ####### Load input
@@ -247,7 +253,7 @@ def main():
         g.save_gif(directory=args.dir,name=args.gif_name,
             engine=args.engine,
             selected_graphs=args.select_graph, **gif_param_dic)
-    
+
     if args.tex:
         tex_params = []
         if args.tex_param is not None:

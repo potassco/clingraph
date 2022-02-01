@@ -1,11 +1,13 @@
 """
     Defines an ORM for clingraphs using clorm
 """
+import logging
 import clorm
 from clorm import Predicate, RawField, ComplexTerm, refine_field, ConstantField, SimpleField, Raw, FactBase
 from clingo.symbol import Function
 from clingraph.orm import ClingraphORM
 from clingraph.exception import InvalidSyntax
+log = logging.getLogger('custom')
 
 
 class AttrID(ComplexTerm):
@@ -137,16 +139,21 @@ class ClormORM(ClingraphORM):
         if element_type == "graph":
             return self.Graph
 
-        raise ValueError("Invailid element type")
+        raise ValueError("Invalid element type")
 
     def add_fact_string(self, program):
         """
         Adds a string containing facts to the database
 
         Args:
-            program (str): A string consisting of only facts, devided by a '.'
+            program (str): A string consisting of only facts, divided by a '.'
         """
-        program = program.replace( '\\' ,'\\\\')
+        log.debug("Program before encode")
+        log.debug(program)
+        # program = program.encode('unicode_escape').decode("utf-8")
+        program = program.replace('\\','\\\\')
+        log.debug("Program after encode")
+        log.debug(program)
 
         try:
             fb = clorm.parse_fact_string(program, self.unifiers,raise_nonfact=True)
@@ -155,7 +162,7 @@ class ClormORM(ClingraphORM):
             msg = "The input string contains a complex structure that is not a fact."
             raise InvalidSyntax(msg,str(e)) from None
         except RuntimeError as e:
-            msg = "Syntactic error the input string can't be read as facts."
+            msg = "Syntactic error the input string can't be read as facts. \n" + program
             raise InvalidSyntax(msg,str(e)) from None
 
     def add_fact_file(self, file):
@@ -180,7 +187,7 @@ class ClormORM(ClingraphORM):
         Adds a clingo model to the database
 
         Args:
-            model (clingo.Model): A model retured by clingo
+            model (clingo.Model): A model returned by clingo
         """
         symbols = model.symbols(atoms=True, shown=True)
         fb = clorm.unify(self.unifiers, symbols)
@@ -190,8 +197,8 @@ class ClormORM(ClingraphORM):
         """
         Adds a fact base to the current factbase
         """
-        desugarized_fb = self.desugar(fb)
-        self.fb = self.fb.union(desugarized_fb)
+        processed_fb = self.desugar(fb)
+        self.fb = self.fb.union(processed_fb)
 
     def desugar(self, fb):
         """
@@ -292,7 +299,7 @@ class ClormORM(ClingraphORM):
         q = q.select(self.Attr.attr_id.attr_pos, self.Attr.attr_value)
         attrs = {}
         for name, list_opts in q.all():
-            info = {"set": [], "idxs": [], "sep": " "}
+            info = {"set": [], "idx": [], "sep": " "}
             for opt, val in list_opts:
                 val_str = str(val).strip('"')
                 if opt == "sep":
@@ -301,9 +308,9 @@ class ClormORM(ClingraphORM):
                     info["set"].append(val_str)
                 else:
                     i = int(opt)
-                    if i >= len(info["idxs"]):
-                        info["idxs"] = info["idxs"] + \
-                            [""]*(1+i-len(info["idxs"]))
-                    info["idxs"][i] = val_str
-            attrs[str(name)] = info["sep"].join(info["set"]+info["idxs"]).replace('\\\\','\\')
+                    if i >= len(info["idx"]):
+                        info["idx"] = info["idx"] + \
+                            [""]*(1+i-len(info["idx"]))
+                    info["idx"][i] = val_str
+            attrs[str(name)] = info["sep"].join(info["set"]+info["idx"]).encode('utf-8').decode('unicode_escape')
         return attrs
