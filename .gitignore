@@ -5,3 +5,4 @@ __pycache__/
 *.ipynb_checkpoints
 docs/_build
 clingraph.egg-info*
+build
