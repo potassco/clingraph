@@ -70,6 +70,10 @@ html_theme_options = {
     'sticky_navigation': True,
     'navigation_depth': 4,
     'includehidden': True,
+    "launch_buttons": {
+        "binderhub_url": "https://mybinder.org/v2/gh/susuhahnml/notebooks/master?labpath=binder-notebook.ipynb"
+    },
+    "repository_url": "https://github.com/potassco/clingraph"
 #    'titles_only': False
 }
 
