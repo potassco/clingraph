@@ -4,5 +4,6 @@ channels:
   - defaults
   - potassco
 dependencies:
+  - python=3.9
   - pygraphviz
   - python-graphviz=0.19.1
