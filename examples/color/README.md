@@ -1,7 +1,7 @@
-### Run example
+### Graph coloring
 
 **Features used:**
-- Piping
+- Clingo integration
 - Multi model
 - Rendering
 - Model selection 

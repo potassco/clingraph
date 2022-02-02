@@ -1,8 +1,10 @@
-### Run example
+### Elevator
+
+A dynamic application of an elevator serving floors
 
 **Features used:**
-- Piping
 - Multi model
+- Multi graph
 - Model selection 
 - Gif generation
 - Gif special parameter

@@ -1,4 +1,6 @@
-### Run example for reified format
+### Reified format
+
+Shows the reification output of gringo 
 
 **Features used:**
 - Load from clingo
