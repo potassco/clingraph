@@ -2,6 +2,7 @@ name: clingraph
 channels:
   - conda-forge
 dependencies:
+  - python>=3.8
   - clingo
   - clorm=1.3.6
   - dot2tex
