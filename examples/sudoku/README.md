@@ -1,4 +1,4 @@
-### Run example
+### Sudoku
 
 **Features used:**
 - Multi model

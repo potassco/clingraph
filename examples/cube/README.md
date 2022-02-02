@@ -1,4 +1,4 @@
-### Run example
+### Cube
 
 **Features used:**
 - Piped from clingo as list of facts

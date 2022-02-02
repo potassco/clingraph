@@ -1,4 +1,4 @@
-### Run example
+### Transition system
 
 **Features used:**
 - Latex integration
@@ -11,6 +11,6 @@
 
 This command can be followed by:
 
-`pdflatex out/system.tex -output-directory out`
+`pdflatex out/system.tex`
 
 To compile the latex file into a pdf.
