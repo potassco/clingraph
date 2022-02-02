@@ -13,16 +13,17 @@ Installing with conda
 Installing with pip
 =====================
 
-For the installation using ```pip`` the user must first install `graphviz <https://www.graphviz.org/download/>`_  manually.
+For the installation using ``pip`` the user must first install `graphviz <https://www.graphviz.org/download/>`_  manually.
 
 .. code-block:: bash
 
     $ pip install -u clingraph
 
 The following dependencies used in `clingraph` are optional. 
-- `tex`: For latex code generation.
-- `gif`: For gifs generation.
-- `ipython`: To show graphs in a jupyter notebook.
+
+#. `tex`: For latex code generation.
+#. `gif`: For gifs generation.
+#. `ipython`: To show graphs in a jupyter notebook.
 
 To include them in the installation use:
 
@@ -55,5 +56,5 @@ With pip:
     $ cd clingraph
     $ pip install .[dev,tex,gif,ipython]
 
-.. warn:: 
+.. warning:: 
     This makes clingraph available in the command like using ``python -m clingraph`` instead of ``clingraph``.
