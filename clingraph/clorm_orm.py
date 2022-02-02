@@ -10,6 +10,11 @@ from clingraph.exception import InvalidSyntax
 log = logging.getLogger('custom')
 
 
+if hasattr(clorm.orm.symbols_facts, 'NonFactError'):
+    NonFactError = clorm.orm.symbols_facts.NonFactError # NOLINT
+else:
+    NonFactError = NotImplementedError
+
 class AttrID(ComplexTerm):
     # pylint: disable=missing-class-docstring
     attr_name = SimpleField
@@ -154,7 +159,7 @@ class ClormORM(ClingraphORM):
         try:
             fb = clorm.parse_fact_string(program, self.unifiers,raise_nonfact=True)
             self.add_to_fb(fb)
-        except clorm.orm.symbols_facts.NonFactError as e:
+        except NonFactError as e:
             msg = "The input string contains a complex structure that is not a fact."
             raise InvalidSyntax(msg,str(e)) from None
         except RuntimeError as e:
@@ -171,7 +176,7 @@ class ClormORM(ClingraphORM):
         try:
             fb = clorm.parse_fact_files([file], self.unifiers,raise_nonfact=True)
             self.add_to_fb(fb)
-        except clorm.orm.symbols_facts.NonFactError as e:
+        except NonFactError as e:
             msg = "The file contains a complex structure that is not a fact."
             raise InvalidSyntax(msg,str(e)) from None
         except RuntimeError as e:
