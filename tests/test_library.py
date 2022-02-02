@@ -93,10 +93,6 @@ def test_from_str():
 
     cg = Clingraph()
     with pytest.raises(InvalidSyntax):
-        cg.add_fact_string("head:-body.node(a).")
-
-    cg = Clingraph()
-    with pytest.raises(InvalidSyntax):
         cg.add_fact_string("def sjs(): .node(a).")
 
 
@@ -124,11 +120,6 @@ def test_from_file():
     assert 'attr(graph_nodes,default,(style,-1),filled).' in facts
     assert 'attr(node,john,(label,-1),"John Doe").' in facts
     assert 'attr(node,jane,(label,-1),"Jane Doe").' in facts
-
-    cg = Clingraph()
-    file_name = make_file("head:-body.node(a).")
-    with pytest.raises(InvalidSyntax):
-        cg.add_fact_file(file_name)
 
     cg = Clingraph()
     file_name = make_file("def: __init__()")
