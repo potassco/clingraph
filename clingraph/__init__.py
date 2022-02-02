@@ -189,6 +189,18 @@ def get_parser():
                 metavar="")
     return parser
 
+def setup_clingraph_log(log_str):
+    '''
+    Setup the clingraph log to get given level
+    '''
+    ####### Logger
+    log = logging.getLogger('custom')
+    levels = {'error': logging.ERROR, 'warn': logging.WARNING,
+              'warning': logging.WARNING, 'info': logging.INFO, 'debug': logging.DEBUG}
+    setup_logger(levels.get(log_str.lower()))
+    log.debug("Log level set to %s",log_str)
+    return log
+
 def main():
     '''
     Runs the main function
@@ -198,10 +210,7 @@ def main():
     args = parser.parse_args()
 
     ####### Logger
-    log = logging.getLogger('custom')
-    levels = {'error': logging.ERROR, 'warn': logging.WARNING,
-              'warning': logging.WARNING, 'info': logging.INFO, 'debug': logging.DEBUG}
-    setup_logger(levels.get(args.log.lower()))
+    log = setup_clingraph_log(args.log)
 
     log.debug(args)
     ####### Load input

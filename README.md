@@ -3,7 +3,10 @@
 A visualizer for graphs defined as a set of facts computed from logic programs. Graphs are generated using [graphviz](https://graphviz.org) defined via fixed predicates from a list of facts. 
 
 
-It contains special features for integration with [clingo](https://potassco.org/clingo/)!
+Clingraph also contains special features for integration with [clingo](https://potassco.org/clingo/) generation of gifs and latex code!
+
+Try the package online: [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/potassco/clingraph/development?labpath=docs%2Fnotebook.ipynb)
+ 
 
 
 ## Installation

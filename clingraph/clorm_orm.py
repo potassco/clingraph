@@ -1,11 +1,13 @@
 """
     Defines an ORM for clingraphs using clorm
 """
+import logging
 import clorm
 from clorm import Predicate, RawField, ComplexTerm, refine_field, ConstantField, SimpleField, Raw, FactBase
 from clingo.symbol import Function
 from clingraph.orm import ClingraphORM
 from clingraph.exception import InvalidSyntax
+log = logging.getLogger('custom')
 
 
 class AttrID(ComplexTerm):
@@ -146,7 +148,8 @@ class ClormORM(ClingraphORM):
         Args:
             program (str): A string consisting of only facts, divided by a '.'
         """
-        program = program.replace( '\\' ,'\\\\')
+        # program = program.encode('unicode_escape').decode("utf-8")
+        program = program.replace('\\','\\\\')
 
         try:
             fb = clorm.parse_fact_string(program, self.unifiers,raise_nonfact=True)
@@ -155,7 +158,7 @@ class ClormORM(ClingraphORM):
             msg = "The input string contains a complex structure that is not a fact."
             raise InvalidSyntax(msg,str(e)) from None
         except RuntimeError as e:
-            msg = "Syntactic error the input string can't be read as facts."
+            msg = "Syntactic error the input string can't be read as facts. \n" + program
             raise InvalidSyntax(msg,str(e)) from None
 
     def add_fact_file(self, file):
@@ -306,4 +309,5 @@ class ClormORM(ClingraphORM):
                             [""]*(1+i-len(info["idx"]))
                     info["idx"][i] = val_str
             attrs[str(name)] = info["sep"].join(info["set"]+info["idx"]).replace('\\\\','\\')
+
         return attrs
