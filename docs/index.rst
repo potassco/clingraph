@@ -38,7 +38,7 @@ Then clingraph will load this facts and construct a graphviz object that can be 
    
    clingraph/installation
    clingraph/syntax
-   notebook.ipynb
+   notebook_link
    clingraph/api 
    clingraph/console
 
