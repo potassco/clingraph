@@ -6,3 +6,5 @@ __pycache__/
 docs/_build
 clingraph.egg-info*
 build
+.mypy_cache/
+dist/
