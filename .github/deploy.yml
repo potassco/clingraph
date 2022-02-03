@@ -12,3 +12,49 @@ pip:
         python3 -m pip install --user -r .github/requirements.txt
     build_depends_dev: |
         python3 -m pip install --user --extra-index-url https://test.pypi.org/simple/ -r .github/requirements.txt
+
+conda:
+    package_name:
+        'clingraph'
+    os: 
+        - 'ubuntu-latest'
+    channels_release:
+        - 'potassco'
+    channels_dev:
+        - 'potassco/label/dev'
+        - 'potassco'
+    version: |
+        version = None
+        with open('setup.cfg') as fh:
+            for line in fh:
+                m = match(r'''[ ]*version[ ]*=[ ]*([0-9]+\.[0-9]+\.[0-9]+)(\.post[0-9]+)?''', line)
+                if m is not None:
+                    version = m.group(1)
+    meta:
+      url: https://github.com/potassco/{{ name }}/archive/v{{ version }}.tar.gz
+      git_url: https://github.com/potassco/{{ name }}.git
+      requirements:
+        host:
+          - python >=3.8
+          - pip
+        run:
+          - python >=3.8
+          - clingo
+          - clorm >=1.3.6
+          - networkx
+          - python-graphviz
+
+      build:
+        noarch: python
+        script: 'python -m pip install --no-deps --ignore-installed .'
+        entry_points:
+          - clingraph = clingraph:main
+
+      about:
+        home: https://potassco.org/
+        license: MIT
+        license_family: MIT
+        license_file: LICENSE
+        summary: ORM interface for the Clingo ASP Solver
+        doc_url: https://clingraph.readthedocs.io/en/latest/index.html
+        dev_url: https://github.com/potassco/{{ name }}
