@@ -285,7 +285,8 @@ class Clingraph:
                 directory, f"{name_prefix}{graph_name}.{format}")
             graph.render(
                 format=format,
-                outfile=file_name,
+                directory=directory,
+                filename=f"{name_prefix}{graph_name}",
                 **kwargs,
                 cleanup=True)
             log.info("Image saved in %s",file_name)
