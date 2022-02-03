@@ -1,0 +1,14 @@
+# do not edit the workflows, they are generated from this file
+pip:
+    pure: True
+    version: |
+        version = None
+        with open('setup.cfg') as fh:
+            for line in fh:
+                m = match(r'''[ ]*version[ ]*=[ ]*([0-9]+\.[0-9]+\.[0-9]+)(\.post[0-9]+)?''', line)
+                if m is not None:
+                    version = m.group(1)
+    build_depends_release: |
+        python3 -m pip install --user -r .github/requirements.txt
+    build_depends_dev: |
+        python3 -m pip install --user --extra-index-url https://test.pypi.org/simple/ -r .github/requirements.txt
