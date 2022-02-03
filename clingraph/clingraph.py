@@ -324,7 +324,7 @@ class Clingraph:
         Creates a tex file ussing dot2tex
         """
         if not HAS_DOT2TEX:
-            raise RuntimeError("imageio module has to be installed to export to tex")
+            raise RuntimeError("dot2tex module has to be installed to export to tex")
         graphs = self._get_graphvizs(selected_graphs)
         for graph_name, g in graphs.items():
             source = g.source
