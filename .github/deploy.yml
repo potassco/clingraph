@@ -58,3 +58,64 @@ conda:
         summary: ORM interface for the Clingo ASP Solver
         doc_url: https://clingraph.readthedocs.io/en/latest/index.html
         dev_url: https://github.com/potassco/{{ name }}
+
+# ppa:
+#     package_name:
+#         'python3-clingraph'
+#     upstream_name:
+#         'clingraph'
+#     initial_version:
+#         '0.1.0'
+#     initial_date:
+#         'Sat, 3 Jan 2022 15:00:00 +0100'
+#     contact_url:
+#         'https://github.com/potassco/clingraph/issues'
+#     source_url:
+#         'https://github.com/potassco/clingraph'
+#     version:
+#         $(sed -n "/version[ ]*=/s/.*\([0-9]\+\.[0-9]\+\.[0-9]\+.*\).*/\1/p" ../../setup.cfg)
+#     build_depends:
+#         - 'dh-python'
+#         - 'python3-all'
+#     create_depends:
+#         - 'python3-clingo'
+#         - 'python3-clorm'
+#         - 'python3-graphviz'
+#         - 'python3-networkx'
+#     sync_patterns:
+#         - 'clingraph'
+#         - 'setup.py'
+#         - 'setup.cfg'
+#         - 'README.md'
+#         - 'LICENSE'
+#     distributions:
+#         focal:
+#             source:
+#                 Build-Depends: 'debhelper-compat (= 12), dh-python, python3-all, python3-setuptools, python3-clingo, python3-clorm, python3-graphviz, python3-networkx'
+#     source:
+#         Source: 'python3-clingraph'
+#         Section: 'devel'
+#         Priority: 'optional'
+#         Maintainer: 'Roland Kaminski <kaminski@cs.uni-potsdam.de>'
+#         Build-Depends: 'debhelper-compat (= 12), dh-python, python3-all, python3-setuptools, python3-clingo, python3-clorm, python3-graphviz, python3-networkx'
+#         Standards-Version: '4.4.1'
+#         Homepage: 'https://potassco.org/'
+#         Vcs-Browser: 'https://github.com/potassco/clingraph'
+#         Vcs-Git: 'https://github.com/potassco/clingraph.git'
+#     packages:
+#         python3-clingraph:
+#             Architecture: 'any'
+#             Depends: '${shlibs:Depends}, ${misc:Depends}, ${python3:Depends}'
+#             Recommends: 'python3-imageio'
+#             Suggests: 'python3-ipython, dot2tex'
+#             Description: 'A visualizer for graphs defined as logic programs.'
+#     files:
+#         docs: |
+#             README.md
+#         py3dist-overrides: |
+#             clingo python3-clingo
+#         rules: |
+#             #!/usr/bin/make -f
+#             
+#             %:
+#             	dh $@ --with python3 --buildsystem=pybuild
