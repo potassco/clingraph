@@ -77,7 +77,7 @@ With pip:
 
     $ git clone https://github.com/potassco/clingraph
     $ cd clingraph
-    $ pip install .[dev,tex,gif,ipython]
+    $ pip install .[dev,tex,gif]
 
 .. warning:: 
     This makes clingraph available in the command like using ``python -m clingraph`` instead of ``clingraph``.

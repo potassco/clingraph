@@ -59,7 +59,7 @@ This makes clingraph available in the command like using `python -m clingraph` i
 - Then install the package with all the optional dependencies for development.
 
   ```
-    pip install .[dev,tex,gif,ipython]
+    pip install .[dev,tex,gif]
   ```
 
 This will make the command `clingraph` available for usage as well as the python package with `import clingraph`.

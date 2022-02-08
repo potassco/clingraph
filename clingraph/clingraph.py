@@ -4,17 +4,12 @@
 
 import logging
 import os
+import re
 import networkx as nx
 from clingo import Model
 from graphviz import Graph, Digraph
 from clingraph.clorm_orm import ClormORM
 log = logging.getLogger('custom')
-
-try:
-    from IPython import display
-    HAS_IPYTHON=True
-except ImportError:
-    HAS_IPYTHON=False
 
 try:
     import dot2tex
@@ -338,41 +333,41 @@ class Clingraph:
 
             log.info("Latex file saved in %s",file_name)
 
-    def _show(self, selected_graphs=None, **kwargs):
-        """
-        Shows the graphs in a frontend, such as jupyter
 
-        Args:
-            selected_graphs: The names of the graphs to be shown. By default all are shown
-
-        """
-        if not HAS_IPYTHON:
-            raise RuntimeError("ipython module has to be installed to display images")
-        graphs = self._get_graphvizs(selected_graphs)
-        images_dir = 'out'
-        self.save(images_dir, selected_graphs=selected_graphs, format="png", **kwargs)
-        d = []
-        for graph_name in graphs:
-            d.append(graph_name)
-            d.append(display.Image(os.path.join('out', graph_name+".png")))
-        return display.display(*tuple(d))
-
-    def _repr_html_(self):
+    def _repr_mimebundle_(self, include = None, exclude = None):
         """
         Shows the graphs in a frontend, such as jupyter
         """
-        return self._show()
 
-    def show_gif(self, selected_graphs=None, engine="dot", **kwargs):
-        """
-        Shows the a gif of the graphs
+        head = [r'<?xml version="1.0" encoding="UTF-8" standalone="no"?>',
+                r'<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"', r'"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">']
+        graph_lines = []
+        current_y = 0
+        max_width = 0
+        main_mime = None
+        for g_name, g in self._get_graphvizs().items():
+            # pylint: disable=protected-access
+            main_mime = g._repr_mimebundle_(include=include, exclude=exclude)
+            mime_str = main_mime['image/svg+xml']
+            mime_lines = mime_str.split('\n')
+            r = re.compile(r'<svg width="(?P<width>[0-9]+)pt"\sheight="(?P<height>[0-9]+)pt"')
+            m = r.search(mime_lines[6])
+            width = int(m.group("width"))
+            hight = int(m.group("height"))
+            if width>max_width:
+                max_width=width
+            title = fr'<text transform="translate({0},{10+current_y})" font-style="italic" '
+            title+= fr'font-family="Times,serif" font-size="10.00">{g_name}</text>'
+            graph_lines.append(title)
+            graph_lines.append(fr'<g transform="translate(0,{20+current_y})">')
+            graph_lines.append(r'<svg>')
+            graph_lines += mime_lines[8:]
+            graph_lines.append(r'</g>')
+            current_y += hight + 20
 
-        Args:
-            engine (str): A valid graphviz engine
-            selected_graphs (list): The names of the graphs to be shown. By default all are shown
 
-        Any additional arguments are passed to the ``imageio.mimsave`` method
-        """
-        images_dir = 'out'
-        self.save_gif(images_dir, engine=engine,selected_graphs=selected_graphs, **kwargs)
-        return display.Image(os.path.join('out', "clingraph.gif"))
+        main_svg = fr'<svg width="{max_width}pt" height="{current_y}pt" viewBox="0.00 0.00 {max_width}.00 '
+        main_svg += fr'{current_y}.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">'
+        lines = head + [main_svg] + graph_lines + [r'</svg>']
+        main_mime['image/svg+xml']="\n".join(lines)
+        return main_mime
