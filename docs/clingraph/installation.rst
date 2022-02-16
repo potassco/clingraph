@@ -41,19 +41,6 @@ To include them in the installation use:
     $ pip install --extra-index-url https://test.pypi.org/simple/ clingraph[tex,gif]
 
 
-Installing with apt
-===================
-
-.. code-block:: bash
-
-    $ sudo add-apt-repository ppa:potassco/wip
-
-or 
-
-.. code-block:: bash
-
-    $ sudo apt install python3-clingraph
-
 
 Installing from source
 ======================
