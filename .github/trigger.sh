@@ -11,14 +11,14 @@ function list() {
 function dispatch() {
     token=$(grep -A1 workflow_dispatch ~/.tokens | tail -n 1)
     curl \
-      -u "rkaminsk:$token" \
+      -u "$token" \
       -X POST \
       -H "Accept: application/vnd.github.v3+json" \
       "https://api.github.com/repos/potassco/clingraph/actions/workflows/$1/dispatches" \
       -d "{\"ref\":\"$3\",\"inputs\":{\"wip\":\"$2\"${4:+,$4}}}"
 }
 
-branch=deploy
+branch=master
 wip=true
 
 case $1 in
