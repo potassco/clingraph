@@ -34,6 +34,6 @@ about:
   license: MIT
   license_family: MIT
   license_file: LICENSE
-  summary: ORM interface for the Clingo ASP Solver
+  summary: A visualizer for graphs defined as a set of facts with special integration for clingo
   doc_url: https://clingraph.readthedocs.io/en/latest/index.html
   dev_url: https://github.com/potassco/{{ name }}
