@@ -37,38 +37,4 @@ Our **[examples folder](examples)** shows how to use the range of functionalitie
 
 - Python (version 3.8, 3.9, or 3.10)
 
-For more installation options see our [documentation page](https://clingraph.readthedocs.io/en/latest/clingraph/installation.html).
-
-##### Install from source 
-
-###### With conda
-
-
-```
-  conda env create -f environment.yml
-  conda activate clingraph
-  conda install pylint pytest -c conda-forge
-```
-
-This makes clingraph available in the command like using `python -m clingraph` instead of `clingraph`.
-
-###### With pip
-
-- First manually install [graphviz](https://www.graphviz.org/download/)
-
-- Then install the package with all the optional dependencies for development.
-
-  ```
-    pip install .[dev,tex,gif]
-  ```
-
-This will make the command `clingraph` available for usage as well as the python package with `import clingraph`.
-
-## Run tests
-
-```
-pytest -v
-```
-
-
-
+For instructions to install from source, pip and conda see our [documentation page](https://clingraph.readthedocs.io/en/latest/clingraph/installation.html).
