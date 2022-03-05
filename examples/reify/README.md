@@ -6,12 +6,19 @@ Shows the reification output of gringo
 - Load from clingo
 - Select graph
 - View
+- Viz encoding
+- Legend
 
 For this example one must first compute the reification calling `gringo`.
 Then we call clingo with our visualization encoding
 
-`echo "$(gringo examples/reify/program1.lp --output=reify)" "$(cat examples/reify/viz_basic.lp)" | clingo --outf=2 | clingraph --dir='out/reify' --default-graph=program --format=pdf --json --select-model=1 --render --view`
+`gringo examples/reify/program1.lp --output=reify | clingraph --dir='out/reify' --default-graph=program --format=png --select-model=0 --out=render --view --viz-encoding=examples/reify/viz_basic.lp --name-format=basic`
 
-Run example that uses theory atoms
+![](basic.png)
 
-`echo "$(gringo examples/reify/program2.lp --output=reify)" "$(cat examples/reify/viz_basic.lp) $(cat examples/reify/viz_theory.lp)" | clingo --outf=2 | clingraph --dir='out/reify' --default-graph=program --format=pdf --json --select-model=1 --render --view`
+
+Run example that uses theory atoms and has a legend
+
+`gringo examples/reify/program2.lp --output=reify | clingraph --dir='out/reify' --default-graph=program --format=png --select-model=0 --out=render --view --viz-encoding=examples/reify/viz_all.lp --name-format=theory-label`
+
+![](theory-label.png)

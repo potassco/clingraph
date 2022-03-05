@@ -1,13 +1,13 @@
 # Clingraph Examples 
 Our **[examples folder](.)** shows how to use the range of functionalities in different applications. 
 
-- :turtle: Examples used in the [documentation](https://clingraph.readthedocs.io/en/latest/index.html) ([basic](basic))
-  - Attribute definition ([example1](basic/example1))
-  - Multi graphs ([example2](basic/example2))
-  - Subgraphs ([example3](basic/example3))
-  - Complex attributes ([example4](basic/example4))
-  - Clingo integration with multi model ([example5](basic/example5))
-  - Latex integration ([example6](basic/example6))
+- :turtle: Examples used in the [documentation](https://clingraph.readthedocs.io/en/latest/index.html) ([doc](doc))
+  - Attribute definition ([example1](doc/example1))
+  - Multi graphs ([example2](doc/example2))
+  - Subgraphs ([example3](doc/example3))
+  - Complex attributes ([example4](doc/example4))
+  - Clingo integration with multi model ([example5](doc/example5))
+  - Latex integration ([example6](doc/example6))
 - :turtle: Simple ([color](color), [cube](cube), [lights](lights))
 - :rabbit2: Advanced clingo integration ([sudoku](sudoku), [reify](reify), [transition_system](transition_system))
   - Absolute positioning

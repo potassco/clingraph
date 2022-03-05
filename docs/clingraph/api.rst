@@ -3,28 +3,41 @@ API Documentation
 
 .. _api_fields:
 
-Clingraph
-=========
+Factbase
+========
 
-.. autoclass:: clingraph.Clingraph
+.. autoclass:: clingraph.orm.Factbase
     :members:
 
     .. automethod:: __init__
 
+Graphviz
+========
 
-MultiModelClingraph
-===================
-
-.. autoclass:: clingraph.MultiModelClingraph
-    :members:
-
-    .. automethod:: __init__
+.. automodule:: clingraph.graphviz
+   :members:
 
 
-ClingraphORM
-============
+Graphviz imageio
+++++++++++++++++
 
-.. autoclass:: clingraph.ClingraphORM
-    :members:
+.. automodule:: clingraph.graphviz.imageio
+   :members:
 
-    .. automethod:: __init__
+Graphviz tex
+++++++++++++
+
+.. automodule:: clingraph.graphviz.tex
+   :members:
+
+Utils
+=====
+
+.. automodule:: clingraph.utils
+   :members:
+
+Exceptions
+==========
+
+.. automodule:: clingraph.exceptions
+   :members:

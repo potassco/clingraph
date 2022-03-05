@@ -26,7 +26,7 @@ The package also contains special features for integration with `clingo <https:/
 
 Then clingraph will load this facts and construct a graphviz object that can be rendered, saved and more! 
 
-.. figure:: ../examples/basic/example1/example_1.2.png
+.. figure:: ../examples/doc/example1/example1.2.png
 
 
 
@@ -38,7 +38,7 @@ Then clingraph will load this facts and construct a graphviz object that can be 
    
    clingraph/installation
    clingraph/syntax
+   clingraph/console
    notebook
    clingraph/api 
-   clingraph/console
 

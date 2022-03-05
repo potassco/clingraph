@@ -34,14 +34,25 @@ extensions = [
     'nbsphinx',
     'sphinx_rtd_theme',
     'sphinx.ext.autodoc',
-    'sphinx.ext.napoleon'
+    'sphinx.ext.napoleon',
+    'sphinx.ext.autosectionlabel',
+    'sphinx.ext.intersphinx'
 ]
 
+# intersphinx_mapping = {'clorm': ('https://clorm.readthedocs.io/en/latest/', None)}
+
 # napoleon_google_docstring = False
-# napoleon_use_param = False
 # napoleon_use_ivar = True
 napoleon_include_init_with_doc = False
 napoleon_use_admonition_for_examples = False
+napoleon_use_admonition_for_references = True
+
+# napoleon_use_param = True
+# napoleon_type_aliases = {
+#     "Factbase": "clingraph.orm.Factbase",
+#     "dict-like": ":term:`array-like`",
+# }
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -63,14 +74,17 @@ html_theme_options = {
 #    'analytics_id': 'UA-XXXXXXX-1',  #  Provided by Google in your dashboard
     'logo_only': False,
     'display_version': True,
+    'display_version': True,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': False,
     # Toc options
     'collapse_navigation': True,
-    'sticky_navigation': True,
+    'sticky_navigation': False,
     'navigation_depth': 4,
-    'includehidden': True
+    'includehidden': True,
+    'titles_only': False
 }
+
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

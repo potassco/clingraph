@@ -21,12 +21,15 @@ class SingleLevelFilter(logging.Filter):
         return record.levelno == self.passlevel
 
 
-GREY = '\033[90m'
-BLUE = '\033[94m'
-GREEN = '\033[92m'
-YELLOW = '\033[93m'
-RED = '\033[91m'
-NORMAL = '\033[0m'
+COLORS = {
+    'GREY' : '\033[90m',
+    'BLUE' : '\033[94m',
+    'GREEN' : '\033[92m',
+    'YELLOW' : '\033[93m',
+    'RED' : '\033[91m',
+    'NORMAL' : '\033[0m'
+}
+
 
 
 def setup_logger(level=logging.INFO):
@@ -42,7 +45,7 @@ def setup_logger(level=logging.INFO):
     info_sh.addFilter(SingleLevelFilter(logging.INFO, False))
     info_sh.setLevel(logging.INFO)
     formatter = logging.Formatter(
-        log_message_str.format(GREEN, GREY, NORMAL))
+        log_message_str.format(COLORS['GREEN'], COLORS['GREY'], COLORS['NORMAL']))
     info_sh.setFormatter(formatter)
     logger.addHandler(info_sh)
 
@@ -51,7 +54,7 @@ def setup_logger(level=logging.INFO):
     warn_sh.addFilter(SingleLevelFilter(logging.WARNING, False))
     warn_sh.setLevel(logging.WARN)
     formatter = logging.Formatter(
-        log_message_str.format(YELLOW, GREY, NORMAL))
+        log_message_str.format(COLORS['YELLOW'], COLORS['GREY'], COLORS['NORMAL']))
     warn_sh.setFormatter(formatter)
     logger.addHandler(warn_sh)
 
@@ -60,7 +63,7 @@ def setup_logger(level=logging.INFO):
     debug_sh.addFilter(SingleLevelFilter(logging.DEBUG, False))
     debug_sh.setLevel(logging.DEBUG)
     formatter = logging.Formatter(
-        log_message_str.format(BLUE, GREY, NORMAL))
+        log_message_str.format(COLORS['BLUE'], COLORS['GREY'], COLORS['NORMAL']))
     debug_sh.setFormatter(formatter)
     logger.addHandler(debug_sh)
 
@@ -69,6 +72,18 @@ def setup_logger(level=logging.INFO):
     error_sh.addFilter(SingleLevelFilter(logging.ERROR, False))
     error_sh.setLevel(logging.ERROR)
     formatter = logging.Formatter(
-        log_message_str.format(RED, GREY, NORMAL))
+        log_message_str.format(COLORS['RED'], COLORS['GREY'], COLORS['NORMAL']))
     error_sh.setFormatter(formatter)
     logger.addHandler(error_sh)
+
+def setup_logger_str(log_str):
+    '''
+    Setup the clingraph log to get given level
+    '''
+    ####### Logger
+    log = logging.getLogger('custom')
+    levels = {'error': logging.ERROR, 'warn': logging.WARNING,
+              'warning': logging.WARNING, 'info': logging.INFO, 'debug': logging.DEBUG}
+    setup_logger(levels.get(log_str.lower()))
+    log.debug("Log level set to %s",log_str)
+    return log

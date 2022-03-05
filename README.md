@@ -12,13 +12,13 @@ Try clingraph **online** in a jupyter notebook :point_right: [![Binder](https://
 
 Our **[examples folder](examples)** shows how to use the range of functionalities in different applications. 
 
-- :turtle: Examples used in the [documentation](https://clingraph.readthedocs.io/en/latest/index.html) ([basic](examples/basic))
-  - Attribute definition ([example1](examples/basic/example1))
-  - Multi graphs ([example2](examples/basic/example2))
-  - Subgraphs ([example3](examples/basic/example3))
-  - Complex attributes ([example4](examples/basic/example4))
-  - Clingo integration with multi model ([example5](examples/basic/example5))
-  - Latex integration ([example6](examples/basic/example6))
+- :turtle: Examples used in the [documentation](https://clingraph.readthedocs.io/en/latest/index.html) ([doc](examples/doc))
+  - Attribute definition ([example1](examples/doc/example1))
+  - Multi graphs ([example2](examples/doc/example2))
+  - Subgraphs ([example3](examples/doc/example3))
+  - Complex attributes ([example4](examples/doc/example4))
+  - Clingo integration with multi model ([example5](examples/doc/example5))
+  - Latex integration ([example6](examples/doc/example6))
 - :turtle: Simple ([color](examples/color), [cube](examples/cube), [lights](examples/lights))
 - :rabbit2: Advanced clingo integration ([sudoku](examples/sudoku), [reify](examples/reify), [transition_system](examples/transition_system))
   - Absolute positioning

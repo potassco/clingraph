@@ -38,7 +38,6 @@ viz_graph(T) :- at(_,_,T).
 viz_attr(graph, G, label, "") :- viz_graph(G).
 viz_attr(graph, G, style, invis) :- viz_graph(G).
 viz_attr(graph, G, nodesep, 1) :- viz_graph(G).
-viz_attr(graph, G, type, graph) :- viz_graph(G).
 viz_attr(graph, G, newrank, true) :- viz_graph(G).
 
 % Global node attributes
