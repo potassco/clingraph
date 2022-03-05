@@ -43,9 +43,9 @@ jobs:
         shell: pwsh
         run: |
           sudo apt install graphviz
-          pip install -e .[dev]
-          cat  /opt/hostedtoolcache/Python/3.9.10/x64/lib/python3.9/site-packages/clingraph/clingraph.py
-          cat clingraph/clingraph.py
+          pip install -e .[dev,gif,tex]
+          cat  /opt/hostedtoolcache/Python/3.9.10/x64/lib/python3.9/site-packages/clingraph/orm.py
+          cat clingraph/orm.py
 
       - name: Run tests
         shell: pwsh
@@ -81,6 +81,10 @@ jobs:
       - name: Install development tools
         shell: pwsh
         run: conda install pylint pytest
+      
+      - name: Install extra tools
+        shell: pwsh
+        run: conda install -c conda-forge dot2tex imageio
 
       - name: Run tests
         shell: pwsh

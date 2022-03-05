@@ -12,7 +12,8 @@ The image paths must be absolute, therefore the user must change the visualizati
 - Model selection 
 - Gif generation
 - Gif special parameter
-- Quiet mode
 
 
-`clingo examples/minotaur/minotaur.lp --outf=2 | clingraph --prefix='viz_' --engine=neato --gif --format=png --dir='out/minotaur' --type=graph --json --select-model=1 --gif-param="fps=1" -q`
+`clingo examples/minotaur/minotaur.lp --outf=2 | clingraph --json --prefix='viz_' --engine=neato --out=gif --dir='out/minotaur' --type=graph --select-model=0 --fps=1 --name-format=minotaur`
+
+![](minotaur.gif)

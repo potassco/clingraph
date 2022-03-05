@@ -1,24 +1,26 @@
 """
-    Package inports and command line functionality
+Clingraph functionality
 """
-from ast import parse
 import sys
-import logging
 import argparse
 import textwrap
 import pkg_resources
-from clingraph.clingraph import Clingraph
-from clingraph.logger import setup_logger
-from clingraph.multigraph import MultiModelClingraph
-from clingraph.orm import ClingraphORM
-from clingraph.exception import InvalidSyntax
+from clingo import Control
+from clingo.script import enable_python
+
+from .graphviz import compute_graphs, dot, render
+from .logger import setup_logger_str
+from .orm import Factbase
+from .utils import write, apply, parse_clingo_json
 
 try:
     VERSION = pkg_resources.require("clingraph")[0].version
 except pkg_resources.DistributionNotFound:
     VERSION = '0.0.0'
 
-def get_parser():
+enable_python()
+
+def _get_parser():
     """
     Get the parser for the command line
     """
@@ -35,9 +37,22 @@ def get_parser():
     Special features for integration with clingo.
     """),
     formatter_class=argparse.RawTextHelpFormatter)
-    parser.add_argument('files', type=argparse.FileType('r'), nargs='*')
+    parser.add_argument('files',
+        type=argparse.FileType('r'),
+        help=textwrap.dedent('''\
+            Files containing facts that define the graph.
+            See the allowed syntax: https://clingraph.readthedocs.io/en/latest/clingraph/syntax.html'''),
+        nargs='*')
+    parser.add_argument('stdin',
+            type=argparse.FileType('r'),
+            help=textwrap.dedent('''\
+                Standard piped input in one of the following formats:
+                    - A list of facts
+                    - A json (requires option: `out=json`) '''),
+            nargs='?',
+            default=sys.stdin)
     parser.add_argument('-q',
-                    help = """Flag to have a quiet output where the graphs soruce wont be rendered""",
+                    help = """Flag to have a quiet output where the graphs source wont be rendered""",
                     action='store_true')
     parser.add_argument('-log', default="warning",
                     choices=['debug', 'info', 'error', 'warning'],
@@ -51,20 +66,12 @@ def get_parser():
                     version=f'%(prog)s {VERSION}')
 
 
-    input_params = parser.add_argument_group('Graph generation')
-    input_params.add_argument('--type',
-                    default = 'graph',
-                    choices=['graph', 'digraph'],
-                    help = textwrap.dedent('''\
-                        The type of the graph: digraph or graph
-                        {graph|digraph}
-                            (default: %(default)s)'''),
-                    type=str,
-                    metavar='')
+    input_params = parser.add_argument_group('INPUT', 'Options for the facts defining the graph.')
     input_params.add_argument('--prefix',
                     default = '',
                     help = textwrap.dedent('''\
-                        Prefix expected in all the considered facts'''),
+                        Prefix expected in all the considered facts.
+                        Example: --prefix=viz_ will look for predicates named viz_node, viz_edge etc.'''),
                     type=str,
                     metavar='')
     input_params.add_argument('--default-graph',
@@ -72,41 +79,99 @@ def get_parser():
                     help = textwrap.dedent('''\
                     The name of the default graph.
                     All nodes and edges with arity 1 will be assigned to this graph
-                    (default: %(default)s)'''),
+                        (default: %(default)s)'''),
                     type=str,
                     metavar='')
 
-    render_params = parser.add_argument_group('Graph rendering')
-    render_params.add_argument('--render',
-                    help = """Flag to render the graphs and save in files""",
-                    action='store_true')
+    input_params.add_argument('--json',
+                help = textwrap.dedent('''\
+                Flag to use multiple models defined in a json piped from clingo using the option `--outf=2`.
+                The facts defining the graphs will be loaded for each stable model.'''),
+                required='--select-model' in sys.argv,
+                action='store_true')
+    input_params.add_argument('--viz-encoding',
+                    help = textwrap.dedent('''\
+                        A visualization encoding that will be used to generate the graph facts
+                        by calling clingo with the input.
+                        This encoding is expected to have only one stable model.'''),
+                    type=argparse.FileType('r'),
+                    nargs='?',
+                    metavar='')
 
-    render_params.add_argument('--dir',
+    graphs_params = parser.add_argument_group('OUTPUT','Options to define the output.')
+
+    graphs_params.add_argument('--out',
+            default = 'facts',
+            choices=['facts', 'dot', 'render', 'gif', 'tex'],
+            help = textwrap.dedent('''\
+                Type of output {facts|dot|render|gif|tex}
+                    facts: The preprocessed facts
+                    dot: The string in DOT language
+                    render: Generates images with the rendering method of graphviz
+                    gif: Generates a gif after rendering
+                    tex: Generates a latex file
+                    (default: %(default)s)
+                See below for additional special options for each output type.
+                -'''),
+            type=str,
+            metavar="")
+
+    graphs_params.add_argument('--select-graph',
+            help = textwrap.dedent('''\
+                Select one of the graphs by name.
+                Can appear multiple times to select multiple graphs'''),
+            type=str,
+            nargs='+',
+            metavar="")
+
+    graphs_params.add_argument('--select-model',
+            help = textwrap.dedent('''\
+                Select only one of the models when using the json input.
+                Defined by a number starting in index 0.
+                Can appear multiple times to select multiple models.'''),
+            type=int,
+            nargs='+',
+            metavar="")
+
+    graphs_params.add_argument('--name-format',
+                help = textwrap.dedent('''\
+                    An optional string to format the name when saving multiple files,
+                    this string can reference parameters `{graph_name}` and `{model_number}`.
+                    Example `new_version-{graph_name}-{model_number}`
+                    (default: `{graph_name}` or
+                              `{model_number}/{graph_name}` for multi model functionality from json)'''),
+                type=str,
+                metavar='')
+
+
+    graphs_params.add_argument('--dir',
                     default = 'out',
                     help = textwrap.dedent('''\
-                        Directory for saving and rendering
+                        Directory for writing the output files
                             (default: %(default)s)'''),
                     type=str,
                     metavar='')
 
-    render_params.add_argument('--out-file-prefix',
-                    default = '',
-                    help = textwrap.dedent('''\
-                        A prefix for the names of the generated files
-                            (default: %(default)s)'''),
-                    type=str,
-                    metavar='')
+    graphs_params.add_argument('--save',
+                action='store_true',
+                help = textwrap.dedent('''\
+                    Saves the output in files based on the directory, name format and fortmat provided.
+                    Otherwise the output is just printed on the stdout'''))
 
-    render_params.add_argument('--format',
-                    default = 'pdf',
-                    choices=['pdf', 'png', 'svg'],
-                    help = textwrap.dedent('''\
-                        Format to save the graph
-                        {pdf|png|svg}
-                            (default: %(default)s)'''),
-                    type=str,
-                    metavar="")
-    render_params.add_argument('--engine',
+    graphviz_params = parser.add_argument_group('OUTPUT {dot|render|tex|gif}','Options for the functionality regarding graphviz.')
+
+
+    graphviz_params.add_argument('--type',
+                default = 'graph',
+                choices=['graph', 'digraph'],
+                help = textwrap.dedent('''\
+                    The type of the graph
+                    {graph|digraph}
+                        (default: %(default)s)'''),
+                type=str,
+                metavar='')
+
+    graphviz_params.add_argument('--engine',
                     default = 'dot',
                     choices=["dot","neato","twopi","circo","fdp","osage","patchwork","sfdp"],
                     help = textwrap.dedent('''\
@@ -116,159 +181,221 @@ def get_parser():
                     type=str,
                     metavar="")
 
-    render_params.add_argument('--view',
+
+    graphviz_render_params = parser.add_argument_group('OUTPUT {render}', 'Options to render graphviz objects.')
+
+
+    graphviz_render_params.add_argument('--format',
+                    default = 'pdf',
+                    choices=['pdf', 'png', 'svg'],
+                    help = textwrap.dedent('''\
+                        Format to save the graph
+                        {pdf|png|svg}
+                            (default: %(default)s)'''),
+                    type=str,
+                    metavar="")
+
+    graphviz_render_params.add_argument('--view',
                 action='store_true',
                 help = textwrap.dedent('''\
                     Opens the generated files'''))
 
-    render_params.add_argument('--select-graph',
-                    help = textwrap.dedent('''\
-                        Select one of the graphs for output or rendering by name
-                        Can appear multiple times to select multiple graphs'''),
-                    type=str,
-                    nargs='+',
-                    metavar="")
 
-    render_params.add_argument('--render-param',
-                    default = '',
-                    help = textwrap.dedent('''\
-                    A string containing a parameter for graphviz rendering.
-                    String should have the form arg_name=arg_value '''),
-                    type=str,
-                    nargs='*',
-                    metavar='')
+    graphviz_gif_params = parser.add_argument_group('OUTPUT {gif}','Options for the gif generation')
 
-    render_params.add_argument('--gif',
-                    help = """Flag to generate a gif from all the generated files""",
-                    action='store_true')
-
-    render_params.add_argument('--gif-name',
-                default = 'clingraph',
+    graphviz_gif_params.add_argument('--fps',
+                default = 1,
                 help = textwrap.dedent('''\
-                Name for the gif file that will be saved in the given directory'''),
-                type=str,
+                The number of frames per second.
+                    (default: %(default)s)'''),
+                type=float,
                 metavar='')
 
-    render_params.add_argument('--gif-param',
-                default = '',
-                help = textwrap.dedent('''\
-                A string containing a parameter for the gif generation by imageio.
-                String should have the form arg_name=arg_value '''),
-                type=str,
-                nargs='*',
-                metavar='')
+    graphviz_gif_params.add_argument('--sort',
+            default = 'asc-str',
+            help = textwrap.dedent('''\
+            How to sort the images used to generate the gif
+                asc-str: Sort ascendent based on the graph name as a string
+                asc-int: Sort ascendent based on the graph name converted to an integer
+                desc-str: Sort descendent based on the graph name as a string
+                desc-int: Sort descendent based on the graph name converted to an integer
+                name1,...,namex: A string with the order of the graph names separated by `,`
+                (default: %(default)s)'''),
+            type=str,
+            metavar='')
+
+    graphviz_tex_params = parser.add_argument_group('OUTPUT {tex}', 'Options for the generation of latex files')
 
 
-    render_params.add_argument('--tex',
-                    help = """Flag to generate a latex tex file""",
-                    action='store_true')
-
-    render_params.add_argument('--tex-param',
+    graphviz_tex_params.add_argument('--tex-param',
                 default = '',
                 help = textwrap.dedent('''\
                 A string containing a parameter for the tex file generation by dot2tex.
-                String should have the form arg_name=arg_value '''),
+                String should have the form arg_name=arg_value for a valid option:
+                    https://dot2tex.readthedocs.io/en/latest/usage_guide.html '''),
                 type=str,
                 nargs='*',
                 metavar='')
 
-    multi_params = parser.add_argument_group('Multi model graphs')
-
-    multi_params.add_argument('--json',
-                help = textwrap.dedent('''\
-                Flag to indicate the creation of multiple models from a json.
-                The graphs will be generated for each stable model.
-                The json is exptected to be the output of clingo using the option `--outf=2`'''),
-                action='store_true')
-
-    multi_params.add_argument('--select-model',
-                help = textwrap.dedent('''\
-                    Select only one of the models outputed by clingo defined by a number'''),
-                type=int,
-                nargs='?',
-                metavar="")
     return parser
 
-def setup_clingraph_log(log_str):
-    '''
-    Setup the clingraph log to get given level
-    '''
-    ####### Logger
-    log = logging.getLogger('custom')
-    levels = {'error': logging.ERROR, 'warn': logging.WARNING,
-              'warning': logging.WARNING, 'info': logging.INFO, 'debug': logging.DEBUG}
-    setup_logger(levels.get(log_str.lower()))
-    log.debug("Log level set to %s",log_str)
-    return log
+def _get_fbs_from_encoding(args,stdin):
+    fbs = []
+    def add_fb_model(m):
+        fbs.append(Factbase.from_model(m,
+                    prefix=args.prefix,
+                    default_graph=args.default_graph))
+
+    if args.json:
+        models_prgs = parse_clingo_json(stdin)
+        for prg in models_prgs:
+            ctl = Control(["-n1"])
+            ctl.load(args.viz_encoding.name)
+            ctl.add("base",[],prg)
+            ctl.ground([("base", [])])
+            ctl.solve(on_model=add_fb_model)
+    else:
+        ctl = Control(["-n1"])
+        ctl.load(args.viz_encoding.name)
+        ctl.add("base",[],stdin)
+        for f in args.files:
+            ctl.load(f.name)
+        ctl.ground([("base", [])])
+        ctl.solve(on_model=add_fb_model)
+
+    return fbs
+
+def _get_fbs_normal(args,stdin):
+    fbs = []
+    if args.json:
+        models_prgs = parse_clingo_json(stdin)
+        fbs = [Factbase.from_string(prg,prefix=args.prefix,
+                                        default_graph=args.default_graph)
+                for prg in models_prgs]
+    else:
+        fb= Factbase(prefix=args.prefix,default_graph=args.default_graph)
+        fb.add_fact_string(stdin)
+        for f in args.files:
+            fb.add_fact_file(f.name)
+        fbs = [fb]
+
+    return fbs
 
 def main():
     '''
     Runs the main function
     '''
+    #pylint:disable=too-many-branches
     ####### Parser
-    parser= get_parser()
+    parser= _get_parser()
     args = parser.parse_args()
 
     ####### Logger
-    log = setup_clingraph_log(args.log)
+    log = setup_logger_str(args.log)
 
     log.debug(args)
-    ####### Load input
-    input_str=""
+
+    if len(args.files)>0 and args.json:
+        log.error("Files are not allowed as input when using --json.")
+        raise ValueError(textwrap.dedent('''
+        Files are not allowed as input when using --json.
+        See the --viz-encoding option to use a visualization encoding for all models.'''))
+
+    ####### READ stdin
+    stdin = ""
     if not sys.stdin.isatty():
-        input_str = sys.stdin.read()
+        stdin = parser.parse_args().stdin.read()
 
-    g = None
-    if not args.json:
-        g = Clingraph(type_ = args.type, prefix=args.prefix, default_graph=args.default_graph)
-
-        for f in args.files:
-            log.info("Adding file %s",f.name)
-            g.add_fact_file(f.name)
-
-        if input_str:
-            g.add_fact_string(input_str)
-
+    ######## LOAD Fact base
+    fbs = []
+    if args.viz_encoding:
+        fbs = _get_fbs_from_encoding(args,stdin)
     else:
-        log.info("Loading a multi model graph from json")
+        fbs = _get_fbs_normal(args,stdin)
 
-        g = MultiModelClingraph(type_ = args.type, prefix=args.prefix, default_graph=args.default_graph)
+    ######## Name format
+    if args.json:
+        if args.name_format is None:
+            args.name_format = '{model_number}/{graph_name}'
+    else:
+        if args.name_format is None:
+            args.name_format = '{graph_name}'
 
-        g.load_json(input_str)
+    ######## Model selection
+    if args.select_model is not None:
+        fbs = [f if i in args.select_model else None
+                    for i, f in enumerate(fbs) ]
 
-    g.compute_graphs()
+    ######## Warnings
+    n_models = len([f for f in fbs if f is not None])
+    if n_models>1 and not args.q and not args.save and not (args.out in ['render','gif']):
+        log.warning("Outputing multiple models in stdout.")
+    if n_models>1 and not '{model_number}' in args.name_format:
+        log.warning("Output files will be overwritten since no `{model_number}` is used in the name format argument.")
 
-    ####### Output
-    if not args.select_model is None and args.json:
-        g=g.get_clingraph(args.select_model)
+    write_arguments = {"directory":args.dir, "name_format":args.name_format}
 
-    if args.render:
-        render_params = []
-        if args.render_param is not None:
-            render_params = args.render_param
-        render_param_dic = { s.split('=')[0]:s.split('=')[1] for s in render_params}
-        g.save(directory=args.dir,format=args.format,name_prefix=args.out_file_prefix,
-            selected_graphs=args.select_graph,
-            view=args.view, engine=args.engine,
-            **render_param_dic)
-    if args.gif:
-        gif_params = []
-        if args.gif_param is not None:
-            gif_params = args.gif_param
-        gif_param_dic = { s.split('=')[0]:s.split('=')[1] for s in gif_params}
+    ######## OUT=facts
+    if args.out == 'facts':
+        log.debug("Log option facts")
+        fbs_as_elements = [{'graphviz_facts':str(f)} for f in fbs]
+        if args.save:
+            write(fbs_as_elements,format = 'lp',**write_arguments)
+        else:
+            apply(fbs_as_elements,print)
+        sys.exit()
 
-        g.save_gif(directory=args.dir,name=args.gif_name,
-            engine=args.engine,
-            selected_graphs=args.select_graph, **gif_param_dic)
+    ######## Compute graphs
+    graphs = compute_graphs(fbs,graphviz_type=args.type)
+    if args.select_graph is not None:
+        graphs = [{g_name:g for g_name, g in graph.items() if g_name in args.select_graph}
+                    for graph in graphs]
 
-    if args.tex:
+    ######## OUT=dot
+    if args.out == 'dot':
+        log.debug("Out option: dot")
+        dots = dot(graphs)
+        if args.save:
+            write(dots,format='dot',**write_arguments)
+        else:
+            apply(dots,print)
+        sys.exit()
+
+    ######## OUT=render
+    if args.out == 'render':
+        log.debug("Out option: render")
+        render(graphs,
+                format=args.format,
+                engine=args.engine,
+                view=args.view,
+                **write_arguments)
+        sys.exit()
+
+    ######## OUT=tex
+    if args.out == 'tex':
+        #pylint: disable=import-outside-toplevel
+        from .graphviz.tex import tex
+        log.debug("Out option: tex")
         tex_params = []
         if args.tex_param is not None:
             tex_params = args.tex_param
         tex_param_dic = { s.split('=')[0]:s.split('=')[1] for s in tex_params}
 
-        g.save_tex(directory=args.dir,
-            selected_graphs=args.select_graph, **tex_param_dic)
+        texs = tex(graphs,**tex_param_dic)
+        if args.save:
+            write(texs,format='tex',**write_arguments)
+        else:
+            apply(texs,print)
+        sys.exit()
 
-    if not args.q:
-        print(g.source(args.select_graph))
+    ######## OUT=gif
+    if args.out == 'gif':
+        #pylint: disable=import-outside-toplevel
+        from .graphviz.imageio import save_gif
+        log.debug("Out option: gif")
+        save_gif(graphs,
+                engine=args.engine,
+                fps = args.fps,
+                sort=args.sort,
+                **write_arguments)
+        sys.exit()

@@ -8,6 +8,7 @@ A dynamic application of an elevator serving floors
 - Model selection 
 - Gif generation
 - Gif special parameter
-- Quiet mode
 
-`clingo examples/elevator/encoding.lp examples/elevator/viz.lp examples/elevator/instance.lp --outf=2 | clingraph --gif --json --select-model=0 --dir='out/elevator' --gif-param="fps=1" -q`
+`clingo examples/elevator/encoding.lp examples/elevator/viz.lp examples/elevator/instance.lp --outf=2 | clingraph --json --out=gif --select-model=0 --dir='out/elevator' --fps=1 --sort=asc-int`
+
+![](movie.gif)

@@ -1,0 +1,84 @@
+\documentclass{article}
+\usepackage[x11names, svgnames, rgb]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usetikzlibrary{snakes,arrows,shapes}
+\usepackage{amsmath}
+%
+%
+
+%
+
+%
+
+\begin{document}
+\pagestyle{empty}
+%
+%
+%
+
+\enlargethispage{100cm}
+% Start of code
+% \begin{tikzpicture}[anchor=mid,>=latex',line join=bevel,]
+\begin{tikzpicture}[>=latex',line join=bevel,]
+  \pgfsetlinewidth{1bp}
+%%
+\pgfsetcolor{black}
+  % Edge: start -> green
+  \draw [-stealth',dotted] (94.769bp,354.84bp) .. controls (94.769bp,347.2bp) and (94.769bp,337.8bp)  .. (94.769bp,318.16bp);
+  % Edge: green -> yellow
+  \draw [->,dotted] (60.326bp,270.65bp) .. controls (39.976bp,262.56bp) and (15.888bp,249.08bp)  .. (3.7694bp,228.0bp) .. controls (-10.554bp,203.08bp) and (20.918bp,184.5bp)  .. (60.235bp,169.67bp);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (22.269bp,220.5bp) node {$\mathcal{C}_{\textit{ yellow }}$};
+  % Edge: red -> yellow
+  \draw [->,dotted] (94.769bp,72.158bp) .. controls (94.769bp,84.692bp) and (94.769bp,98.997bp)  .. (94.769bp,122.68bp);
+  \draw (113.27bp,97.5bp) node {$\mathcal{C}_{\textit{ yellow }}$};
+  % Edge: yellow -> green
+  \draw [->,dotted] (94.769bp,195.16bp) .. controls (94.769bp,207.69bp) and (94.769bp,222.0bp)  .. (94.769bp,245.68bp);
+  \draw (110.27bp,220.5bp) node {$\mathcal{C}_{\textit{ green }}$};
+  % Edge: yellow -> red
+  \draw [->,dotted] (62.139bp,142.87bp) .. controls (47.247bp,134.09bp) and (31.103bp,121.48bp)  .. (22.769bp,105.0bp) .. controls (12.655bp,84.995bp) and (31.517bp,67.73bp)  .. (61.491bp,50.726bp);
+  \draw (31.769bp,97.5bp) node {$\mathcal{C}_{\textit{ red }}$};
+  % Node: start
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (94.769bp,373.0bp) node {start};
+\end{scope}
+  % Node: green
+\begin{scope}
+  \definecolor{strokecol}{rgb}{0.0,1.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (94.77bp,282.0bp) ellipse (36.0bp and 36.0bp);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (94.769bp,282.0bp) node {$\triangleright$};
+\end{scope}
+  % Node: yellow
+\begin{scope}
+  \definecolor{strokecol}{rgb}{1.0,1.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (94.77bp,159.0bp) ellipse (36.0bp and 36.0bp);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (94.769bp,159.0bp) node {$\sim$};
+\end{scope}
+  % Node: red
+\begin{scope}
+  \definecolor{strokecol}{rgb}{1.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (94.77bp,36.0bp) ellipse (36.0bp and 36.0bp);
+  \definecolor{strokecol}{rgb}{0.0,0.0,0.0};
+  \pgfsetstrokecolor{strokecol}
+  \draw (94.769bp,36.0bp) node {$\otimes$};
+\end{scope}
+%
+\end{tikzpicture}
+% End of code
+
+%
+\end{document}
+%
+
+

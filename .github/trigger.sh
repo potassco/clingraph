@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 function list() {
     curl \
@@ -32,7 +32,7 @@ case $1 in
         fi
         wip=false
         branch=$2
-        ;;
+        ;&
     dev)
         # .github/workflows/pipsource.yml
         dispatch 19159958 $wip $branch

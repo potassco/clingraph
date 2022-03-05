@@ -7,4 +7,4 @@
 - Model selection 
 - View
 
-`clingo examples/color/color.lp  --outf=2| clingraph  --view --dir='out/color' --format=png --json --select-model=0 -log=info --render`
+`clingo examples/color/color.lp  --outf=2 | clingraph --json --out=render  --view --dir='out/color' --format=png --select-model=0 -log=info `

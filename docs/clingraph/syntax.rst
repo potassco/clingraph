@@ -1,5 +1,3 @@
-.. _Syntax:
-
 Syntax
 ######
 
@@ -37,7 +35,7 @@ when creating a ``digraph`` and not directed one created a ``graph``.
 
     edge((john,jane)).
 
-.. figure:: ../../examples/basic/example1/example_1.1.png
+.. figure:: ../../examples/doc/example1/example1.1.png
 
 
 Graphs
@@ -80,11 +78,11 @@ graph in the second argument.
 
 .. list-table:: 
 
-    * - .. figure:: ../../examples/basic/example2/toms_family.png
+    * - .. figure:: ../../examples/doc/example2/toms_family.png
 
            *Graph toms_family*
 
-      - .. figure:: ../../examples/basic/example2/bills_family.png
+      - .. figure:: ../../examples/doc/example2/bills_family.png
 
            *Graph bills_family*
 
@@ -110,7 +108,7 @@ argument to the ``graph`` predicate. Then, nodes and edges can be assigned to a 
     node(desk,bedroom).
     edge((toilet,bed),house).
 
-.. figure:: ../../examples/basic/example3/house.png
+.. figure:: ../../examples/doc/example3/house.png
 
 Attributes
 ==========
@@ -150,7 +148,7 @@ specified by name-value pairs to the element.
     attr(node, desk, shape, square).
     attr(edge, (toilet,bed), color, red).
 
-.. figure:: ../../examples/basic/example3/house2.png
+.. figure:: ../../examples/doc/example3/house2.png
 
 
 .. note:: To edit the attributes of the default graph one must use the default name as element id.
@@ -165,7 +163,7 @@ specified by name-value pairs to the element.
     attr(node, john, label, "John Doe").
     attr(node, jane, label, "Jane Doe").
 
-.. figure:: ../../examples/basic/example1/example_1.2.png
+.. figure:: ../../examples/doc/example1/example1.2.png
 
 Multi-attribute
 ---------------
@@ -174,9 +172,9 @@ If multiple occurrences of the same attribute name for a specific
 element are present, then the values will be concatenated in no
 specific order. To define an order the attribute name can be a tuple
 where the second value is the position where the value will be
-considered. Furthermore, if the position is the special word
-``"sep"`` the value will be considered as the separator of the strings
-in the concatenation
+considered. Furthermore, if the position is
+``sep`` the value will be considered as the separator of the strings
+in the concatenation.
 
 .. rubric:: *Example 4*
     :name: example-4
@@ -191,6 +189,6 @@ in the concatenation
     attr(edge, (mike,toby)), label, "enemy").
     attr(edge, (mike,toby)), label, "hate").
     attr(edge, (mike,toby)), label, "boss").
-    attr(edge, (mike,toby)), (label,"sep"), "-").
+    attr(edge, (mike,toby)), (label,sep), "-").
 
-.. figure:: ../../examples/basic/example4/example_4.png
+.. figure:: ../../examples/doc/example4/example4.png

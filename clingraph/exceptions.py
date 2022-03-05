@@ -1,5 +1,5 @@
 """
-Custom exceptions
+Exceptions
 """
 import logging
 log = logging.getLogger('custom')

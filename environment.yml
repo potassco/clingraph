@@ -9,3 +9,4 @@ dependencies:
   - imageio
   - networkx
   - python-graphviz
+  - jsonschema

@@ -1,286 +1,253 @@
 Command line functionality
 ##########################
 
-Clingraph also comes with command line functionality.
-The graphs can be generated from files or by a piping some output.
-Then, clingraph will output be the source dot code of the graphs defined by the input.
-Graphs can also be rendered and saved, with additional options for gif generation.
+Clingraph provides command line functionality to generate graphs from files and standard input.
+The graphs can then be printed as a dot string, rendered, converted into a gif or into latex code.
 
-Special integration for `clingo <https://potassco.org/clingo/>`_ includes the creation of graphs for multiple stable models from a clingos’ json output format.
+Special integration for `clingo <https://potassco.org/clingo/>`_ includes the creation of graphs from multiple stable models using clingos’ json output format.
 
-.. note:: For advanced examples on how to use the command line see our `examples folder  <https://github.com/potassco/clingraph/tree/master/examples>`_. Each subfolder contains a README that explains how to run the example.
+.. note:: 
+  For advanced examples on how to use the command line see our `examples folder  <https://github.com/potassco/clingraph/tree/master/examples>`_. 
+  Each subfolder contains a README explaining how to run the example.
+
+The command line usage is described below. However, the latest available options can be found by running:
 
 .. code:: shell
 
    $ clingraph --help
 
-::
 
-         _ _                         _
-       __| (_)_ _  __ _ _ _ __ _ _ __| |_
-     / _| | | ' \/ _` | '_/ _` | '_ \ '  \
-     \__|_|_|_||_\__, |_| \__,_| .__/_||_|
-                 |___/         |_|
-
-        
-    Clingraph is a package to generate graph visualizations
-    based on facts that can be computed by logic programs.
-    Special features for integration with clingo.
-
-    positional arguments:
-      files
-
-    options:
-      -h, --help            show this help message and exit
-      -q                    Flag to have a quiet output where the graphs soruce wont be rendered
-      -log                  Provide logging level.
-                            {debug|info|error|warning}
-                                (default: warning)
-      --version, -v         show program's version number and exit
-
-    Graph generation:
-      --type                The type of the graph: digraph or graph
-                            {graph|digraph}
-                                (default: graph)
-      --prefix              Prefix expected in all the considered facts
-      --default-graph       The name of the default graph.
-                            All nodes and edges with arity 1 will be assigned to this graph
-                            (default: default)
-
-    Graph rendering:
-      --render              Flag to render the graphs and save in files
-      --dir                 Directory for saving and rendering
-                                (default: out)
-      --out-file-prefix     A prefix for the names of the generated files
-                                (default: )
-      --format              Format to save the graph
-                            {pdf|png|svg}
-                                (default: pdf)
-      --engine              Layout command used by graphviz
-                            {dot|neato|twopi|circo|fdp|osage|patchwork|sfdp}
-                                (default: dot)
-      --view                Opens the generated files
-      --select-graph  [ ...]
-                            Select one of the graphs for output or rendering by name
-                            Can appear multiple times to select multiple graphs
-      --render-param [ ...]
-                            A string containing a parameter for graphviz rendering.
-                            String should have the form arg_name=arg_value
-      --gif                 Flag to generate a gif from all the generated files
-      --gif-name            Name for the gif file that will be saved in the given directory
-      --gif-param [ ...]    A string containing a parameter for the gif generation by imageio.
-                            String should have the form arg_name=arg_value
-      --tex                 Flag to generate a latex tex file
-      --tex-param [ ...]    A string containing a parameter for the tex file generation by dot2tex.
-                            String should have the form arg_name=arg_value
-
-    Multi model graphs:
-      --json                Flag to indicate the creation of multiple models from a json.
-                            The graphs will be generated for each stable model.
-                            The json is exptected to be the output of clingo using the option `--outf=2`
-      --select-model []     Select only one of the models outputed by clingo defined by a number
-
-
-Basic example
+Loading facts
 =============
 
-Loading facts from a file with a single graph
-----------------------------------------------
+The input can be loaded from multiple files and standard input, following our :ref:`syntax <syntax>`.
+Any additional predicates will be ignored.
 
-- The file to load which contains only facts.
+.. warning:: 
+  The input must contain only facts. To use more complex structures like logic rules, the user must do one of the following:
+    - Call a solver and pipe the output as facts
+    - Use the :ref:`clingo integration<Clingo integration>` options ``--json`` or ``--viz-encoding``
 
-.. code:: shell
+Consider the file `example1.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example1/example1.lp>`_
 
-  $ cat examples/basic/example3/example_3.lp
-
-*Output:*
-
-.. code:: shell
-
-    graph(house).
-    graph(bathroom, house).
-    graph(bedroom, house).
-
-    node(toilet,bathroom).
-    node(bed,bedroom).
-    node(desk,bedroom).
-
-    edge((toilet,bed),house).
+.. include:: ../../examples/doc/example1/example1.lp
+  :literal:
 
 
-    attr(graph, house, label, "Tom's House").
-    attr(graph, bathroom, style, dotted).
-    attr(graph, bathroom, label, "Bathroom").
-    attr(graph, bedroom, style, dotted).
-    attr(graph, bedroom, label, "Bedroom").
-
-    attr(graph_nodes, house, style, filled).
-    attr(graph_nodes, house, color, cyan).
-
-    attr(node, toilet, shape, circle).
-    attr(node, bed, shape, square).
-    attr(node, desk, shape, square).
-
-    attr(edge, (toilet,bed), color, red).
-
-
-
-- Run clingraph to obtain the graphviz representation.
+- **Load from a file**
 
 .. code:: shell
 
-  $ clingraph examples/basic/example3/example_3.lp
+  $ clingraph example1.lp
 
-*Output:*
+- **Load from from stdin**
 
 .. code:: shell
 
-   //----------house----------
-  graph house {
-    graph [label="Tom's House"]
-    node [color=cyan style=filled]
-    toilet -- bed [color=red]
-    subgraph cluster_bathroom {
-      graph [label=Bathroom style=dotted]
-      toilet [shape=circle]
-    }
-    subgraph cluster_bedroom {
-      graph [label=Bedroom style=dotted]
-      bed [shape=square]
-      desk [shape=square]
-    }
+  $ cat example1.lp | clingraph
+
+.. code:: shell
+
+  node(john,default).
+  node(jane,default).
+  attr(node,jane,(label,-1),"Jane Doe").
+  attr(node,john,(label,-1),"John Doe").
+  attr(graph,default,(label,-1),"Does family").
+  attr(graph_nodes,default,(style,-1),filled).
+  edge((john,jane),default).
+  graph(default). 
+
+  
+Output
+======
+
+Output formats
+++++++++++++++
+
+Clingraph provides four types of outputs
+  - ``facts``: Shows all the facts provided that are part of the syntax, after preprocessing
+  - ``dot``: Generates the graphviz objects and prints the source DOT language
+  - ``render``: Generates the graphviz objects and renders the images
+  - ``tex``: Generates the graphviz objects and prints the latex code
+  - ``gif``: Generates the graphviz objects and creates a gif
+
+
+Consider the file `example2.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example2/example2.lp>`_
+
+.. include:: ../../examples/doc/example2/example2.lp
+  :literal:
+
+- **Facts output** ``out=facts``
+
+The output is a string containing the facts for all graphs provided that are part of the syntax, after preprocessing
+
+.. code:: shell
+
+  $ clingraph example2.lp --out=facts
+
+.. code:: shell
+
+  node(tom,toms_family).
+  node(max,toms_family).
+  node(bill,bills_family).
+  node(jen,bills_family).
+  graph(toms_family).
+  graph(bills_family).
+  edge((tom,max),toms_family).
+  edge((bill,jen),bills_family).
+
+- **Dot output** ``out=dot``
+
+The output is a string containing the graph in `DOT language <https://en.wikipedia.org/wiki/DOT_(graph_description_language)>`_
+
+.. code:: shell
+
+  $ clingraph example2.lp --out=dot
+
+.. code:: shell
+
+  graph toms_family {
+    tom
+    max
+    tom -- max
   }
 
+  graph bills_family {
+    bill
+    jen
+    bill -- jen
+  }
 
-Loading facts from a piped output with multiple graphs
-------------------------------------------------------
-
-- The file which contains only facts.
-
-.. code:: shell
-
-  $ cat examples/basic/example2/example_2.lp
-
-*Output:*
+Output can also be saved in an individual files per graph with argument ``--save``.
+The file is saved in directory ``--dir`` and using the name formatting ``--name-format``.
 
 .. code:: shell
 
-    graph(toms_family).
-    graph(bills_family).
-
-    node(tom, toms_family).
-    node(max, toms_family).
-    edge((tom, max), toms_family).
-
-    node(bill, bills_family).
-    node(jen, bills_family).
-    edge((bill, jen), bills_family).
-
-
-- Run clingraph to obtain the graphviz representation.
+  $ clingraph example2.lp --out=dot --save --dir='out' --name-format='new_version_{graph_name}'
 
 .. code:: shell
 
-  $ cat examples/basic/example2/example_2.lp | clingraph
-
-*Output:*
-
-.. code:: shell
-    
-    //----------toms_family----------
-    graph toms_family {
-      tom
-      max
-      tom -- max
-    }
-    //----------bills_family----------
-    graph bills_family {
-      bill
-      jen
-      bill -- jen
-    }
+  File saved in out/new_version_toms_family.dot
+  File saved in out/new_version_bills_family.dot
 
 
-- Select only one graph from output
+- **Render output** ``out=render``
+
+The graphs will be rendered and saved in files with a given format and engine
 
 .. code:: shell
 
-  $ cat examples/basic/example2/example_2.lp | clingraph --select-graph=toms_family
-
-*Output:*
-
-.. code:: shell
-    
-    //----------toms_family----------
-    graph toms_family {
-      tom
-      max
-      tom -- max
-    }
-
-- Render the graphviz and save it in a directory
+  $ clingraph example2.lp --out=render --format=png
 
 .. code:: shell
 
-  $ cat examples/basic/example2/example_2.lp | clingraph --select-graph=toms_family --render --format=pdf --dir='out' -log=info
+  Image saved in out/toms_family.png
+  Image saved in out/bills_family.png
 
-*Output:*
+.. list-table:: 
+
+    * - .. figure:: ../../examples/doc/example2/toms_family.png
+
+          ``out/toms_family.png``
+
+      - .. figure:: ../../examples/doc/example2/bills_family.png
+
+          ``out/bills_family.png``
+
+- **Gif output** ``out=gif``
+
+Generates a gif with the graph rendering. The order of the images can be provided with argument ``--sort`` based on the name.
+
+  - ``asc-str``: Sort ascendent based on the graph name as a string
+  - ``asc-int``: Sort ascendent based on the graph name as an integer
+  - ``desc-str``: Sort descendent based on the graph name as a string
+  - ``desc-int``: Sort descendent based on the graph name as an integer
+  - ``name1,...,namex``: A string with the order of the graph names separated by `,`
+
+Additionally the number of frames per second can be set with ``--fps``.
+.. code:: shell
+
+  $ clingraph example2.lp --out=gif --sort=desc --name-format=families_gif
 
 .. code:: shell
-    
-    INFO:  - Image saved in out/toms_family.pdf
-    //----------toms_family----------
-    graph toms_family {
-      tom
-      max
-      tom -- max
-    }
+
+  Image saved in out/images/gif_image_toms_family_0.png
+  Image saved in out/images/gif_image_bills_family_0.png
+  Gif saved in out/families_gif.gif
+
+- **Latex output** ``out=tex``
+
+See the :ref:`latex integration section<latex integration>`.
+
+
+Partial output
+++++++++++++++
+
+Graphs can be selected by name to work only with a subset of the output
+
+.. code:: shell
+
+  $ clingraph example2.lp --out=dot --select-graph=toms_family
+
+.. code:: shell
+
+  graph toms_family {
+    tom
+    max
+    tom -- max
+  }
 
 
 Clingo integration
 ==================
 
-- The clingo program written by the user. Note that the choice will account to multiple stable models.
-  
+These features allow the usage of logic programs with rules to define the visualization. 
+This is done in integration with clingo, letting the user handle multiple stable models.
+
+
+.. note:: 
+  **Good practices**
+
+  We advice the user to keep the visualization encoding separate from the encodings used to solve the problem.
+  This visualization encoding can include rules but no choices, those should be handled in the encoding.
+
+Consider the encoding `example5_encoding.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example5/example5_encoding.lp>`_ 
+that has two stable models.
+
+.. include:: ../../examples/doc/example5/example5_encoding.lp
+  :literal:
+
+And a different file `example5_viz.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example5/example5_viz.lp>`_ 
+for the visualization encoding.
+
+.. include:: ../../examples/doc/example5/example5_viz.lp
+  :literal:
+
+- Run clingo to obtain the two stable models formatted as json with option ``--outf=2```
+
 .. code:: shell
 
-  $ cat examples/basic/example5/example_5.lp
+  $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2
 
-*Output:*
-
-.. code:: shell
-    
-  1{node(a);node(b)}1.
-
-  attr(node,a,color,blue):-node(a).
-  attr(node,b,color,red):-node(b).
-
-- Run clingo to obtain the json output with option ``--outf=2```
-
-.. code:: shell
-
-  $ clingo examples/basic/example5/example_5.lp -n 0 --outf=2
-
-*Output:*
 
 .. code:: shell
     
   {
-    "Solver": "clingo version 5.5.0",
+    "Solver": "clingo version 5.5.1",
     "Input": [
-      "examples/basic/example5/example_5.lp"
+      "examples/doc/example5/example5_encoding.lp","examples/doc/example5/example5_viz.lp"
     ],
     "Call": [
       {
         "Witnesses": [
           {
             "Value": [
-              "attr(node,a,color,blue)", "node(a)"
+              "node(a)", "person(a)", "attr(node,a,color,blue)"
             ]
           },
           {
             "Value": [
-              "attr(node,b,color,red)", "node(b)"
+              "node(b)", "person(b)", "attr(node,b,color,red)"
             ]
           }
         ]
@@ -306,91 +273,106 @@ Clingo integration
 
 .. code:: shell
 
-  $ clingo examples/basic/example5/example_5.lp -n 0 --outf=2 | clingraph --json
+  $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2 | clingraph --json --out=dot
 
-*Output:*
 
 .. code:: shell
     
-  //=========================
-  //	Model: 1 Costs: []
-  //=========================
-
-  //----------default----------
+  WARNING:  - Outputing multiple models in stdout.
   graph default {
     a [color=blue]
   }
 
-  //=========================
-  //	Model: 2 Costs: []
-  //=========================
+  graph default {
+    b [color=red]
+  }
 
-  //----------default----------
+- Select a single model using the model number starting with index 0
+
+.. code:: shell
+
+  $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2 | clingraph --json --out=dot --select-model=1
+
+
+.. code:: shell
+    
   graph default {
     b [color=red]
   }
 
 
+Advanced integration
+++++++++++++++++++++
 
-- Select one of the models by number and save it
+The visualization encoding can also be provided as a separate argument. 
+This allows for integration projects using more complex scripts or applications. 
+In this case the visualization facts will be obtained by running clingo with the visualization encoding for each stable model.
 
 .. code:: shell
 
-  $ clingo examples/basic/example5/example_5.lp -n 0 --outf=2 | clingraph --json --select-model=1 --render --format=png -log=info
+  $ clingo example5_encoding.lp -n0 --outf=2 | clingraph --viz-encoding example5_viz.lp --json --out=render --format=png
 
-*Output:*
 
 .. code:: shell
     
-  INFO:  - Loading a multi model graph from json
-  INFO:  - Image saved in out/default.png
-  //----------default----------
-  graph default {
-    a [color=blue]
-  }
+  Image saved in out/0/default.png
+  Image saved in out/1/default.png
+
+.. list-table:: 
+
+    * - .. figure:: ../../examples/doc/example5/default_1.png
+
+          ``out/0/default.png``
+
+      - .. figure:: ../../examples/doc/example5/default_0.png
+
+          ``out/1/default.png``
+
+.. _Latex:
 
 Latex integration
 =================
 
-.. code:: shell
+The integration will latex generates latex code for the graphs using the `dot2tex <https://dot2tex.readthedocs.io/en/latest>`_ package. This feature allows the user to include mathematical notation in the labels.
 
-  $ cat examples/basic/example5/example_5.lp
+.. warning:: To use math notation (``$``) in labels, we advise the user to use the ``texlbl`` special attribute for the latex label instead of the normal ``label`` attribute. This will avoid problems with the escape characters. Note that edges require a ``label`` attribute to be defined (even if it is empty) in order for the ``texlbl`` attribute to have an effect. Additionally, the backslash ``\`` must be escaped.
 
-*Output:*
 
-.. code:: shell
-  
-  node(sum).
-  attr(node,sum,label,"Sum").
-  attr(node,sum,texlbl,"$\\Sigma $").
-  attr(node,sum,shape,circle).
-  attr(node,sum,color,blue).
-  edge((sum,sum)).
-  attr(edge,(sum,sum),texlbl,"$\\forall x\\in \\Theta$").
-  attr(edge,(sum,sum),label,"x in Theta").
+Consider the file `example6.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example6/example6.lp>`_
 
-- Run cligraph to obtain the latex ``.tex`` file using the ``--tex`` option. We use additional (optional) parameters in ``--tex-param`` to crop the image.
+.. include:: ../../examples/doc/example6/example6.lp
+  :literal:
+
+
+Run cligraph to obtain the latex file using the output option ``--out=tex``. 
+The optional parameters in ``--tex-param`` are passed to `dot2tex <https://dot2tex.readthedocs.io/en/latest/usage_guide.html>`_.
+This parameter should be a string ``arg_name=arg_value``.
 
 .. code:: shell
 
-  $ clingraph examples/basic/example6/example_6.lp --tex --render --type=digraph --tex-param="crop=True"
+  $ clingraph example6.lp --out=tex --tex-param="crop=True" --save
 
-This will save the normal ``pdf`` as before (because of the flag ``--render``), and a latex ``.tex`` file that can be compiled into a pdf. The compilation can be done using a package like ``pdflatex``:
+Then, the compilation can be done using a package like ``pdflatex``
+
+.. code:: shell
+
+  File saved in out/default.tex
 
 .. code:: shell
 
   $ pdflatex out/default.tex ; open default.pdf
 
-Leading to two different pdfs:
+
+We can see compare the two outputs using ``--out=tex`` and ``--out=render``:
 
 .. list-table:: 
 
-    * - .. figure:: ../../examples/basic/example6/default.png
+    * - .. figure:: ../../examples/doc/example6/default.png
 
-           *Graph pdf computed by graphviz*
+           *Graph rendered by graphviz* ``--out=render``
 
-      - .. figure:: ../../examples/basic/example6/latex.png
+      - .. figure:: ../../examples/doc/example6/latex.png
 
-           *Graph pdf compiled by latex*
+           *Graph compiled by latex* ``--out=tex``
 
-.. warning:: To use math notation (``$``) in labels, we advise the user to use the ``texlbl`` special attribute for the latex label instead of the normal ``label`` attribute. This will avoid problems with the escape characters. Note that edges require a ``label`` attribute to be defined (even if it is empty) in order for the ``texlbl`` attribute to have an effect.
+
