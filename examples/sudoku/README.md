@@ -6,6 +6,7 @@
 - Predicate prefix
 - Engine
 - Default graph
+- HTML labels
 
 
 `clingo examples/sudoku/encoding.lp examples/sudoku/instance.lp  -n 0 --outf=2 | clingraph  --view --dir='out/sudoku' --format=png --json --out=render --prefix=viz_ --engine=neato --default-graph=sudoku --viz-encoding=examples/sudoku/viz.lp --name-format=model_{model_number}`
