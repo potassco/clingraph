@@ -13,6 +13,7 @@ Our **[examples folder](.)** shows how to use the range of functionalities in di
   - Absolute positioning
   - Legends
   - Latex integration
+  - HTML labels
 - :rabbit2: Dynamic applications ([asprilo](asprilo), [elevator](elevator), [minotaur](minotaur))
   - Clingo integration
   - Multi graphs
