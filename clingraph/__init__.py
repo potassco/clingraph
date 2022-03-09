@@ -62,6 +62,12 @@ def _get_parser():
                             (default: %(default)s)'''),
                     type=str,
                     metavar='')
+    parser.add_argument('--seed', default=None,
+                help=textwrap.dedent('''\
+                    Provide a seed for the outputs. It will be passed to clingo if viz-encoding in present,
+                    and as the start attribute of the graphviz graphs https://graphviz.org/docs/attrs/start/'''),
+                type=str,
+                metavar='')
     parser.add_argument('--version','-v', action='version',
                     version=f'%(prog)s {VERSION}')
 
@@ -246,16 +252,19 @@ def _get_fbs_from_encoding(args,stdin):
                     prefix=args.prefix,
                     default_graph=args.default_graph))
 
+    cl_args = ["-n1"]
+    if args.seed is not None:
+        cl_args.append(f'--seed={args.seed}')
     if args.json:
         models_prgs = parse_clingo_json(stdin)
         for prg in models_prgs:
-            ctl = Control(["-n1"])
+            ctl = Control(cl_args)
             ctl.load(args.viz_encoding.name)
             ctl.add("base",[],prg)
             ctl.ground([("base", [])])
             ctl.solve(on_model=add_fb_model)
     else:
-        ctl = Control(["-n1"])
+        ctl = Control(cl_args)
         ctl.load(args.viz_encoding.name)
         ctl.add("base",[],stdin)
         for f in args.files:
@@ -346,7 +355,7 @@ def main():
         sys.exit()
 
     ######## Compute graphs
-    graphs = compute_graphs(fbs,graphviz_type=args.type)
+    graphs = compute_graphs(fbs,graphviz_type=args.type,seed=args.seed)
     if args.select_graph is not None:
         graphs = [{g_name:g for g_name, g in graph.items() if g_name in args.select_graph}
                     for graph in graphs]
