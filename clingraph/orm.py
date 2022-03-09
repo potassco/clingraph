@@ -201,8 +201,6 @@ class Factbase():
             :py:class:`InvalidSyntax`: If the input are not facts
         """
         #pylint: disable=duplicate-except
-        # program = program.encode('unicode_escape').decode("utf-8")
-        program = program.replace('\\','\\\\')
 
         try:
             fb = clorm.parse_fact_string(program, self._unifiers,raise_nonfact=True)
@@ -393,6 +391,8 @@ class Factbase():
                         info["idx"] = info["idx"] + \
                             [""]*(1+i-len(info["idx"]))
                     info["idx"][i] = val_str
-            attrs[str(name)] = info["sep"].join(info["set"]+info["idx"]).replace('\\\\','\\')
+            attrs[str(name)] = info["sep"].join(info["set"]+info["idx"])
+            if str(name)=='texlbl': #Used for latex
+                attrs[str(name)] = attrs[str(name)].replace('\\\\','\\')
 
         return attrs
