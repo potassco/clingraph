@@ -44,11 +44,15 @@ def _nest_graphs(fb, all_graphs):
 
     return nested_graphs
 
-def _compute_graphs_single_fb(fb, graphviz_type = 'graph'):
+def _compute_graphs_single_fb(fb, graphviz_type = 'graph',seed=None):
     """
     Compute the graphs for the factbase.
     It creates a Graphviz instance for each graph defined by the facts.
     Graphs can then be obtained by name using the method :py:meth:`get_graphviz`.
+     Args:
+        fb (:class:`Factbase`): A :class:`Factbase` to generate the graphviz objects.
+        graphviz_type (str): The type of graph ``graph`` for ``graphviz.Graph`` and ``digraph`` for ``graphviz.Digraph``
+        seed (int): A number used as seed
     """
     graphs = fb.get_all_graphs()
     all_graphs = {}
@@ -62,7 +66,9 @@ def _compute_graphs_single_fb(fb, graphviz_type = 'graph'):
 
         graph.node_attr = fb.get_graph_global_element_attr("node", g)
         graph.edge_attr = fb.get_graph_global_element_attr("edge", g)
-        graph.graph_attr = fb.get_element_attr("graph", g)
+        graph_attr = {"start":seed} if seed is not None else {}
+        graph_attr.update(fb.get_element_attr("graph", g))
+        graph.graph_attr = graph_attr
 
         elements = ["node", "edge"]
         for e_type in elements:
@@ -80,7 +86,7 @@ def _compute_graphs_single_fb(fb, graphviz_type = 'graph'):
     graphs = _nest_graphs(fb, all_graphs)
     return graphs
 
-def compute_graphs(fb, graphviz_type = 'graph'):
+def compute_graphs(fb, graphviz_type = 'graph', seed=None):
     """
     Computes graphs using Graphviz for the given factbase
 
@@ -88,6 +94,7 @@ def compute_graphs(fb, graphviz_type = 'graph'):
         fb (list[:class:`Factbase`] | :class:`Factbase`): A :class:`Factbase` to generate the graphviz objects.
             If a list is passed, each element is cosidered as the Factbase for a stable model.
         graphviz_type (str): The type of graph ``graph`` for ``graphviz.Graph`` and ``digraph`` for ``graphviz.Digraph``
+        seed (int): A number used as seed
     """
     is_multi_model = isinstance(fb,list)
     if not is_multi_model:
@@ -97,7 +104,7 @@ def compute_graphs(fb, graphviz_type = 'graph'):
         if f is None:
             result.append(None)
         else:
-            result.append(_compute_graphs_single_fb(f,graphviz_type=graphviz_type))
+            result.append(_compute_graphs_single_fb(f,graphviz_type=graphviz_type,seed=seed))
     if not is_multi_model:
         return result[0]
     return result
