@@ -1,7 +1,7 @@
 Installation
 ############
 
-Clingraph requires Python 3.8 or grater
+Clingraph requires Python 3.8 or greater
 
 Installing with conda (Beta version)
 ====================================
