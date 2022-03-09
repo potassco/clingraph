@@ -308,11 +308,10 @@ class Factbase():
         Returns:
             (`list`) A list with the identifiers for all the graphs
         """
-        graph_ids = set([])
         q = self.fb.query(self.Graph).select(self.Graph.id)
-        graph_ids = set(q.all())
+        graph_ids = list(q.all())
         q = self.fb.query(self.SubGraph).select(self.SubGraph.id)
-        graph_ids = graph_ids.union(set(q.all()))
+        graph_ids = graph_ids+list(q.all())
         return graph_ids
 
     def get_parent_graph(self, graph_id):
@@ -358,7 +357,7 @@ class Factbase():
         """
         C = self._get_element_class(element_type)
         q = self.fb.query(C).where(C.graph == graph_id).select(C.id)
-        return set(q.all())
+        return list(q.all())
 
     def get_element_attr(self, element_type, element_id):
         """
