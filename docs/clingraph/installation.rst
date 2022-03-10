@@ -1,7 +1,7 @@
 Installation
 ############
 
-Clingraph requires Python 3.8 or grater
+Clingraph requires Python 3.8 or greater
 
 Installing with conda (Beta version)
 ====================================
@@ -23,7 +23,7 @@ Installing with conda (Beta version)
 Installing with pip (Beta version)
 ==================================
 
-For the installation using ``pip`` the user must first install `graphviz <https://www.graphviz.org/download/>`_  (version 2.50 or grater) manually.
+For the installation using ``pip`` the user must first install `graphviz <https://www.graphviz.org/download/>`_  (version 2.50 or greater) manually.
 
 .. code-block:: bash
 
