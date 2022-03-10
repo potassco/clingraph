@@ -223,6 +223,14 @@ for the visualization encoding.
 .. include:: ../../examples/doc/example5/example5_viz.lp
   :literal:
 
+Piping json output
+++++++++++++++++++
+
+.. warning:: 
+  This integration is currently not supporting special characters in strings, such as scaped quotes ``attr(node,a,label,"Quotes\"")``.
+  For using these strings try the ``--viz-encoding``` option.
+
+
 - Run clingo to obtain the two stable models formatted as json with option ``--outf=2```
 
 .. code:: shell
@@ -301,12 +309,16 @@ for the visualization encoding.
   }
 
 
-Advanced integration
-++++++++++++++++++++
+Define the visualization encoding
++++++++++++++++++++++++++++++++++
 
-The visualization encoding can also be provided as a separate argument. 
+The visualization encoding can also be provided as a separate argument ``--viz-encoding``. 
 This allows for integration projects using more complex scripts or applications. 
-In this case the visualization facts will be obtained by running clingo with the visualization encoding for each stable model.
+When passing a json as input, the visualization facts will be obtained by running clingo with the visualization encoding for each stable model.
+
+.. warning:: 
+  The visualization encoding should not include any choices, only the first stable model will be considered.
+
 
 .. code:: shell
 
