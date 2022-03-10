@@ -21,6 +21,7 @@ requirements:
   - clorm >=1.3.6
   - networkx
   - python-graphviz
+  - libxml2
 
 build:
   number: {{ build }}
