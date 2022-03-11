@@ -1,6 +1,7 @@
 """
 Clingraph functionality
 """
+from ast import parse
 import sys
 import argparse
 import textwrap
@@ -12,7 +13,7 @@ from .graphviz import compute_graphs, dot, render
 from .logger import setup_logger_str
 from .orm import Factbase
 from .utils import write, apply, parse_clingo_json
-
+from .exceptions import InvalidSyntaxJSON, InvalidSyntax
 try:
     VERSION = pkg_resources.require("clingraph")[0].version
 except pkg_resources.DistributionNotFound:
@@ -42,15 +43,18 @@ def _get_parser():
     parser.add_argument('files',
         type=argparse.FileType('r'),
         help=textwrap.dedent('''\
-            Files containing facts that define the graph.
-            See the allowed syntax: https://clingraph.readthedocs.io/en/latest/clingraph/syntax.html'''),
+            - Files containing facts that define the graph.
+              See the allowed syntax: https://clingraph.readthedocs.io/en/latest/clingraph/syntax.html.
+
+            - A single JSON file using clingos output option `--outf=2`.
+            In this case, the facts defining the graphs will be loaded from each stable model.'''),
         nargs='*')
     parser.add_argument('stdin',
             type=argparse.FileType('r'),
             help=textwrap.dedent('''\
-                Standard piped input in one of the following formats:
+                Standard input in one of the following formats:
                     - A list of facts
-                    - A json (requires option: `out=json`) '''),
+                    - A json from clingos output option `--outf=2` '''),
             nargs='?',
             default=sys.stdin)
     parser.add_argument('-q',
@@ -91,12 +95,6 @@ def _get_parser():
                     type=str,
                     metavar='')
 
-    input_params.add_argument('--json',
-                help = textwrap.dedent('''\
-                Flag to use multiple models defined in a json piped from clingo using the option `--outf=2`.
-                The facts defining the graphs will be loaded for each stable model.'''),
-                required='--select-model' in sys.argv,
-                action='store_true')
     input_params.add_argument('--viz-encoding',
                     help = textwrap.dedent('''\
                         A visualization encoding that will be used to generate the graph facts
@@ -134,7 +132,7 @@ def _get_parser():
 
     graphs_params.add_argument('--select-model',
             help = textwrap.dedent('''\
-                Select only one of the models when using the json input.
+                Select only one of the models when using a json input.
                 Defined by a number starting in index 0.
                 Can appear multiple times to select multiple models.'''),
             type=int,
@@ -247,7 +245,35 @@ def _get_parser():
 
     return parser
 
-def _get_fbs_from_encoding(args,stdin):
+def _get_json(args, stdin):
+    json_str = None
+
+    for f in args.files:
+        if ".json" not in f.name:
+            return None
+        if json_str is not None:
+            raise ValueError("Only one json file can be provided")
+        json_str = f.read()
+    try:
+        prg_list = parse_clingo_json(stdin)
+        if json_str is not None:
+            raise ValueError("One one json can be provided as input.")
+        return prg_list
+    except InvalidSyntaxJSON as e:
+        raise e from None
+    except InvalidSyntax:
+        if json_str is None:
+            return None
+        try:
+            prg_list = parse_clingo_json(json_str)
+            return prg_list
+        except InvalidSyntaxJSON as e:
+            raise e from None
+        except InvalidSyntax as e:
+            return None
+
+
+def _get_fbs_from_encoding(args,stdin,prgs_from_json):
     fbs = []
     def add_fb_model(m):
         fbs.append(Factbase.from_model(m,
@@ -257,9 +283,8 @@ def _get_fbs_from_encoding(args,stdin):
     cl_args = ["-n1"]
     if args.seed is not None:
         cl_args.append(f'--seed={args.seed}')
-    if args.json:
-        models_prgs = parse_clingo_json(stdin)
-        for prg in models_prgs:
+    if prgs_from_json:
+        for prg in prgs_from_json:
             ctl = Control(cl_args)
             ctl.load(args.viz_encoding.name)
             ctl.add("base",[],prg)
@@ -276,13 +301,12 @@ def _get_fbs_from_encoding(args,stdin):
 
     return fbs
 
-def _get_fbs_normal(args,stdin):
+def _get_fbs_normal(args,stdin,prgs_from_json):
     fbs = []
-    if args.json:
-        models_prgs = parse_clingo_json(stdin)
+    if prgs_from_json:
         fbs = [Factbase.from_string(prg,prefix=args.prefix,
                                         default_graph=args.default_graph)
-                for prg in models_prgs]
+                for prg in prgs_from_json]
     else:
         fb= Factbase(prefix=args.prefix,default_graph=args.default_graph)
         fb.add_fact_string(stdin)
@@ -306,12 +330,6 @@ def main():
 
     log.debug(args)
 
-    if len(args.files)>0 and args.json:
-        log.error("Files are not allowed as input when using --json.")
-        raise ValueError(textwrap.dedent('''
-        Files are not allowed as input when using --json.
-        See the --viz-encoding option to use a visualization encoding for all models.'''))
-
     ####### READ stdin
     stdin = ""
     if not sys.stdin.isatty():
@@ -319,13 +337,14 @@ def main():
 
     ######## LOAD Fact base
     fbs = []
+    prg_from_json = _get_json(args,stdin)
     if args.viz_encoding:
-        fbs = _get_fbs_from_encoding(args,stdin)
+        fbs = _get_fbs_from_encoding(args,stdin,prg_from_json)
     else:
-        fbs = _get_fbs_normal(args,stdin)
+        fbs = _get_fbs_normal(args,stdin,prg_from_json)
 
     ######## Name format
-    if args.json:
+    if prg_from_json:
         if args.name_format is None:
             args.name_format = '{model_number}/{graph_name}'
     else:
