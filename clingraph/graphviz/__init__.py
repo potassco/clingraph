@@ -125,11 +125,12 @@ def _render_single_graph(graph, directory, format,engine,view, name_format=None)
     file_name = name_format
     file_path = os.path.join(
         directory, f"{file_name}.{format}")
+    graph.engine = engine
     graph.render(
         format=format,
         directory=directory,
         filename=file_name,
-        engine=engine,
+        # engine=engine,
         view=view,
         cleanup=True)
     print(f"Image saved in {file_path}")

@@ -8,6 +8,6 @@ dependencies:
   - dot2tex
   - imageio
   - networkx
-  - python-graphviz>=0.19.1
+  - python-graphviz
   - jsonschema
   - libxml2
