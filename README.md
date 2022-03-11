@@ -4,14 +4,14 @@ A **declarative visualizer for graphs** defined as a set of facts. The graphs ar
 
 Clingraph also contains **special features** for integration with **[clingo](https://potassco.org/clingo/)**, as well as for generating **latex** code and **gifs**!
 
-#### Usage
+### Usage
 
 Look at our [documentation page](https://clingraph.readthedocs.io/en/latest/) to see how to use clingraph.
 
 Try clingraph via [command line](https://clingraph.readthedocs.io/en/latest/clingraph/console.html) or as a package online in a jupyter notebook via [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/potassco/clingraph/master?labpath=notebook.ipynb)
 
 
-#### Examples
+### Examples
 
 Our **[examples folder](https://github.com/potassco/clingraph/tree/master/examples)** shows how to use the range of functionalities in different applications. 
 
@@ -36,7 +36,7 @@ Our **[examples folder](https://github.com/potassco/clingraph/tree/master/exampl
 
 ## Installation
 
-#### Requirements
+### Requirements
 
 - Python (version 3.8, 3.9, or 3.10)
 
