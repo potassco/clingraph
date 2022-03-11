@@ -18,16 +18,16 @@ Graphviz
    :members:
 
 
-Graphviz imageio
-++++++++++++++++
+Graphviz gif
+++++++++++++
 
-.. automodule:: clingraph.graphviz.imageio
+.. automodule:: clingraph.gif
    :members:
 
 Graphviz tex
 ++++++++++++
 
-.. automodule:: clingraph.graphviz.tex
+.. automodule:: clingraph.tex
    :members:
 
 Utils

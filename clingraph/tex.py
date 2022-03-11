@@ -3,7 +3,7 @@
 Graphviz integration to generate latex
 """
 
-from ..utils import apply
+from .utils import apply
 try:
     import dot2tex
 except ImportError:

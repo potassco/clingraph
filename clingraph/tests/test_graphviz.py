@@ -7,8 +7,8 @@ from graphviz import Graph, Digraph
 from clingo import Control
 from .. import Factbase
 from ..graphviz import compute_graphs, dot, render
-from ..graphviz.imageio import save_gif
-from ..graphviz.tex import tex
+from ..gif import save_gif
+from ..tex import tex
 from ..utils import write
 from .utils import get_example_file, clean_out
 
