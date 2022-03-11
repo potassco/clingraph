@@ -22,11 +22,7 @@ Loading facts
 
 The input can be loaded from multiple files and standard input, following our :ref:`syntax <syntax>`.
 Any additional predicates will be ignored.
-
-.. warning:: 
-  The input must contain only facts. To use more complex structures like logic rules, the user must do one of the following:
-    - Call a solver and pipe the output as facts
-    - Use the :ref:`clingo integration<Clingo integration>` options ``--json`` or ``--viz-encoding``
+Additionally, a single JSON file can be provided instead, with the structure of clingos json output format with `--outf=2`. More details can be found in :ref:`clingo integration<Clingo integration>`
 
 Consider the file `example1.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example1/example1.lp>`_
 
@@ -277,11 +273,29 @@ Piping json output
   }
 
 
-- Pipe clingos json to clingraph with the ``--json`` option
+- Pipe clingos json output to clingraph
 
 .. code:: shell
 
-  $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2 | clingraph --json --out=dot
+  $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2 | clingraph --out=dot
+
+
+.. code:: shell
+    
+  WARNING:  - Outputing multiple models in stdout.
+  graph default {
+    a [color=blue]
+  }
+
+  graph default {
+    b [color=red]
+  }
+
+- Load a json file 
+
+.. code:: shell
+
+  $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2 > out/example5.json ; clingraph out/example5.json --out=dot
 
 
 .. code:: shell
@@ -299,7 +313,7 @@ Piping json output
 
 .. code:: shell
 
-  $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2 | clingraph --json --out=dot --select-model=1
+  $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2 | clingraph --out=dot --select-model=1
 
 
 .. code:: shell
@@ -322,7 +336,7 @@ When passing a json as input, the visualization facts will be obtained by runnin
 
 .. code:: shell
 
-  $ clingo example5_encoding.lp -n0 --outf=2 | clingraph --viz-encoding example5_viz.lp --json --out=render --format=png
+  $ clingo example5_encoding.lp -n0 --outf=2 | clingraph --viz-encoding example5_viz.lp --out=render --format=png
 
 
 .. code:: shell

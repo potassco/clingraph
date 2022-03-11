@@ -6,7 +6,7 @@ import os
 import logging
 import jsonschema
 from jsonschema import validate
-from .exceptions import InvalidSyntax
+from .exceptions import InvalidSyntax, InvalidSyntaxJSON
 log = logging.getLogger('custom')
 
 def apply(elements, function,**kwargs):
@@ -138,7 +138,7 @@ def parse_clingo_json(json_str):
         validate(instance=j, schema=clingo_json_schema)
         if j['Result'] != 'SATISFIABLE':
             log.warning("Only satisfiable results in the JSON can be parsed")
-            raise InvalidSyntax('The JSON indicates a result that is not SATISFIABLE') from None
+            raise InvalidSyntaxJSON('The JSON indicates a result that is not SATISFIABLE') from None
 
         models_prgs = []
         for w in j["Call"][0]["Witnesses"]:
@@ -150,4 +150,4 @@ def parse_clingo_json(json_str):
     except json.JSONDecodeError as e:
         raise InvalidSyntax('The json can not be read.',str(e)) from None
     except jsonschema.exceptions.ValidationError as e:
-        raise InvalidSyntax('The json does not have the expected structure. Make sure you used the -outf=2 option in clingo.',str(e)) from None
+        raise InvalidSyntaxJSON('The json does not have the expected structure. Make sure you used the -outf=2 option in clingo.',str(e)) from None
