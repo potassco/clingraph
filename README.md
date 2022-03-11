@@ -13,21 +13,21 @@ Try clingraph via [command line](https://clingraph.readthedocs.io/en/latest/clin
 
 #### Examples
 
-Our **[examples folder](https://github.com/potassco/clingraph/examples)** shows how to use the range of functionalities in different applications. 
+Our **[examples folder](https://github.com/potassco/clingraph/tree/master/examples)** shows how to use the range of functionalities in different applications. 
 
-- Examples used in the documentation ([doc](https://github.com/potassco/clingraph/examples/doc))
-  - *Attribute definition* ([example1](https://github.com/potassco/clingraph/examples/doc/example1))
-  - *Multi graphs* ([example2](https://github.com/potassco/clingraph/examples/doc/example2))
-  - *Subgraphs* ([example3](https://github.com/potassco/clingraph/examples/doc/example3))
-  - *Complex attributes* ([example4](https://github.com/potassco/clingraph/examples/doc/example4))
+- Examples used in the documentation ([doc](https://github.com/potassco/clingraph/tree/master/examples/doc))
+  - *Attribute definition* ([example1](https://github.com/potassco/clingraph/tree/master/examples/doc/example1))
+  - *Multi graphs* ([example2](https://github.com/potassco/clingraph/tree/master/examples/doc/example2))
+  - *Subgraphs* ([example3](https://github.com/potassco/clingraph/tree/master/examples/doc/example3))
+  - *Complex attributes* ([example4](https://github.com/potassco/clingraph/tree/master/examples/doc/example4))
   - *Clingo integration with multi model* ([example5](https://github.com/potassco/clingraph/examples/doc/example5))
-  - *Latex integration* ([example6](https://github.com/potassco/clingraph/examples/doc/example6))
-- Simple ([color](https://github.com/potassco/clingraph/examples/color), [cube](https://github.com/potassco/clingraph/examples/cube), [lights](https://github.com/potassco/clingraph/examples/lights))
-- Clingo integration ([sudoku](https://github.com/potassco/clingraph/examples/sudoku), [reify](https://github.com/potassco/clingraph/examples/reify), [transition_system](https://github.com/potassco/clingraph/examples/transition_system))
+  - *Latex integration* ([example6](https://github.com/potassco/clingraph/tree/master/examples/doc/example6))
+- Simple ([color](https://github.com/potassco/clingraph/tree/master/examples/color), [cube](https://github.com/potassco/clingraph/tree/master/examples/cube), [lights](https://github.com/potassco/clingraph/tree/master/examples/lights))
+- Clingo integration ([sudoku](https://github.com/potassco/clingraph/tree/master/examples/sudoku), [reify](https://github.com/potassco/clingraph/tree/master/examples/reify), [transition_system](https://github.com/potassco/clingraph/tree/master/examples/transition_system))
   - *Absolute positioning*
   - *Legends*
   - *Latex integration*
-- Dynamic applications ([asprilo](https://github.com/potassco/clingraph/examples/asprilo), [elevator](https://github.com/potassco/clingraph/examples/elevator), [minotaur](https://github.com/potassco/clingraph/examples/minotaur))
+- Dynamic applications ([asprilo](https://github.com/potassco/clingraph/tree/master/examples/asprilo), [elevator](https://github.com/potassco/clingraph/tree/master/examples/elevator), [minotaur](https://github.com/potassco/clingraph/tree/master/examples/minotaur))
   - *Clingo integration*
   - *Multi graphs*
   - *Gif generation*
