@@ -20,6 +20,8 @@ except pkg_resources.DistributionNotFound:
 
 enable_python()
 
+__all__ = ["main"]
+
 def _get_parser():
     """
     Get the parser for the command line
@@ -383,7 +385,7 @@ def main():
     ######## OUT=tex
     if args.out == 'tex':
         #pylint: disable=import-outside-toplevel
-        from .graphviz.tex import tex
+        from .tex import tex
         log.debug("Out option: tex")
         tex_params = []
         if args.tex_param is not None:
@@ -400,7 +402,7 @@ def main():
     ######## OUT=gif
     if args.out == 'gif':
         #pylint: disable=import-outside-toplevel
-        from .graphviz.imageio import save_gif
+        from .gif import save_gif
         log.debug("Out option: gif")
         save_gif(graphs,
                 engine=args.engine,

@@ -4,7 +4,7 @@ Graphviz integration to generate gifs
 
 import os
 import logging
-from ..graphviz import render
+from .graphviz import render
 try:
     import imageio
 except ImportError:

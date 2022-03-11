@@ -5,7 +5,7 @@ import os
 import logging
 import networkx as nx
 from graphviz import Graph, Digraph
-from ..utils import apply
+from .utils import apply
 log = logging.getLogger('custom')
 
 
