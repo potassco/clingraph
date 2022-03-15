@@ -223,8 +223,7 @@ Piping json output
 ++++++++++++++++++
 
 .. warning:: 
-  This integration is currently not supporting special characters in strings, such as scaped quotes ``attr(node,a,label,"Quotes\"")``.
-  For using these strings try the ``--viz-encoding``` option.
+  This integration is only supports special characters in strings, such as scaped quotes ``attr(node,a,label,"Quotes\"")``, when using ``clingo >= 5.5.2``.
 
 
 - Run clingo to obtain the two stable models formatted as json with option ``--outf=2```

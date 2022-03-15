@@ -94,24 +94,6 @@ clingo_json_schema = {
     "properties":{
         "Call": {
             "type" : "array",
-            "items":{
-                "type": "object",
-                "required": ["Witnesses"],
-                "properties": {
-                    "Witnesses": {
-                        "type":"array",
-                        "items":{
-                            "type": "object",
-                            "required": ["Value"],
-                            "properties": {
-                                "Value":{
-                                    "type":"array"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         },
         "Result":{
             "type": "string",
@@ -136,12 +118,20 @@ def parse_clingo_json(json_str):
     try:
         j = json.loads(json_str.encode())
         validate(instance=j, schema=clingo_json_schema)
-        if j['Result'] != 'SATISFIABLE':
-            log.warning("Only satisfiable results in the JSON can be parsed")
-            raise InvalidSyntaxJSON('The JSON indicates a result that is not SATISFIABLE') from None
+        if j['Result'] == 'UNSATISFIABLE':
+            log.warning("Passing an unsatisfiable instance in the JSON. This wont produce any results")
+
+        if len(j["Call"]) > 1:
+            log.warning("Calls will multiple theads from clingo are not supported by clingraph")
+
+        if not "Witnesses" in j["Call"][0]:
+            log.warning("No Witnesses (stable models) in the JSON output, no output will be produced by clingraph")
+            witnesses = []
+        else:
+            witnesses = j["Call"][0]["Witnesses"]
 
         models_prgs = []
-        for w in j["Call"][0]["Witnesses"]:
+        for w in witnesses:
             prg_str = "\n".join([f"{v}." for v in w["Value"]])
             models_prgs.append(prg_str)
 

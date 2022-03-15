@@ -128,6 +128,15 @@ def test_from_model():
     assert 'node(b,default).' in fbs[1].get_facts()
     assert 'node(b,default).' not in fbs[0].get_facts()
 
+def test_missing_graph():
+    s = "node(n).graph(h,g)."
+    cg = Factbase(default_graph='g')
+    cg.add_fact_string(s)
+    facts = cg.get_facts()
+    graphs = cg.get_all_graphs()
+    cg.get_graph_elements('node',graphs[0])
+
+
 def test_from_json():
 
     json = '''
@@ -145,18 +154,6 @@ def test_from_json():
     assert 'node(a,default).' in fbs[0].get_facts()
     assert 'node(b,default).' in fbs[1].get_facts()
 
-
-    json = '''
-    {
-        "Call": [{"Witnesses": [
-                {"Value": ["attr(node,a,color,blue)", "node(a)"]},
-                {"Value": ["attr(node,b,color,red)", "node(b)"]}]
-            }],
-        "Result": "UNSATISFIABLE"
-        }
-    '''
-    with pytest.raises(InvalidSyntax):
-        parse_clingo_json(json)
 
     json = '''
     {
