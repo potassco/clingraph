@@ -257,7 +257,7 @@ def _get_json(args, stdin):
     try:
         prg_list = parse_clingo_json(stdin)
         if json_str is not None:
-            raise ValueError("One one json can be provided as input.")
+            raise ValueError("Only one json can be provided as input.")
         return prg_list
     except InvalidSyntaxJSON as e:
         raise e from None
@@ -283,7 +283,7 @@ def _get_fbs_from_encoding(args,stdin,prgs_from_json):
     cl_args = ["-n1"]
     if args.seed is not None:
         cl_args.append(f'--seed={args.seed}')
-    if prgs_from_json:
+    if prgs_from_json is not None:
         for prg in prgs_from_json:
             ctl = Control(cl_args)
             ctl.load(args.viz_encoding.name)
@@ -303,7 +303,7 @@ def _get_fbs_from_encoding(args,stdin,prgs_from_json):
 
 def _get_fbs_normal(args,stdin,prgs_from_json):
     fbs = []
-    if prgs_from_json:
+    if prgs_from_json is not None:
         fbs = [Factbase.from_string(prg,prefix=args.prefix,
                                         default_graph=args.default_graph)
                 for prg in prgs_from_json]
