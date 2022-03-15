@@ -68,7 +68,7 @@ def _write(info, directory, format, name_format):
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     with open(file_path,'w',encoding='utf-8') as f:
         f.write(info)
-    print(f"File saved in {file_path}")
+    return file_path
 
 def write(elements, directory, format, name_format=None):
     """
@@ -81,9 +81,13 @@ def write(elements, directory, format, name_format=None):
         directory (str): Path to the directory where to write
         format (str): Output format
         name_format (str): The file name
+
+    Returns:
+        [dic | list[dic]]: A dictionary with the paths where the files where saved as values for each graph.
+                Or a list of such dictionaries, each element corresponding to a model.
     """
     #pylint: disable=redefined-builtin
-    apply(elements, _write,
+    return apply(elements, _write,
             directory = directory,
             format = format,
             name_format=name_format)

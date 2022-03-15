@@ -5,12 +5,13 @@ from ast import parse
 import sys
 import argparse
 import textwrap
+from tkinter.messagebox import NO
 import pkg_resources
 from clingo import Control
 from clingo.script import enable_python
 
 from .graphviz import compute_graphs, dot, render
-from .logger import setup_logger_str
+from .logger import setup_logger_str, COLORS
 from .orm import Factbase
 from .utils import write, apply, parse_clingo_json
 from .exceptions import InvalidSyntaxJSON, InvalidSyntax
@@ -353,8 +354,12 @@ def main():
 
     ######## Model selection
     if args.select_model is not None:
+        for m in args.select_model:
+            if m>=len(fbs):
+                raise ValueError(f"Invalid model number selected {m}")
         fbs = [f if i in args.select_model else None
                     for i, f in enumerate(fbs) ]
+
 
     ######## Warnings
     n_models = len([f for f in fbs if f is not None])
@@ -381,6 +386,9 @@ def main():
         graphs = [{g_name:g for g_name, g in graph.items() if g_name in args.select_graph}
                     for graph in graphs]
 
+    def out_str(t, g_name, p):
+        s = f"{COLORS['BLUE']}->{COLORS['NORMAL']} {t} for graph {COLORS['YELLOW']}{g_name}{COLORS['NORMAL']},"
+        return s + f" saved in: {COLORS['BLUE']}{p}{COLORS['NORMAL']}"
     ######## OUT=dot
     if args.out == 'dot':
         log.debug("Out option: dot")
@@ -394,11 +402,17 @@ def main():
     ######## OUT=render
     if args.out == 'render':
         log.debug("Out option: render")
-        render(graphs,
+        paths = render(graphs,
                 format=args.format,
                 engine=args.engine,
                 view=args.view,
                 **write_arguments)
+        if not args.q:
+            for p_dic in paths:
+                if p_dic is None:
+                    continue
+                for g_name, p in p_dic.items():
+                    print(out_str("Image",g_name,p))
         sys.exit()
 
     ######## OUT=tex
@@ -413,7 +427,14 @@ def main():
 
         texs = tex(graphs,**tex_param_dic)
         if args.save:
-            write(texs,format='tex',**write_arguments)
+            paths = write(texs,format='tex',**write_arguments)
+            if not args.q:
+                for p_dic in paths:
+                    if p_dic is None:
+                        continue
+                    for g_name, p in p_dic.items():
+                        print(out_str("File",g_name,p))
+
         else:
             apply(texs,print)
         sys.exit()
@@ -423,9 +444,17 @@ def main():
         #pylint: disable=import-outside-toplevel
         from .gif import save_gif
         log.debug("Out option: gif")
-        save_gif(graphs,
+        paths = save_gif(graphs,
                 engine=args.engine,
                 fps = args.fps,
                 sort=args.sort,
                 **write_arguments)
+        if not args.q:
+            for p_dic in paths:
+                if p_dic is None:
+                    continue
+                for g_name, p in p_dic.items():
+                    print(out_str("Gif",g_name,p))
+
+
         sys.exit()

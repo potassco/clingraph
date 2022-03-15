@@ -306,9 +306,10 @@ class Factbase():
         Returns:
             (`list`) A list with the identifiers for all the graphs
         """
-        log.warning("No graphs were defined in the code. Perhaps a missing `graph` predicate.")
         q = self.fb.query(self.Graph).select(self.Graph.id)
         graph_ids = list(q.all())
+        if len(graph_ids) == 0:
+            log.warning("No graphs were defined in the code. Perhaps a missing `graph` predicate.")
         q = self.fb.query(self.SubGraph).select(self.SubGraph.id)
         graph_ids = graph_ids+list(q.all())
         return graph_ids

@@ -119,6 +119,9 @@ def _render_single_graph(graph, directory, format,engine,view, name_format=None)
         format (str): The format for the output ``pdf``, ``png`` or ``svg``
         name_format (str): The format for the name
         **kwargs: Any additional arguments passed to graphviz ``render()`` function
+
+    Returns:
+        str: The path where the image was saved
     """
     #pylint: disable=redefined-builtin
     assert isinstance(graph,(Graph,Digraph))
@@ -133,7 +136,7 @@ def _render_single_graph(graph, directory, format,engine,view, name_format=None)
         # engine=engine,
         view=view,
         cleanup=True)
-    print(f"Image saved in {file_path}")
+    return file_path
 
 def render(graphs, directory="out", format="pdf", name_format=None,engine='dot',view=False):
     """
@@ -147,9 +150,13 @@ def render(graphs, directory="out", format="pdf", name_format=None,engine='dot',
         name_format (str): The format for the name.
         engine (str): Engine used for the layout
         view (bool): If the rendered files will be oppend
+
+    Returns:
+        [dic | list[dic]]: A dictionary with the paths where the images where saved as values for each graph.
+                Or a list of such dictionaries, each element corresponding to a model.
     """
     #pylint: disable=redefined-builtin
-    apply(graphs, _render_single_graph,
+    return apply(graphs, _render_single_graph,
             directory=directory,
             format=format,
             name_format=name_format,

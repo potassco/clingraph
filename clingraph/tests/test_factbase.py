@@ -132,7 +132,6 @@ def test_missing_graph():
     s = "node(n).graph(h,g)."
     cg = Factbase(default_graph='g')
     cg.add_fact_string(s)
-    facts = cg.get_facts()
     graphs = cg.get_all_graphs()
     cg.get_graph_elements('node',graphs[0])
 
