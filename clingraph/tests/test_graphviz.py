@@ -120,7 +120,8 @@ def test_render():
     cg = Factbase()
     cg.add_fact_file(s)
     graphs = compute_graphs(cg)
-    render(graphs, directory ='out')
+    paths = render(graphs, directory ='out')
+    assert os.path.join('out','default.pdf') == paths['default']
     assert os.path.isfile(os.path.join('out','default.pdf'))
 
     clean_out()
@@ -128,7 +129,8 @@ def test_render():
     cg = Factbase(default_graph ='other')
     cg.add_fact_file(s)
     graphs = compute_graphs(cg)
-    render(graphs, directory ='out')
+    paths = render(graphs, directory ='out')
+    assert os.path.join('out','other.pdf') == paths['other']
     assert os.path.isfile(os.path.join('out','other.pdf'))
 
     clean_out()
@@ -136,7 +138,10 @@ def test_render():
     cg = Factbase()
     cg.add_fact_file(s)
     graphs = compute_graphs(cg)
-    render(graphs, directory ='out')
+    paths = render(graphs, directory ='out')
+    assert os.path.join('out','bills_family.pdf') == paths['bills_family']
+    assert os.path.join('out','toms_family.pdf') == paths['toms_family']
+
     assert os.path.isfile(os.path.join('out','bills_family.pdf'))
     assert os.path.isfile(os.path.join('out','toms_family.pdf'))
 
@@ -146,7 +151,7 @@ def test_render():
     cg.add_fact_file(s)
     graphs = compute_graphs(cg)
     selected_graphs = {k:graphs[k] for k in ['bills_family']}
-    render(selected_graphs, directory ='out')
+    paths = render(selected_graphs, directory ='out')
     assert os.path.isfile(os.path.join('out','bills_family.pdf'))
     assert not os.path.isfile(os.path.join('out','toms_family.pdf'))
 
@@ -155,15 +160,15 @@ def test_render():
     cg = Factbase()
     cg.add_fact_file(s)
     graphs = compute_graphs(cg)
-    render(graphs, directory ='out',format='png')
+    paths = render(graphs, directory ='out',format='png')
     assert os.path.isfile(os.path.join('out','house.png'))
 
     clean_out()
-    render(graphs, directory ='out',format='svg')
+    paths = render(graphs, directory ='out',format='svg')
     assert os.path.isfile(os.path.join('out','house.svg'))
 
     clean_out()
-    render(graphs, directory ='out',format='svg',name_format='pre_{graph_name}')
+    paths = render(graphs, directory ='out',format='svg',name_format='pre_{graph_name}')
     assert os.path.isfile(os.path.join('out','pre_house.svg'))
 
 
@@ -193,7 +198,8 @@ def test_tex():
     clean_out()
     texs = tex(graphs)
     assert r'node {$\forall x\in \Theta$}' in texs['default']
-    write(texs,'out',format='tex')
+    paths = write(texs,'out',format='tex')
+    assert paths['default'] == os.path.join('out','default.tex')
     assert os.path.isfile(os.path.join('out','default.tex'))
 
 

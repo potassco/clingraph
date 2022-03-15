@@ -28,8 +28,12 @@ def save_gif(graphs, directory='out', name_format="movie", engine="dot", fps=1, 
                 ``asc-int`` Sort descendent based on the graph name converted to an interger,
                 ``desc-int`` Sort descendent based on the graph name converted to an integer,
                 ``name1,...,namex`` A string with the order of the graph names separated by `,`
+    Returns:
+        [dic | list[dic]]: A dictionary with the paths where the gifss where saved as values for each graph.
+                Or a list of such dictionaries, each element corresponding to a model.
     """
-    if not isinstance(graphs,list):
+    is_multi = isinstance(graphs,list)
+    if not is_multi:
         graphs = [graphs]
     images_dir = os.path.join(directory, 'images')
     img_name_format = 'gif_image_{graph_name}_{model_number}'
@@ -55,6 +59,7 @@ def save_gif(graphs, directory='out', name_format="movie", engine="dot", fps=1, 
                 if not k in keys:
                     raise ValueError(f"Invalid graph name in sort: {k}")
         all_keys.append(ordered_keys)
+    paths = []
     for model_n,graph in enumerate(graphs):
         if graph is None:
             continue
@@ -69,4 +74,8 @@ def save_gif(graphs, directory='out', name_format="movie", engine="dot", fps=1, 
 
         imageio.mimsave(gif_path,
                         images, fps=fps)
-        print(f"Gif saved in {gif_path}")
+        paths.append({'all':gif_path})
+
+    if not is_multi:
+        return paths[0]
+    return paths
