@@ -41,7 +41,7 @@ conda:
           - python >=3.8
           - clingo
           - clorm >=1.3.6
-          - jsonschema >=4.0
+          - jsonschema
           - networkx
           - python-graphviz
           - libxml2
