@@ -128,7 +128,8 @@ def _get_parser():
                 Select one of the graphs by name.
                 Can appear multiple times to select multiple graphs'''),
             type=str,
-            nargs='+',
+            action='append',
+            nargs='?',
             metavar="")
 
     graphs_params.add_argument('--select-model',
@@ -137,7 +138,8 @@ def _get_parser():
                 Defined by a number starting in index 0.
                 Can appear multiple times to select multiple models.'''),
             type=int,
-            nargs='+',
+            action='append',
+            nargs='?',
             metavar="")
 
     graphs_params.add_argument('--name-format',
