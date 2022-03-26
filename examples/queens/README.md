@@ -5,9 +5,9 @@ See definition of the problem [here](https://en.wikipedia.org/wiki/Eight_queens_
 **Features used:**
 - Clingo integration
 - Neato
-- Absolute Ppossition
+- Absolute Position
 
 
-`clingo examples/shortest_path/encoding.lp --outf=2 --opt-mode=optN -q1  | clingraph --viz-encoding examples/shortest_path/viz.lp --out=render --view --select-model=0 --format=png`
+`clingo examples/queens/encoding.lp --outf=2 | clingraph --viz-encoding=examples/queens/viz.lp --out=render  --engine=neato`
 
 ![](default.png)
