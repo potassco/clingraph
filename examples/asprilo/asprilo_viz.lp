@@ -2,138 +2,62 @@
 from clingo.symbol import String
 def pos(x,y):
     return String(f"{str(x)},{str(y)}!")
-
-def join(base,*args):
-    return String(str(base).strip('"').join([str(x).strip('"') for x in args]))
 #end.
+% --- Auxiliar
+position(station(S),P,T):-position(station(S),P),step(T).
+free(P,T):- position(P), not position(_,P,T),step(T).
+step(0..T):-time(T).
 
-time0(0).
-time0(T):-time(T).
-% One graph per time
-viz_graph(T):-time0(T).
-viz_graph(0).
-viz_attr(graph, G, label, ""):- viz_graph(G).
-viz_attr(graph, G, style, invis):- viz_graph(G).
-viz_attr(graph, G, type, digraph):- viz_graph(G).
-viz_attr(graph, G, nodesep, 1):- viz_graph(G).
-viz_attr(graph, G, newrank, true):- viz_graph(G).
+% --- Graphs
+graph(T):-step(T).
+attr(graph, G, nodesep, 1):- graph(G).
+attr(graph_nodes, G, width, "0.5"):- graph(G).
+attr(graph_nodes, G, fixedsize, "shape"):- graph(G).
+attr(graph_nodes, G, style, "filled"):- graph(G).
+attr(graph_nodes, G, fontsize, 10):- graph(G).
 
+% --- Edges (Movements)
+edge((((X,Y),T),((X+DX,Y+DY),T)),T):- move(robot(R),(DX,DY),T), position(robot(R),(X,Y),T-1).
 
-% Global node/edge attributes
-viz_attr(graph_nodes, G, width, "0.5"):- viz_graph(G).
-viz_attr(graph_nodes, G, height, "0.5"):- viz_graph(G).
-viz_attr(graph_nodes, G, fixedsize, "shape"):- viz_graph(G).
-viz_attr(graph_nodes, G, fontsize, "8"):- viz_graph(G).
-viz_attr(graph_nodes, G, style, "filled"):- viz_graph(G).
-viz_attr(graph_edges, G, shape, vee):- viz_graph(G).
-viz_attr(graph_edges, G, style, dotted):- viz_graph(G).
-viz_attr(graph_edges, G, arrowsize, "0.5"):- viz_graph(G).
+% --- Nodes
+node((P,T),T):-position(P),step(T).
 
-
-% Movements as edges
-viz_edge(((X,Y,T),(X+DX,Y+DY,T)),T):-
-    move(robot(R),(DX,DY),T),
-    position(robot(R),(X,Y),T-1).
-
-size(X,Y):- #max{X':position((X',Y'))}=X, #max{Y':position((X',Y'))}=Y.
-% One node per position
-viz_node((X,Y,T),T):-position((X,Y)),time0(T).
-viz_attr(node, (X,Y,T),pos,@pos(X,YMax-Y)):- position((X,Y)), time0(T), size(XMax,YMax).
+% Position
+attr(node,((X,Y),T),pos,@pos(X,YMax-Y)):- position((X,Y)), step(T), #max{Y':position((X',Y'))}=YMax.
 
 % Shape
-viz_attr(node, (X,Y,T),shape,"doublecircle"):-
-    viz_node((X,Y,T),T),
-    position(station(S),(X,Y)).
-viz_attr(node, (X,Y,T),shape,"circle"):-
-    position(robot(R),(X,Y),T),
-    not position(shelf(_),(X,Y),T),
-    not position(station(_),(X,Y)).
-viz_attr(node, (X,Y,T),shape,"box"):-
-    position(shelf(S),(X,Y),T),
-    not position(robot(_),(X,Y),T),
-    not position(station(_),(X,Y)).
-viz_attr(node, (X,Y,T),shape,"square"):-
-    position(shelf(S),(X,Y),T),
-    position(robot(R),(X,Y),T),
-    not position(station(_),(X,Y)).
-viz_attr(node, (X,Y,T),shape,"point"):-
-    viz_node((X,Y,T),T),
-    not position(_,(X,Y),T),
-    not position(station(_),(X,Y)).
+attr(node,(P,T),shape,"doublecircle"):- position(station(S),P,T).
+attr(node,(P,T),shape,"square"):- position(shelf(S),P,T), not position(station(_),P).
+attr(node,(P,T),shape,"point"):- free(P,T).
+attr(node,(P,T),shape,"plaintext"):- position(robot(R),P,T), not position(station(_),P), not position(shelf(_),P,T).
+attr(node,(P,T),style,"solid"):- position(robot(R),P,T), not position(station(_),P), not position(shelf(_),P,T).
 
-% Label
-viz_attr(node, (X,Y,T),label,""):-
-    viz_node((X,Y,T),T),
-    not position(_,(X,Y),T).
-viz_attr(node, (X,Y,T),label,@join("","R",R)):-
-    position(robot(R),(X,Y),T),
-    not position(shelf(_),(X,Y),T).
-viz_attr(node, (X,Y,T),label,@join("","S",S)):-
-    position(shelf(S),(X,Y),T),
-    not position(robot(_),(X,Y),T).
-viz_attr(node, (X,Y,T),label,@join("","R",R," ","S",S)):-
-    position(shelf(S),(X,Y),T),
-    position(robot(R),(X,Y),T).
+% Label Simpler option without using HTML and without subindex
+attr(node,(P,T),(label,0),"R"):- position(robot(R),P,T).
+attr(node,(P,T),(label,1),R):- position(robot(R),P,T).
+attr(node,(P,T),(label,2),"S"):- position(shelf(S),P,T).
+attr(node,(P,T),(label,3),S):- position(shelf(S),P,T).
+attr(node,(P,T),(label,sep),""):- node((P,T),T).
+% Label Using HTML for subindex
+% attr(node,(P,T),(label,0),"< "):- node((P,T),T).
+% attr(node,(P,T),(label,1),"R<sub>"):- position(robot(R),P,T).
+% attr(node,(P,T),(label,2),R):- position(robot(R),P,T).
+% attr(node,(P,T),(label,3),"</sub>"):- position(robot(R),P,T).
+% attr(node,(P,T),(label,4),"S<sub>"):- position(shelf(S),P,T).
+% attr(node,(P,T),(label,5),S):- position(shelf(S),P,T).
+% attr(node,(P,T),(label,6),"</sub>"):- position(shelf(S),P,T).
+% attr(node,(P,T),(label,7),">"):- node((P,T),T).
+% attr(node,(P,T),(label,sep),""):- node((P,T),T).
+
 
 % Fillcolor
-viz_attr(node, (X,Y,T),fillcolor,"gold"):-
-    viz_node((X,Y,T),T),
-    position(station(S),(X,Y)),
-    not position(_,(X,Y),T).
-viz_attr(node, (X,Y,T),fillcolor,@join("","/pubu9/",1+R)):-
-    position(robot(R),(X,Y),T),
-    not position(station(_),(X,Y)),
-    not position(shelf(_),(X,Y),T).
-viz_attr(node, (X,Y,T),fillcolor,@join("","/orrd9/",1+S)):-
-    position(shelf(S),(X,Y),T),
-    not position(station(_),(X,Y)),
-    not position(robot(_),(X,Y),T).
-viz_attr(node, (X,Y,T),fillcolor,@join("","/pubu9/",1+R,":","/orrd9/",1+S)):-
-    position(shelf(S),(X,Y),T),
-    position(robot(R),(X,Y),T),
-    not position(station(_),(X,Y)).
-viz_attr(node, (X,Y,T),fillcolor,@join("","/pubu9/",1+R,":","/orrd9/",1+S,":","gold")):-
-    position(shelf(S),(X,Y),T),
-    position(robot(R),(X,Y),T),
-    position(station(_),(X,Y)).
-viz_attr(node, (X,Y,T),fillcolor,@join("","/orrd9/",1+S,":","gold")):-
-    position(shelf(S),(X,Y),T),
-    not position(robot(_),(X,Y),T),
-    position(station(_),(X,Y)).
-viz_attr(node, (X,Y,T),fillcolor,@join("","/pubu9/",1+R,":","gold")):-
-    not position(shelf(_),(X,Y),T),
-    position(robot(R),(X,Y),T),
-    position(station(_),(X,Y)).
-viz_attr(node, (X,Y,T),color,white):-
-    position((X,Y)), not position(_,(X,Y),T),
-    not position(station(_),(X,Y)),time0(T).
-viz_attr(node, (X,Y,T),fillcolor,gray):-
-    position((X,Y)), not position(_,(X,Y),T),
-    highway((X,Y)),
-    not position(station(_),(X,Y)),time0(T).
-viz_attr(node, (X,Y,T),fillcolor,black):-
-    position((X,Y)), not position(_,(X,Y),T),
-    not highway((X,Y)),
-    not position(station(_),(X,Y)),time0(T).
+attr(node,(P,T),fillcolor,"#99B88A"):- position(station(_),P,T).
+attr(node,(P,T),colorscheme,"orrd9"):- position(shelf(S),P,T), not position(station(_),P,T).
+attr(node,(P,T),fillcolor,S):- position(shelf(S),P,T), not position(station(_),P,T).
+attr(node,(P,T),color,white):- free(P,T).
+attr(node,(P,T),fillcolor,gray):- free(P,T), highway(P).
+attr(node,(P,T),fillcolor,black):- free(P,T), not highway(P).
 
 % Penwidth
-viz_attr(node, (X,Y,T),penwidth,30):-
-    position((X,Y)), not position(_,(X,Y),T),
-    not position(station(_),(X,Y)),time0(T).
-viz_attr(node, (X,Y,T),penwidth,2):-
-    position(shelf(S),(X,Y),T),
-    position(robot(R),(X,Y),T),
-    carries(robot(R),shelf(S),T).
-
-% Style
-viz_attr(node, (X,Y,T),style,"wedged"):-
-    position(station(S),(X,Y)),
-    time(T),
-    position(_,(X,Y),T).
-viz_attr(node, (X,Y,T),style,"filled"):-
-    position(station(S),(X,Y)),
-    time(T),
-    not position(_,(X,Y),T).
-viz_attr(node, (X,Y,T),style,"striped"):-
-    position(shelf(S),(X,Y),T),
-    position(robot(R),(X,Y),T).
+attr(node,(P,T),penwidth,30):- free(P,T).
+attr(node,(P,T),penwidth,2):- position(robot(R),P,T), carries(robot(R),shelf(S),T).
