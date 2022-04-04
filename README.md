@@ -30,7 +30,7 @@ Our **[examples folder](https://github.com/potassco/clingraph/tree/master/exampl
 - Dynamic applications ([asprilo](https://github.com/potassco/clingraph/tree/master/examples/asprilo), [elevator](https://github.com/potassco/clingraph/tree/master/examples/elevator), [minotaur](https://github.com/potassco/clingraph/tree/master/examples/minotaur))
   - *Clingo integration*
   - *Multi graphs*
-  - *Gif generation*
+  - *Animation via Gif*
 
 
 

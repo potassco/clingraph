@@ -14,6 +14,6 @@ The image paths must be absolute, therefore the user must change the visualizati
 - Gif special parameter
 
 
-`clingo examples/minotaur/minotaur.lp --outf=2 | clingraph --prefix='viz_' --engine=neato --out=gif --dir='out/minotaur' --type=graph --select-model=0 --fps=1 --name-format=minotaur`
+`clingo examples/minotaur/minotaur.lp --outf=2 | clingraph --prefix='viz_' --engine=neato --out=animate --dir='out/minotaur' --type=graph --select-model=0 --fps=1 --name-format=minotaur`
 
 ![](minotaur.gif)

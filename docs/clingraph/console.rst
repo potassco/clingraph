@@ -65,7 +65,7 @@ Clingraph provides four types of outputs
   - ``dot``: Generates the graphviz objects and prints the source DOT language
   - ``render``: Generates the graphviz objects and renders the images
   - ``tex``: Generates the graphviz objects and prints the latex code
-  - ``gif``: Generates the graphviz objects and creates a gif
+  - ``animate``: Generates the graphviz objects and creates a an animation in gif format
 
 
 Consider the file `example2.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example2/example2.lp>`_
@@ -150,9 +150,9 @@ The graphs will be rendered and saved in files with a given format and engine
 
           ``out/bills_family.png``
 
-- **Gif output** ``out=gif``
+- **Animate output** ``out=animate``
 
-Generates a gif with the graph rendering. The order of the images can be provided with argument ``--sort`` based on the name.
+Generates an animation with the graph rendering. The order of the images can be provided with argument ``--sort`` based on the name.
 
   - ``asc-str``: Sort ascendent based on the graph name as a string
   - ``asc-int``: Sort ascendent based on the graph name as an integer
@@ -163,7 +163,7 @@ Generates a gif with the graph rendering. The order of the images can be provide
 Additionally the number of frames per second can be set with ``--fps``.
 .. code:: shell
 
-  $ clingraph example2.lp --out=gif --sort=desc --name-format=families_gif
+  $ clingraph example2.lp --out=animate --sort=desc --name-format=families_gif
 
 .. code:: shell
 

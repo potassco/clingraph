@@ -109,13 +109,13 @@ def _get_parser():
 
     graphs_params.add_argument('--out',
             default = 'facts',
-            choices=['facts', 'dot', 'render', 'gif', 'tex'],
+            choices=['facts', 'dot', 'render', 'animate', 'tex'],
             help = textwrap.dedent('''\
-                Type of output {facts|dot|render|gif|tex}
+                Type of output {facts|dot|render|animate|tex}
                     facts: The preprocessed facts
                     dot: The string in DOT language
                     render: Generates images with the rendering method of graphviz
-                    gif: Generates a gif after rendering
+                    animate: Generates an animation in gif format after rendering
                     tex: Generates a latex file
                     (default: %(default)s)
                 See below for additional special options for each output type.
@@ -167,7 +167,7 @@ def _get_parser():
                     Saves the output in files based on the directory, name format and fortmat provided.
                     Otherwise the output is just printed on the stdout'''))
 
-    graphviz_params = parser.add_argument_group('OUTPUT {dot|render|tex|gif}','Options for the functionality regarding graphviz.')
+    graphviz_params = parser.add_argument_group('OUTPUT {dot|render|tex|animate}','Options for the functionality regarding graphviz.')
 
 
     graphviz_params.add_argument('--type',
@@ -210,7 +210,7 @@ def _get_parser():
                     Opens the generated files'''))
 
 
-    graphviz_gif_params = parser.add_argument_group('OUTPUT {gif}','Options for the gif generation')
+    graphviz_gif_params = parser.add_argument_group('OUTPUT {animate}','Options for the animation')
 
     graphviz_gif_params.add_argument('--fps',
                 default = 1,
@@ -365,7 +365,7 @@ def main():
 
     ######## Warnings
     n_models = len([f for f in fbs if f is not None])
-    if n_models>1 and not args.q and not args.save and not (args.out in ['render','gif']):
+    if n_models>1 and not args.q and not args.save and not (args.out in ['render','animate']):
         log.warning("Outputing multiple models in stdout.")
     if n_models>1 and not '{model_number}' in args.name_format:
         log.warning("Output files will be overwritten since no `{model_number}` is used in the name format argument.")
@@ -442,10 +442,10 @@ def main():
         sys.exit()
 
     ######## OUT=gif
-    if args.out == 'gif':
+    if args.out == 'animate':
         #pylint: disable=import-outside-toplevel
         from .gif import save_gif
-        log.debug("Out option: gif")
+        log.debug("Out option: animate")
         paths = save_gif(graphs,
                 engine=args.engine,
                 fps = args.fps,
