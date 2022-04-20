@@ -36,6 +36,13 @@ Utils
 .. automodule:: clingraph.utils
    :members:
 
+Clingo Utils
+============
+
+.. automodule:: clingraph.clingo_utils
+   :members:
+
+
 Exceptions
 ==========
 

@@ -1,11 +1,4 @@
 % %%%%%%%%%%%%%%%%%%%%%%%%% Visualization
-
-#script (python)
-from clingo.symbol import String
-def pos(x,y):
-    return String(f"{str(x)},{str(y)}!")
-#end.
-
 viz_graph(sudoku).
 
 % Name of graph

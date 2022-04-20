@@ -328,6 +328,7 @@ Define the visualization encoding
 The visualization encoding can also be provided as a separate argument ``--viz-encoding``. 
 This allows for integration projects using more complex scripts or applications. 
 When passing a json as input, the visualization facts will be obtained by running clingo with the visualization encoding for each stable model.
+Furthermore, the functions defined in :ref:`ClingraphContext <Clingo Utils>` will be available for usage withing the encoding preceded by ``@``.
 
 .. warning:: 
   The visualization encoding should not include any choices, only the first stable model will be considered.

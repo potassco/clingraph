@@ -7,20 +7,19 @@ import argparse
 import textwrap
 from tkinter.messagebox import NO
 import pkg_resources
-from clingo import Control
-from clingo.script import enable_python
 
 from .graphviz import compute_graphs, dot, render
 from .logger import setup_logger_str, COLORS
 from .orm import Factbase
-from .utils import write, apply, parse_clingo_json
+from .utils import write, apply
 from .exceptions import InvalidSyntaxJSON, InvalidSyntax
+from .clingo_utils import _get_fbs_from_encoding, _get_json
+
 try:
     VERSION = pkg_resources.require("clingraph")[0].version
 except pkg_resources.DistributionNotFound:
     VERSION = '0.0.0'
 
-enable_python()
 
 __all__ = ["main"]
 
@@ -248,62 +247,6 @@ def _get_parser():
 
     return parser
 
-def _get_json(args, stdin):
-    json_str = None
-
-    for f in args.files:
-        if ".json" not in f.name:
-            return None
-        if json_str is not None:
-            raise ValueError("Only one json file can be provided")
-        json_str = f.read()
-    try:
-        prg_list = parse_clingo_json(stdin)
-        if json_str is not None:
-            raise ValueError("Only one json can be provided as input.")
-        return prg_list
-    except InvalidSyntaxJSON as e:
-        raise e from None
-    except InvalidSyntax:
-        if json_str is None:
-            return None
-        try:
-            prg_list = parse_clingo_json(json_str)
-            return prg_list
-        except InvalidSyntaxJSON as e:
-            raise e from None
-        except InvalidSyntax as e:
-            return None
-
-
-def _get_fbs_from_encoding(args,stdin,prgs_from_json):
-    fbs = []
-    def add_fb_model(m):
-        fbs.append(Factbase.from_model(m,
-                    prefix=args.prefix,
-                    default_graph=args.default_graph))
-
-    cl_args = ["-n1"]
-    if args.seed is not None:
-        cl_args.append(f'--seed={args.seed}')
-    if prgs_from_json is not None:
-        for prg in prgs_from_json:
-            ctl = Control(cl_args)
-            ctl.load(args.viz_encoding.name)
-            ctl.add("base",[],prg)
-            ctl.ground([("base", [])])
-            ctl.solve(on_model=add_fb_model)
-    else:
-        ctl = Control(cl_args)
-        ctl.load(args.viz_encoding.name)
-        ctl.add("base",[],stdin)
-        for f in args.files:
-            ctl.load(f.name)
-        ctl.ground([("base", [])])
-        ctl.solve(on_model=add_fb_model)
-
-    return fbs
-
 def _get_fbs_normal(args,stdin,prgs_from_json):
     fbs = []
     if prgs_from_json is not None:
@@ -346,6 +289,7 @@ def main():
     else:
         fbs = _get_fbs_normal(args,stdin,prg_from_json)
 
+    log.debug(fbs)
     ######## Name format
     if prg_from_json:
         if args.name_format is None:

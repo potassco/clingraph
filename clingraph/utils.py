@@ -1,12 +1,8 @@
 """
 Utils functions used across the project
 """
-import json
 import os
 import logging
-import jsonschema
-from jsonschema import validate
-from .exceptions import InvalidSyntax, InvalidSyntaxJSON
 log = logging.getLogger('custom')
 
 def apply(elements, function,**kwargs):
@@ -91,57 +87,3 @@ def write(elements, directory, format, name_format=None):
             directory = directory,
             format = format,
             name_format=name_format)
-
-clingo_json_schema = {
-    "type": "object",
-    "required": ["Call","Result"],
-    "properties":{
-        "Call": {
-            "type" : "array",
-        },
-        "Result":{
-            "type": "string",
-        }
-    }
-}
-
-def parse_clingo_json(json_str):
-    """
-    Parses a json string from the output of clingo obtained using the option ``--outf=2``.
-    Expects a SATISFIABLE answer.
-
-    Args:
-        json_str (str): A string with the json
-
-    Returns:
-        (`list[str]`) A list with the programs as strings
-
-    Raises:
-        :py:class:`InvalidSyntax`: if the json format is invalid or is not a SAT result.
-    """
-    try:
-        j = json.loads(json_str.encode())
-        validate(instance=j, schema=clingo_json_schema)
-        if j['Result'] == 'UNSATISFIABLE':
-            log.warning("Passing an unsatisfiable instance in the JSON. This wont produce any results")
-
-        if len(j["Call"]) > 1:
-            log.warning("Calls will multiple theads from clingo are not supported by clingraph")
-
-        if not "Witnesses" in j["Call"][0]:
-            log.warning("No Witnesses (stable models) in the JSON output, no output will be produced by clingraph")
-            witnesses = []
-        else:
-            witnesses = j["Call"][0]["Witnesses"]
-
-        models_prgs = []
-        for w in witnesses:
-            prg_str = "\n".join([f"{v}." for v in w["Value"]])
-            models_prgs.append(prg_str)
-
-        return models_prgs
-
-    except json.JSONDecodeError as e:
-        raise InvalidSyntax('The json can not be read.',str(e)) from None
-    except jsonschema.exceptions.ValidationError as e:
-        raise InvalidSyntaxJSON('The json does not have the expected structure. Make sure you used the -outf=2 option in clingo.',str(e)) from None
