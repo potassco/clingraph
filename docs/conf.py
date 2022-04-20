@@ -13,7 +13,8 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../..'))
-
+# sys.path.append(os.path.join(os.path.abspath(os.pardir)))
+# autodoc_mock_imports = ["clingo","clorm"]
 
 # -- Project information -----------------------------------------------------
 
@@ -38,6 +39,7 @@ extensions = [
     'sphinx.ext.autosectionlabel',
     'sphinx.ext.intersphinx'
 ]
+
 
 # intersphinx_mapping = {'clorm': ('https://clorm.readthedocs.io/en/latest/', None)}
 

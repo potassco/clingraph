@@ -39,6 +39,6 @@ Then clingraph will load this facts and construct a graphviz object that can be 
    clingraph/installation
    clingraph/syntax
    clingraph/console
-   notebook
-   clingraph/api 
+   ./../notebook
+   clingraph/api
 

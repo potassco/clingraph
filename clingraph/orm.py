@@ -6,7 +6,7 @@ import clorm
 from clorm import Predicate, RawField, ComplexTerm, refine_field, ConstantField, SimpleField, Raw
 from clorm import FactBase as ClormFactBase
 from clingo.symbol import Function
-from .utils import InvalidSyntax
+from .exceptions import InvalidSyntax
 log = logging.getLogger('custom')
 
 

@@ -5,7 +5,7 @@ Test  the Factbase
 import pytest
 from clingo import Control
 from ..orm import Factbase
-from ..utils import parse_clingo_json
+from ..clingo_utils import parse_clingo_json
 from ..exceptions import InvalidSyntax
 
 from .utils import get_example_file, get_example_str, make_file
