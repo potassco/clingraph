@@ -5,7 +5,6 @@ from ast import parse
 import sys
 import argparse
 import textwrap
-from tkinter.messagebox import NO
 import pkg_resources
 
 from .graphviz import compute_graphs, dot, render
