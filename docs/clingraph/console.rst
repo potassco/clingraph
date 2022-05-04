@@ -236,7 +236,7 @@ Piping json output
 .. code:: shell
     
   {
-    "Solver": "clingo version 5.5.1",
+    "Solver": "clingo version 5.5.2",
     "Input": [
       "examples/doc/example5/example5_encoding.lp","examples/doc/example5/example5_viz.lp"
     ],
