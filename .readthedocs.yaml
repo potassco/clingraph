@@ -13,9 +13,6 @@ sphinx:
 
 # Explicitly set the version of Python and its requirements
 
-conda:
-  environment: environment.yml
-
 python:
   install:
     - method: pip
