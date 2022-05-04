@@ -3,11 +3,14 @@ Installation
 
 Clingraph requires Python 3.8 or greater
 
-Installing with conda (Beta version)
-====================================
+Installing with conda
+=====================
+
+The conda clingraph package can be found `here <https://anaconda.org/potassco/clingraph>`_.
 
 .. code-block:: bash
 
+    $ conda install -c potassco clingraph 
     $ conda install -c potassco/label/dev clingraph
 
 .. note::
@@ -20,14 +23,17 @@ Installing with conda (Beta version)
 
 
 
-Installing with pip (Beta version)
-==================================
+Installing with pip 
+===================
 
-For the installation using ``pip`` the user must first install `graphviz <https://www.graphviz.org/download/>`_  (version 2.50 or greater) manually.
+The python clingraph package can be found `here <https://pypi.org/project/clingraph/>`_.
+
+.. warning:: 
+    For the installation using ``pip`` the user must first install `graphviz <https://www.graphviz.org/download/>`_  (version 2.50 or greater) manually.
 
 .. code-block:: bash
 
-    $ pip install --extra-index-url https://test.pypi.org/simple/ clingraph
+    $ pip install clingraph
 
 The following dependencies used in `clingraph` are optional. 
 
@@ -38,7 +44,7 @@ To include them in the installation use:
 
 .. code-block:: bash
 
-    $ pip install --extra-index-url https://test.pypi.org/simple/ clingraph[tex,gif]
+    $ pip install clingraph[tex,gif]
 
 
 
