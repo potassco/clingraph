@@ -12,9 +12,13 @@ viz_attr(graph, sudoku, newrank, true).
 viz_attr(graph_nodes, sudoku, shape, square).
 viz_attr(graph_nodes, sudoku, style, filled).
 viz_attr(graph_nodes, sudoku, fillcolor, white).
+viz_attr(graph_nodes, sudoku, width, "1").
+viz_attr(graph_nodes, sudoku, fontsize, 30).
 
 % Nodes
 viz_node(pos(X,Y), sudoku):- pos(X,Y).
+viz_attr(node, pos(X,Y), fillcolor, "grey88"):- pos(X,Y), subgrid(X,Y,S), S\2==0.
+
 viz_attr(node, pos(X,Y), label, V):- sudoku(X,Y,V), not initial(X,Y,_).
 viz_attr(node, pos(X,Y), (label,0), "<<B>"):- sudoku(X,Y,V), initial(X,Y,_).
 viz_attr(node, pos(X,Y), (label,1), V):- sudoku(X,Y,V), initial(X,Y,_).
