@@ -65,7 +65,7 @@ Clingraph provides four types of outputs
   - ``dot``: Generates the graphviz objects and prints the source DOT language
   - ``render``: Generates the graphviz objects and renders the images
   - ``tex``: Generates the graphviz objects and prints the latex code
-  - ``animate``: Generates the graphviz objects and creates a an animation in gif format
+  - ``animate``: Generates the graphviz objects and creates an animation in gif format
 
 
 Consider the file `example2.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example2/example2.lp>`_
@@ -161,6 +161,7 @@ Generates an animation with the graph rendering. The order of the images can be 
   - ``name1,...,namex``: A string with the order of the graph names separated by `,`
 
 Additionally the number of frames per second can be set with ``--fps``.
+
 .. code:: shell
 
   $ clingraph example2.lp --out=animate --sort=desc --name-format=families_gif
@@ -223,10 +224,10 @@ Piping json output
 ++++++++++++++++++
 
 .. warning:: 
-  This integration is only supports special characters in strings, such as scaped quotes ``attr(node,a,label,"Quotes\"")``, when using ``clingo >= 5.5.2``.
+  This integration only supports special characters in strings, such as escaped quotes ``attr(node,a,label,"Quotes\"")``, when using ``clingo >= 5.5.2``.
 
 
-- Run clingo to obtain the two stable models formatted as json with option ``--outf=2```
+- Run clingo to obtain the two stable models formatted as json with option ``--outf=2``
 
 .. code:: shell
 
@@ -272,7 +273,7 @@ Piping json output
   }
 
 
-- Pipe clingos json output to clingraph
+- Pipe clingo's json output to clingraph
 
 .. code:: shell
 
@@ -359,7 +360,7 @@ Furthermore, the functions defined in :ref:`ClingraphContext <Clingo Utils>` wil
 Latex integration
 =================
 
-The integration will latex generates latex code for the graphs using the `dot2tex <https://dot2tex.readthedocs.io/en/latest>`_ package. This feature allows the user to include mathematical notation in the labels.
+The integration generates latex code for the graphs using the `dot2tex <https://dot2tex.readthedocs.io/en/latest>`_ package. This feature allows the user to include mathematical notation in the labels.
 
 .. warning:: To use math notation (``$``) in labels, we advise the user to use the ``texlbl`` special attribute for the latex label instead of the normal ``label`` attribute. This will avoid problems with the escape characters. Note that edges require a ``label`` attribute to be defined (even if it is empty) in order for the ``texlbl`` attribute to have an effect. Additionally, the backslash ``\`` must be escaped.
 
@@ -389,7 +390,7 @@ Then, the compilation can be done using a package like ``pdflatex``
   $ pdflatex out/default.tex ; open default.pdf
 
 
-We can see compare the two outputs using ``--out=tex`` and ``--out=render``:
+We can compare the two outputs using ``--out=tex`` and ``--out=render``:
 
 .. list-table:: 
 
@@ -400,5 +401,3 @@ We can see compare the two outputs using ``--out=tex`` and ``--out=render``:
       - .. figure:: ../../examples/doc/example6/latex.png
 
            *Graph compiled by latex* ``--out=tex``
-
-

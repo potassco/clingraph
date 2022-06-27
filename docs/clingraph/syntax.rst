@@ -53,9 +53,9 @@ A graph is defined using predicate ``graph/1``.
 Multiple graphs
 ---------------
     
-Multiple graphs can defined within the same set of facts.
+Multiple graphs can be defined within the same set of facts.
 Each of them will generate a different graph. In order to assign a
-node or edge to an specific graph we add the identifier of the
+node or edge to a specific graph we add the identifier of the
 graph in the second argument. 
 
 .. warning:: All nodes and edges defined with a
@@ -86,7 +86,7 @@ graph in the second argument.
 
            *Graph bills_family*
 
-.. note:: The creation of multiple graphs is specially useful for representing a dynamic domain where we need a different visualization for each time step
+.. note:: The creation of multiple graphs is especially useful for representing a dynamic domain where we need a different visualization for each time step
 
 
 Subgraphs
