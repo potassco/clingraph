@@ -73,4 +73,4 @@ With pip:
     $ pip install .[dev,tex,gif]
 
 .. warning:: 
-    This makes clingraph available in the command like using ``python -m clingraph`` instead of ``clingraph``.
+    This makes clingraph available in the command line using ``python -m clingraph`` instead of ``clingraph``.

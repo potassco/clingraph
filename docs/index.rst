@@ -24,7 +24,7 @@ The package also contains special features for integration with `clingo <https:/
    attr(node, john, label, "John Doe").
    attr(node, jane, label, "Jane Doe").
 
-Then clingraph will load this facts and construct a graphviz object that can be rendered, saved and more! 
+Then clingraph will load these facts and construct a graphviz object that can be rendered, saved and more! 
 
 .. figure:: ../examples/doc/example1/example1.2.png
 
