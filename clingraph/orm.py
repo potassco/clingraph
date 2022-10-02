@@ -121,7 +121,7 @@ class Factbase():
         self.AttrSugar = AttrSugar
 
         self.default_graph = default_graph
-        self.fb = ClormFactBase()
+        self.fb = ClormFactBase(indexes=[Attr.element_id])
         self.prefix = prefix
 
     @classmethod
