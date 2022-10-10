@@ -6,7 +6,7 @@ import os
 import logging
 from .graphviz import render
 try:
-    import imageio
+    import imageio.v2 as imageio
 except ImportError:
     raise RuntimeError("imageio module has to be installed to save gifs") from None
 log = logging.getLogger('custom')
