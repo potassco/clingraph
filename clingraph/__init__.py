@@ -1,12 +1,12 @@
 """
 Clingraph functionality
 """
+import os
 from ast import parse
 import sys
 import argparse
 import textwrap
 import pkg_resources
-
 from .graphviz import compute_graphs, dot, render
 from .logger import setup_logger_str, COLORS
 from .orm import Factbase
@@ -246,6 +246,50 @@ def _get_parser():
 
     return parser
 
+
+SVG_SCRIPT = """
+<style>
+.hidden{
+    visibility: hidden;
+}
+</style>
+<script>
+      <script type="text/javascript">
+        var edges = Object.values(document.getElementsByClassName('edge'));
+        var nodes = Object.values(document.getElementsByClassName('node'));
+        var elements = edges.concat(nodes);
+        const events = ["click","mouseenter","mouseleave"];
+        const actions = ["visible","hidden","focus","blur"];
+        const properties = {
+            'visible':['visibility','visible'],
+            'hidden':['visibility','hidden'],
+            'focus':['opacity','1'],
+            'blur':['opacity','0.2']
+            }
+        window.onload=function(){
+            elements.forEach(elem => {
+                events.forEach(event => {
+                    actions.forEach(action => {
+                        elem.addEventListener(event, function() {
+                            local_event = event;
+                            property = properties[action][0];
+                            property_val = properties[action][1];
+                            class_name = local_event + "_" + elem.id + "_" + action;
+                            var children = Object.values(document.getElementsByClassName(class_name));
+                            children.forEach(c => {
+                                c.style[property]=property_val
+                            })
+                        })
+                    })
+                })
+            });
+        }
+      </script>
+
+</script>
+</svg>
+"""
+
 def _get_fbs_normal(args,stdin,prgs_from_json):
     fbs = []
     if prgs_from_json is not None:
@@ -358,6 +402,19 @@ def main():
                     continue
                 for g_name, p in p_dic.items():
                     print(out_str("Image",g_name,p))
+
+        if args.format=="svg":
+            for path_dic in paths:
+                for path in path_dic.values():
+                    with open(path, 'r', encoding='UTF-8') as f:
+                        lines = f.readlines()
+                        lines[-1] = ""
+                        lines+=[s+"\n" for s in SVG_SCRIPT.split("\n")]
+                    with open(path, 'w', encoding='UTF-8') as f:
+                        f.writelines(lines)
+
+
+
         sys.exit()
 
     ######## OUT=tex
