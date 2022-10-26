@@ -251,6 +251,10 @@ SVG_SCRIPT = """
 <style>
 .hidden{
     visibility: hidden;
+    pointer-events: none;
+}
+g{
+    pointer-events: all;
 }
 </style>
 <script>
