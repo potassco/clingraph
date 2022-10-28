@@ -9,608 +9,203 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 364)">
 <title>default</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-364 364,-364 364,4 -4,4"/>
-<!-- a((5,1),(1,1)) -->
-<g id="a((5,1),(1,1))" class="node mouseleave_(5,1)_hidden hidden mouseenter_(5,1)_visible">
-<title>a((5,1),(1,1))</title>
-<polygon fill="red" stroke="black" points="72,-72 0,-72 0,0 72,0 72,-72"/>
-<text text-anchor="middle" x="36" y="-32.3" font-family="Times,serif" font-size="14.00">(1,1)</text>
-</g>
-<!-- a((4,3),(3,2)) -->
-<g id="a((4,3),(3,2))" class="node mouseenter_(4,3)_visible hidden mouseleave_(4,3)_hidden">
-<title>a((4,3),(3,2))</title>
-<polygon fill="red" stroke="black" points="216,-144 144,-144 144,-72 216,-72 216,-144"/>
-<text text-anchor="middle" x="180" y="-104.3" font-family="Times,serif" font-size="14.00">(3,2)</text>
-</g>
-<!-- a((2,2),(5,2)) -->
-<g id="a((2,2),(5,2))" class="node mouseenter_(2,2)_visible mouseleave_(2,2)_hidden hidden">
-<title>a((2,2),(5,2))</title>
-<polygon fill="red" stroke="black" points="360,-144 288,-144 288,-72 360,-72 360,-144"/>
-<text text-anchor="middle" x="324" y="-104.3" font-family="Times,serif" font-size="14.00">(5,2)</text>
-</g>
-<!-- a((4,3),(2,5)) -->
-<g id="a((4,3),(2,5))" class="node mouseenter_(4,3)_visible hidden mouseleave_(4,3)_hidden">
-<title>a((4,3),(2,5))</title>
-<polygon fill="red" stroke="black" points="144,-360 72,-360 72,-288 144,-288 144,-360"/>
-<text text-anchor="middle" x="108" y="-320.3" font-family="Times,serif" font-size="14.00">(2,5)</text>
-</g>
-<!-- (2,3) -->
-<g id="(2,3)" class="node mouseenter_(2,2)_hidden mouseleave_(2,2)_visible mouseleave_(1,4)_visible mouseenter_(4,3)_hidden mouseleave_(4,3)_visible mouseenter_(1,4)_hidden">
-<title>(2,3)</title>
-<polygon fill="white" stroke="black" points="144,-216 72,-216 72,-144 144,-144 144,-216"/>
-<text text-anchor="middle" x="108" y="-176.3" font-family="Times,serif" font-size="14.00">(2,3)</text>
-</g>
-<!-- a((3,5),(3,4)) -->
-<g id="a((3,5),(3,4))" class="node mouseleave_(3,5)_hidden mouseenter_(3,5)_visible hidden">
-<title>a((3,5),(3,4))</title>
-<polygon fill="red" stroke="black" points="216,-288 144,-288 144,-216 216,-216 216,-288"/>
-<text text-anchor="middle" x="180" y="-248.3" font-family="Times,serif" font-size="14.00">(3,4)</text>
-</g>
-<!-- a((3,5),(1,5)) -->
-<g id="a((3,5),(1,5))" class="node hidden mouseleave_(3,5)_hidden mouseenter_(3,5)_visible">
-<title>a((3,5),(1,5))</title>
-<polygon fill="red" stroke="black" points="72,-360 0,-360 0,-288 72,-288 72,-360"/>
-<text text-anchor="middle" x="36" y="-320.3" font-family="Times,serif" font-size="14.00">(1,5)</text>
-</g>
-<!-- a((5,1),(3,3)) -->
-<g id="a((5,1),(3,3))" class="node hidden mouseleave_(5,1)_hidden mouseenter_(5,1)_visible">
-<title>a((5,1),(3,3))</title>
-<polygon fill="red" stroke="black" points="216,-216 144,-216 144,-144 216,-144 216,-216"/>
-<text text-anchor="middle" x="180" y="-176.3" font-family="Times,serif" font-size="14.00">(3,3)</text>
-</g>
-<!-- (3,3) -->
-<g id="(3,3)" class="node mouseenter_(3,5)_hidden mouseenter_(4,3)_hidden mouseleave_(4,3)_visible mouseenter_(2,2)_hidden mouseleave_(2,2)_visible mouseenter_(5,1)_hidden mouseleave_(3,5)_visible mouseleave_(5,1)_visible">
-<title>(3,3)</title>
-<polygon fill="gray" stroke="black" points="216,-216 144,-216 144,-144 216,-144 216,-216"/>
-<text text-anchor="middle" x="180" y="-176.3" font-family="Times,serif" font-size="14.00">(3,3)</text>
-</g>
-<!-- (4,2) -->
-<g id="(4,2)" class="node mouseleave_(5,1)_visible mouseenter_(4,3)_hidden mouseleave_(4,3)_visible mouseenter_(2,2)_hidden mouseleave_(2,2)_visible mouseenter_(5,1)_hidden">
-<title>(4,2)</title>
-<polygon fill="gray" stroke="black" points="288,-144 216,-144 216,-72 288,-72 288,-144"/>
-<text text-anchor="middle" x="252" y="-104.3" font-family="Times,serif" font-size="14.00">(4,2)</text>
-</g>
-<!-- a((5,1),(5,2)) -->
-<g id="a((5,1),(5,2))" class="node mouseleave_(5,1)_hidden hidden mouseenter_(5,1)_visible">
-<title>a((5,1),(5,2))</title>
-<polygon fill="red" stroke="black" points="360,-144 288,-144 288,-72 360,-72 360,-144"/>
-<text text-anchor="middle" x="324" y="-104.3" font-family="Times,serif" font-size="14.00">(5,2)</text>
-</g>
-<!-- a((1,4),(1,1)) -->
-<g id="a((1,4),(1,1))" class="node mouseleave_(1,4)_hidden hidden mouseenter_(1,4)_visible">
-<title>a((1,4),(1,1))</title>
-<polygon fill="red" stroke="black" points="72,-72 0,-72 0,0 72,0 72,-72"/>
-<text text-anchor="middle" x="36" y="-32.3" font-family="Times,serif" font-size="14.00">(1,1)</text>
-</g>
-<!-- a((1,4),(5,4)) -->
-<g id="a((1,4),(5,4))" class="node mouseleave_(1,4)_hidden mouseenter_(1,4)_visible hidden">
-<title>a((1,4),(5,4))</title>
-<polygon fill="red" stroke="black" points="360,-288 288,-288 288,-216 360,-216 360,-288"/>
-<text text-anchor="middle" x="324" y="-248.3" font-family="Times,serif" font-size="14.00">(5,4)</text>
-</g>
-<!-- (2,1) -->
-<g id="(2,1)" class="node mouseleave_(4,3)_visible mouseenter_(4,3)_hidden mouseleave_(2,2)_visible mouseenter_(2,2)_hidden mouseenter_(5,1)_hidden mouseleave_(5,1)_visible">
-<title>(2,1)</title>
-<polygon fill="white" stroke="black" points="144,-72 72,-72 72,0 144,0 144,-72"/>
-<text text-anchor="middle" x="108" y="-32.3" font-family="Times,serif" font-size="14.00">(2,1)</text>
-</g>
-<!-- a((2,2),(3,3)) -->
-<g id="a((2,2),(3,3))" class="node mouseleave_(2,2)_hidden hidden mouseenter_(2,2)_visible">
-<title>a((2,2),(3,3))</title>
-<polygon fill="red" stroke="black" points="216,-216 144,-216 144,-144 216,-144 216,-216"/>
-<text text-anchor="middle" x="180" y="-176.3" font-family="Times,serif" font-size="14.00">(3,3)</text>
-</g>
-<!-- a((4,3),(4,3)) -->
-<g id="a((4,3),(4,3))" class="node mouseenter_(4,3)_visible hidden mouseleave_(4,3)_hidden">
-<title>a((4,3),(4,3))</title>
-<polygon fill="red" stroke="black" points="288,-216 216,-216 216,-144 288,-144 288,-216"/>
-<text text-anchor="middle" x="252" y="-167.5" font-family="Times,serif" font-size="50.00">♕</text>
-</g>
-<!-- (3,4) -->
-<g id="(3,4)" class="node mouseenter_(3,5)_hidden mouseenter_(4,3)_hidden mouseenter_(1,4)_hidden mouseleave_(4,3)_visible mouseleave_(3,5)_visible mouseleave_(1,4)_visible">
-<title>(3,4)</title>
-<polygon fill="white" stroke="black" points="216,-288 144,-288 144,-216 216,-216 216,-288"/>
-<text text-anchor="middle" x="180" y="-248.3" font-family="Times,serif" font-size="14.00">(3,4)</text>
-</g>
-<!-- a((1,4),(2,4)) -->
-<g id="a((1,4),(2,4))" class="node hidden mouseenter_(1,4)_visible mouseleave_(1,4)_hidden">
-<title>a((1,4),(2,4))</title>
-<polygon fill="red" stroke="black" points="144,-288 72,-288 72,-216 144,-216 144,-288"/>
-<text text-anchor="middle" x="108" y="-248.3" font-family="Times,serif" font-size="14.00">(2,4)</text>
-</g>
-<!-- (5,1) -->
-<g id="(5,1)" class="node mouseleave_(5,1)_visible mouseenter_(5,1)_hidden">
-<title>(5,1)</title>
-<polygon fill="gray" stroke="black" points="360,-72 288,-72 288,0 360,0 360,-72"/>
-<text text-anchor="middle" x="324" y="-23.5" font-family="Times,serif" font-size="50.00">♕</text>
-</g>
-<!-- a((4,3),(2,3)) -->
-<g id="a((4,3),(2,3))" class="node mouseenter_(4,3)_visible hidden mouseleave_(4,3)_hidden">
-<title>a((4,3),(2,3))</title>
-<polygon fill="red" stroke="black" points="144,-216 72,-216 72,-144 144,-144 144,-216"/>
-<text text-anchor="middle" x="108" y="-176.3" font-family="Times,serif" font-size="14.00">(2,3)</text>
-</g>
-<!-- a((1,4),(1,4)) -->
-<g id="a((1,4),(1,4))" class="node mouseleave_(1,4)_hidden hidden mouseenter_(1,4)_visible">
-<title>a((1,4),(1,4))</title>
-<polygon fill="red" stroke="black" points="72,-288 0,-288 0,-216 72,-216 72,-288"/>
-<text text-anchor="middle" x="36" y="-239.5" font-family="Times,serif" font-size="50.00">♕</text>
-</g>
-<!-- a((5,1),(4,2)) -->
-<g id="a((5,1),(4,2))" class="node hidden mouseenter_(5,1)_visible mouseleave_(5,1)_hidden">
-<title>a((5,1),(4,2))</title>
-<polygon fill="red" stroke="black" points="288,-144 216,-144 216,-72 288,-72 288,-144"/>
-<text text-anchor="middle" x="252" y="-104.3" font-family="Times,serif" font-size="14.00">(4,2)</text>
-</g>
-<!-- a((5,1),(2,4)) -->
-<g id="a((5,1),(2,4))" class="node hidden mouseenter_(5,1)_visible mouseleave_(5,1)_hidden">
-<title>a((5,1),(2,4))</title>
-<polygon fill="red" stroke="black" points="144,-288 72,-288 72,-216 144,-216 144,-288"/>
-<text text-anchor="middle" x="108" y="-248.3" font-family="Times,serif" font-size="14.00">(2,4)</text>
-</g>
-<!-- a((2,2),(3,1)) -->
-<g id="a((2,2),(3,1))" class="node hidden mouseenter_(2,2)_visible mouseleave_(2,2)_hidden">
-<title>a((2,2),(3,1))</title>
-<polygon fill="red" stroke="black" points="216,-72 144,-72 144,0 216,0 216,-72"/>
-<text text-anchor="middle" x="180" y="-32.3" font-family="Times,serif" font-size="14.00">(3,1)</text>
-</g>
-<!-- a((4,3),(3,4)) -->
-<g id="a((4,3),(3,4))" class="node hidden mouseleave_(4,3)_hidden mouseenter_(4,3)_visible">
-<title>a((4,3),(3,4))</title>
-<polygon fill="red" stroke="black" points="216,-288 144,-288 144,-216 216,-216 216,-288"/>
-<text text-anchor="middle" x="180" y="-248.3" font-family="Times,serif" font-size="14.00">(3,4)</text>
-</g>
-<!-- (2,2) -->
-<g id="(2,2)" class="node mouseenter_(2,2)_hidden mouseleave_(2,2)_visible">
-<title>(2,2)</title>
-<polygon fill="gray" stroke="black" points="144,-144 72,-144 72,-72 144,-72 144,-144"/>
-<text text-anchor="middle" x="108" y="-95.5" font-family="Times,serif" font-size="50.00">♕</text>
-</g>
-<!-- a((2,2),(1,2)) -->
-<g id="a((2,2),(1,2))" class="node mouseenter_(2,2)_visible hidden mouseleave_(2,2)_hidden">
-<title>a((2,2),(1,2))</title>
-<polygon fill="red" stroke="black" points="72,-144 0,-144 0,-72 72,-72 72,-144"/>
-<text text-anchor="middle" x="36" y="-104.3" font-family="Times,serif" font-size="14.00">(1,2)</text>
-</g>
 <!-- (4,3) -->
-<g id="(4,3)" class="node mouseenter_(4,3)_hidden mouseleave_(4,3)_visible">
+<g id="(4,3)" class="node init_color_gray mouseenter_(4,3)_color_red mouseleave_(4,3)_color_gray">
 <title>(4,3)</title>
-<polygon fill="white" stroke="black" points="288,-216 216,-216 216,-144 288,-144 288,-216"/>
+<polygon fill="currentcolor" stroke="black" points="288,-216 216,-216 216,-144 288,-144 288,-216"/>
 <text text-anchor="middle" x="252" y="-167.5" font-family="Times,serif" font-size="50.00">♕</text>
-</g>
-<!-- a((2,2),(4,4)) -->
-<g id="a((2,2),(4,4))" class="node mouseleave_(2,2)_hidden mouseenter_(2,2)_visible hidden">
-<title>a((2,2),(4,4))</title>
-<polygon fill="red" stroke="black" points="288,-288 216,-288 216,-216 288,-216 288,-288"/>
-<text text-anchor="middle" x="252" y="-248.3" font-family="Times,serif" font-size="14.00">(4,4)</text>
-</g>
-<!-- a((4,3),(4,5)) -->
-<g id="a((4,3),(4,5))" class="node mouseenter_(4,3)_visible mouseleave_(4,3)_hidden hidden">
-<title>a((4,3),(4,5))</title>
-<polygon fill="red" stroke="black" points="288,-360 216,-360 216,-288 288,-288 288,-360"/>
-<text text-anchor="middle" x="252" y="-320.3" font-family="Times,serif" font-size="14.00">(4,5)</text>
-</g>
-<!-- a((1,4),(1,5)) -->
-<g id="a((1,4),(1,5))" class="node hidden mouseenter_(1,4)_visible mouseleave_(1,4)_hidden">
-<title>a((1,4),(1,5))</title>
-<polygon fill="red" stroke="black" points="72,-360 0,-360 0,-288 72,-288 72,-360"/>
-<text text-anchor="middle" x="36" y="-320.3" font-family="Times,serif" font-size="14.00">(1,5)</text>
-</g>
-<!-- (5,4) -->
-<g id="(5,4)" class="node mouseleave_(1,4)_visible mouseenter_(5,1)_hidden mouseleave_(5,1)_visible mouseenter_(1,4)_hidden mouseenter_(4,3)_hidden mouseleave_(4,3)_visible">
-<title>(5,4)</title>
-<polygon fill="white" stroke="black" points="360,-288 288,-288 288,-216 360,-216 360,-288"/>
-<text text-anchor="middle" x="324" y="-248.3" font-family="Times,serif" font-size="14.00">(5,4)</text>
-</g>
-<!-- a((5,1),(4,1)) -->
-<g id="a((5,1),(4,1))" class="node hidden mouseenter_(5,1)_visible mouseleave_(5,1)_hidden">
-<title>a((5,1),(4,1))</title>
-<polygon fill="red" stroke="black" points="288,-72 216,-72 216,0 288,0 288,-72"/>
-<text text-anchor="middle" x="252" y="-32.3" font-family="Times,serif" font-size="14.00">(4,1)</text>
-</g>
-<!-- a((3,5),(3,2)) -->
-<g id="a((3,5),(3,2))" class="node mouseenter_(3,5)_visible hidden mouseleave_(3,5)_hidden">
-<title>a((3,5),(3,2))</title>
-<polygon fill="red" stroke="black" points="216,-144 144,-144 144,-72 216,-72 216,-144"/>
-<text text-anchor="middle" x="180" y="-104.3" font-family="Times,serif" font-size="14.00">(3,2)</text>
-</g>
-<!-- a((3,5),(3,3)) -->
-<g id="a((3,5),(3,3))" class="node mouseenter_(3,5)_visible hidden mouseleave_(3,5)_hidden">
-<title>a((3,5),(3,3))</title>
-<polygon fill="red" stroke="black" points="216,-216 144,-216 144,-144 216,-144 216,-216"/>
-<text text-anchor="middle" x="180" y="-176.3" font-family="Times,serif" font-size="14.00">(3,3)</text>
-</g>
-<!-- a((5,1),(1,5)) -->
-<g id="a((5,1),(1,5))" class="node mouseleave_(5,1)_hidden hidden mouseenter_(5,1)_visible">
-<title>a((5,1),(1,5))</title>
-<polygon fill="red" stroke="black" points="72,-360 0,-360 0,-288 72,-288 72,-360"/>
-<text text-anchor="middle" x="36" y="-320.3" font-family="Times,serif" font-size="14.00">(1,5)</text>
-</g>
-<!-- a((4,3),(4,2)) -->
-<g id="a((4,3),(4,2))" class="node mouseenter_(4,3)_visible mouseleave_(4,3)_hidden hidden">
-<title>a((4,3),(4,2))</title>
-<polygon fill="red" stroke="black" points="288,-144 216,-144 216,-72 288,-72 288,-144"/>
-<text text-anchor="middle" x="252" y="-104.3" font-family="Times,serif" font-size="14.00">(4,2)</text>
-</g>
-<!-- a((5,1),(2,1)) -->
-<g id="a((5,1),(2,1))" class="node hidden mouseleave_(5,1)_hidden mouseenter_(5,1)_visible">
-<title>a((5,1),(2,1))</title>
-<polygon fill="red" stroke="black" points="144,-72 72,-72 72,0 144,0 144,-72"/>
-<text text-anchor="middle" x="108" y="-32.3" font-family="Times,serif" font-size="14.00">(2,1)</text>
-</g>
-<!-- (3,5) -->
-<g id="(3,5)" class="node mouseleave_(3,5)_visible mouseenter_(3,5)_hidden">
-<title>(3,5)</title>
-<polygon fill="gray" stroke="black" points="216,-360 144,-360 144,-288 216,-288 216,-360"/>
-<text text-anchor="middle" x="180" y="-311.5" font-family="Times,serif" font-size="50.00">♕</text>
-</g>
-<!-- a((2,2),(1,1)) -->
-<g id="a((2,2),(1,1))" class="node mouseenter_(2,2)_visible hidden mouseleave_(2,2)_hidden">
-<title>a((2,2),(1,1))</title>
-<polygon fill="red" stroke="black" points="72,-72 0,-72 0,0 72,0 72,-72"/>
-<text text-anchor="middle" x="36" y="-32.3" font-family="Times,serif" font-size="14.00">(1,1)</text>
-</g>
-<!-- (4,5) -->
-<g id="(4,5)" class="node mouseleave_(3,5)_visible mouseenter_(3,5)_hidden mouseenter_(4,3)_hidden mouseleave_(4,3)_visible">
-<title>(4,5)</title>
-<polygon fill="white" stroke="black" points="288,-360 216,-360 216,-288 288,-288 288,-360"/>
-<text text-anchor="middle" x="252" y="-320.3" font-family="Times,serif" font-size="14.00">(4,5)</text>
-</g>
-<!-- a((1,4),(2,5)) -->
-<g id="a((1,4),(2,5))" class="node mouseenter_(1,4)_visible mouseleave_(1,4)_hidden hidden">
-<title>a((1,4),(2,5))</title>
-<polygon fill="red" stroke="black" points="144,-360 72,-360 72,-288 144,-288 144,-360"/>
-<text text-anchor="middle" x="108" y="-320.3" font-family="Times,serif" font-size="14.00">(2,5)</text>
-</g>
-<!-- (1,3) -->
-<g id="(1,3)" class="node mouseleave_(1,4)_visible mouseenter_(3,5)_hidden mouseenter_(4,3)_hidden mouseenter_(1,4)_hidden mouseleave_(4,3)_visible mouseenter_(2,2)_hidden mouseleave_(2,2)_visible mouseleave_(3,5)_visible">
-<title>(1,3)</title>
-<polygon fill="gray" stroke="black" points="72,-216 0,-216 0,-144 72,-144 72,-216"/>
-<text text-anchor="middle" x="36" y="-176.3" font-family="Times,serif" font-size="14.00">(1,3)</text>
-</g>
-<!-- (2,5) -->
-<g id="(2,5)" class="node mouseenter_(4,3)_hidden mouseenter_(3,5)_hidden mouseleave_(4,3)_visible mouseenter_(2,2)_hidden mouseleave_(2,2)_visible mouseleave_(3,5)_visible mouseleave_(1,4)_visible mouseenter_(1,4)_hidden">
-<title>(2,5)</title>
-<polygon fill="white" stroke="black" points="144,-360 72,-360 72,-288 144,-288 144,-360"/>
-<text text-anchor="middle" x="108" y="-320.3" font-family="Times,serif" font-size="14.00">(2,5)</text>
-</g>
-<!-- a((1,4),(4,1)) -->
-<g id="a((1,4),(4,1))" class="node mouseenter_(1,4)_visible hidden mouseleave_(1,4)_hidden">
-<title>a((1,4),(4,1))</title>
-<polygon fill="red" stroke="black" points="288,-72 216,-72 216,0 288,0 288,-72"/>
-<text text-anchor="middle" x="252" y="-32.3" font-family="Times,serif" font-size="14.00">(4,1)</text>
-</g>
-<!-- a((3,5),(1,3)) -->
-<g id="a((3,5),(1,3))" class="node mouseenter_(3,5)_visible hidden mouseleave_(3,5)_hidden">
-<title>a((3,5),(1,3))</title>
-<polygon fill="red" stroke="black" points="72,-216 0,-216 0,-144 72,-144 72,-216"/>
-<text text-anchor="middle" x="36" y="-176.3" font-family="Times,serif" font-size="14.00">(1,3)</text>
-</g>
-<!-- a((5,1),(3,1)) -->
-<g id="a((5,1),(3,1))" class="node mouseleave_(5,1)_hidden mouseenter_(5,1)_visible hidden">
-<title>a((5,1),(3,1))</title>
-<polygon fill="red" stroke="black" points="216,-72 144,-72 144,0 216,0 216,-72"/>
-<text text-anchor="middle" x="180" y="-32.3" font-family="Times,serif" font-size="14.00">(3,1)</text>
-</g>
-<!-- (3,1) -->
-<g id="(3,1)" class="node mouseenter_(5,1)_hidden mouseenter_(3,5)_hidden mouseleave_(5,1)_visible mouseleave_(3,5)_visible mouseleave_(2,2)_visible mouseenter_(2,2)_hidden">
-<title>(3,1)</title>
-<polygon fill="gray" stroke="black" points="216,-72 144,-72 144,0 216,0 216,-72"/>
-<text text-anchor="middle" x="180" y="-32.3" font-family="Times,serif" font-size="14.00">(3,1)</text>
-</g>
-<!-- a((4,3),(5,4)) -->
-<g id="a((4,3),(5,4))" class="node mouseenter_(4,3)_visible mouseleave_(4,3)_hidden hidden">
-<title>a((4,3),(5,4))</title>
-<polygon fill="red" stroke="black" points="360,-288 288,-288 288,-216 360,-216 360,-288"/>
-<text text-anchor="middle" x="324" y="-248.3" font-family="Times,serif" font-size="14.00">(5,4)</text>
-</g>
-<!-- a((2,2),(5,5)) -->
-<g id="a((2,2),(5,5))" class="node mouseenter_(2,2)_visible mouseleave_(2,2)_hidden hidden">
-<title>a((2,2),(5,5))</title>
-<polygon fill="red" stroke="black" points="360,-360 288,-360 288,-288 360,-288 360,-360"/>
-<text text-anchor="middle" x="324" y="-320.3" font-family="Times,serif" font-size="14.00">(5,5)</text>
-</g>
-<!-- a((3,5),(3,5)) -->
-<g id="a((3,5),(3,5))" class="node mouseenter_(3,5)_visible hidden mouseleave_(3,5)_hidden">
-<title>a((3,5),(3,5))</title>
-<polygon fill="red" stroke="black" points="216,-360 144,-360 144,-288 216,-288 216,-360"/>
-<text text-anchor="middle" x="180" y="-311.5" font-family="Times,serif" font-size="50.00">♕</text>
-</g>
-<!-- a((2,2),(3,2)) -->
-<g id="a((2,2),(3,2))" class="node mouseenter_(2,2)_visible hidden mouseleave_(2,2)_hidden">
-<title>a((2,2),(3,2))</title>
-<polygon fill="red" stroke="black" points="216,-144 144,-144 144,-72 216,-72 216,-144"/>
-<text text-anchor="middle" x="180" y="-104.3" font-family="Times,serif" font-size="14.00">(3,2)</text>
-</g>
-<!-- a((1,4),(2,3)) -->
-<g id="a((1,4),(2,3))" class="node mouseenter_(1,4)_visible mouseleave_(1,4)_hidden hidden">
-<title>a((1,4),(2,3))</title>
-<polygon fill="red" stroke="black" points="144,-216 72,-216 72,-144 144,-144 144,-216"/>
-<text text-anchor="middle" x="108" y="-176.3" font-family="Times,serif" font-size="14.00">(2,3)</text>
-</g>
-<!-- (1,1) -->
-<g id="(1,1)" class="node mouseleave_(2,2)_visible mouseenter_(2,2)_hidden mouseleave_(1,4)_visible mouseenter_(5,1)_hidden mouseleave_(5,1)_visible mouseenter_(1,4)_hidden">
-<title>(1,1)</title>
-<polygon fill="gray" stroke="black" points="72,-72 0,-72 0,0 72,0 72,-72"/>
-<text text-anchor="middle" x="36" y="-32.3" font-family="Times,serif" font-size="14.00">(1,1)</text>
-</g>
-<!-- a((3,5),(2,4)) -->
-<g id="a((3,5),(2,4))" class="node hidden mouseleave_(3,5)_hidden mouseenter_(3,5)_visible">
-<title>a((3,5),(2,4))</title>
-<polygon fill="red" stroke="black" points="144,-288 72,-288 72,-216 144,-216 144,-288"/>
-<text text-anchor="middle" x="108" y="-248.3" font-family="Times,serif" font-size="14.00">(2,4)</text>
-</g>
-<!-- a((3,5),(4,4)) -->
-<g id="a((3,5),(4,4))" class="node hidden mouseleave_(3,5)_hidden mouseenter_(3,5)_visible">
-<title>a((3,5),(4,4))</title>
-<polygon fill="red" stroke="black" points="288,-288 216,-288 216,-216 288,-216 288,-288"/>
-<text text-anchor="middle" x="252" y="-248.3" font-family="Times,serif" font-size="14.00">(4,4)</text>
-</g>
-<!-- a((1,4),(3,2)) -->
-<g id="a((1,4),(3,2))" class="node hidden mouseenter_(1,4)_visible mouseleave_(1,4)_hidden">
-<title>a((1,4),(3,2))</title>
-<polygon fill="red" stroke="black" points="216,-144 144,-144 144,-72 216,-72 216,-144"/>
-<text text-anchor="middle" x="180" y="-104.3" font-family="Times,serif" font-size="14.00">(3,2)</text>
-</g>
-<!-- a((1,4),(4,4)) -->
-<g id="a((1,4),(4,4))" class="node mouseenter_(1,4)_visible mouseleave_(1,4)_hidden hidden">
-<title>a((1,4),(4,4))</title>
-<polygon fill="red" stroke="black" points="288,-288 216,-288 216,-216 288,-216 288,-288"/>
-<text text-anchor="middle" x="252" y="-248.3" font-family="Times,serif" font-size="14.00">(4,4)</text>
-</g>
-<!-- a((4,3),(2,1)) -->
-<g id="a((4,3),(2,1))" class="node mouseenter_(4,3)_visible hidden mouseleave_(4,3)_hidden">
-<title>a((4,3),(2,1))</title>
-<polygon fill="red" stroke="black" points="144,-72 72,-72 72,0 144,0 144,-72"/>
-<text text-anchor="middle" x="108" y="-32.3" font-family="Times,serif" font-size="14.00">(2,1)</text>
-</g>
-<!-- (5,3) -->
-<g id="(5,3)" class="node mouseleave_(5,1)_visible mouseenter_(4,3)_hidden mouseenter_(3,5)_hidden mouseleave_(4,3)_visible mouseleave_(3,5)_visible mouseenter_(5,1)_hidden">
-<title>(5,3)</title>
-<polygon fill="gray" stroke="black" points="360,-216 288,-216 288,-144 360,-144 360,-216"/>
-<text text-anchor="middle" x="324" y="-176.3" font-family="Times,serif" font-size="14.00">(5,3)</text>
-</g>
-<!-- a((4,3),(5,2)) -->
-<g id="a((4,3),(5,2))" class="node mouseenter_(4,3)_visible mouseleave_(4,3)_hidden hidden">
-<title>a((4,3),(5,2))</title>
-<polygon fill="red" stroke="black" points="360,-144 288,-144 288,-72 360,-72 360,-144"/>
-<text text-anchor="middle" x="324" y="-104.3" font-family="Times,serif" font-size="14.00">(5,2)</text>
-</g>
-<!-- a((1,4),(3,4)) -->
-<g id="a((1,4),(3,4))" class="node mouseenter_(1,4)_visible mouseleave_(1,4)_hidden hidden">
-<title>a((1,4),(3,4))</title>
-<polygon fill="red" stroke="black" points="216,-288 144,-288 144,-216 216,-216 216,-288"/>
-<text text-anchor="middle" x="180" y="-248.3" font-family="Times,serif" font-size="14.00">(3,4)</text>
-</g>
-<!-- a((2,2),(2,3)) -->
-<g id="a((2,2),(2,3))" class="node mouseenter_(2,2)_visible hidden mouseleave_(2,2)_hidden">
-<title>a((2,2),(2,3))</title>
-<polygon fill="red" stroke="black" points="144,-216 72,-216 72,-144 144,-144 144,-216"/>
-<text text-anchor="middle" x="108" y="-176.3" font-family="Times,serif" font-size="14.00">(2,3)</text>
-</g>
-<!-- a((3,5),(4,5)) -->
-<g id="a((3,5),(4,5))" class="node hidden mouseleave_(3,5)_hidden mouseenter_(3,5)_visible">
-<title>a((3,5),(4,5))</title>
-<polygon fill="red" stroke="black" points="288,-360 216,-360 216,-288 288,-288 288,-360"/>
-<text text-anchor="middle" x="252" y="-320.3" font-family="Times,serif" font-size="14.00">(4,5)</text>
-</g>
-<!-- (1,4) -->
-<g id="(1,4)" class="node mouseleave_(1,4)_visible mouseenter_(1,4)_hidden">
-<title>(1,4)</title>
-<polygon fill="white" stroke="black" points="72,-288 0,-288 0,-216 72,-216 72,-288"/>
-<text text-anchor="middle" x="36" y="-239.5" font-family="Times,serif" font-size="50.00">♕</text>
-</g>
-<!-- (1,5) -->
-<g id="(1,5)" class="node mouseenter_(3,5)_hidden mouseenter_(1,4)_hidden mouseleave_(3,5)_visible mouseenter_(5,1)_hidden mouseleave_(1,4)_visible mouseleave_(5,1)_visible">
-<title>(1,5)</title>
-<polygon fill="gray" stroke="black" points="72,-360 0,-360 0,-288 72,-288 72,-360"/>
-<text text-anchor="middle" x="36" y="-320.3" font-family="Times,serif" font-size="14.00">(1,5)</text>
-</g>
-<!-- a((2,2),(4,2)) -->
-<g id="a((2,2),(4,2))" class="node hidden mouseleave_(2,2)_hidden mouseenter_(2,2)_visible">
-<title>a((2,2),(4,2))</title>
-<polygon fill="red" stroke="black" points="288,-144 216,-144 216,-72 288,-72 288,-144"/>
-<text text-anchor="middle" x="252" y="-104.3" font-family="Times,serif" font-size="14.00">(4,2)</text>
-</g>
-<!-- a((4,3),(4,1)) -->
-<g id="a((4,3),(4,1))" class="node mouseenter_(4,3)_visible hidden mouseleave_(4,3)_hidden">
-<title>a((4,3),(4,1))</title>
-<polygon fill="red" stroke="black" points="288,-72 216,-72 216,0 288,0 288,-72"/>
-<text text-anchor="middle" x="252" y="-32.3" font-family="Times,serif" font-size="14.00">(4,1)</text>
-</g>
-<!-- (3,2) -->
-<g id="(3,2)" class="node mouseleave_(1,4)_visible mouseenter_(4,3)_hidden mouseenter_(3,5)_hidden mouseenter_(1,4)_hidden mouseleave_(4,3)_visible mouseenter_(2,2)_hidden mouseleave_(2,2)_visible mouseleave_(3,5)_visible">
-<title>(3,2)</title>
-<polygon fill="white" stroke="black" points="216,-144 144,-144 144,-72 216,-72 216,-144"/>
-<text text-anchor="middle" x="180" y="-104.3" font-family="Times,serif" font-size="14.00">(3,2)</text>
-</g>
-<!-- a((1,4),(1,2)) -->
-<g id="a((1,4),(1,2))" class="node mouseenter_(1,4)_visible mouseleave_(1,4)_hidden hidden">
-<title>a((1,4),(1,2))</title>
-<polygon fill="red" stroke="black" points="72,-144 0,-144 0,-72 72,-72 72,-144"/>
-<text text-anchor="middle" x="36" y="-104.3" font-family="Times,serif" font-size="14.00">(1,2)</text>
-</g>
-<!-- a((1,4),(1,3)) -->
-<g id="a((1,4),(1,3))" class="node mouseenter_(1,4)_visible mouseleave_(1,4)_hidden hidden">
-<title>a((1,4),(1,3))</title>
-<polygon fill="red" stroke="black" points="72,-216 0,-216 0,-144 72,-144 72,-216"/>
-<text text-anchor="middle" x="36" y="-176.3" font-family="Times,serif" font-size="14.00">(1,3)</text>
-</g>
-<!-- a((5,1),(5,3)) -->
-<g id="a((5,1),(5,3))" class="node mouseleave_(5,1)_hidden hidden mouseenter_(5,1)_visible">
-<title>a((5,1),(5,3))</title>
-<polygon fill="red" stroke="black" points="360,-216 288,-216 288,-144 360,-144 360,-216"/>
-<text text-anchor="middle" x="324" y="-176.3" font-family="Times,serif" font-size="14.00">(5,3)</text>
-</g>
-<!-- a((5,1),(5,4)) -->
-<g id="a((5,1),(5,4))" class="node mouseleave_(5,1)_hidden mouseenter_(5,1)_visible hidden">
-<title>a((5,1),(5,4))</title>
-<polygon fill="red" stroke="black" points="360,-288 288,-288 288,-216 360,-216 360,-288"/>
-<text text-anchor="middle" x="324" y="-248.3" font-family="Times,serif" font-size="14.00">(5,4)</text>
-</g>
-<!-- a((2,2),(2,1)) -->
-<g id="a((2,2),(2,1))" class="node mouseenter_(2,2)_visible hidden mouseleave_(2,2)_hidden">
-<title>a((2,2),(2,1))</title>
-<polygon fill="red" stroke="black" points="144,-72 72,-72 72,0 144,0 144,-72"/>
-<text text-anchor="middle" x="108" y="-32.3" font-family="Times,serif" font-size="14.00">(2,1)</text>
-</g>
-<!-- a((3,5),(2,5)) -->
-<g id="a((3,5),(2,5))" class="node hidden mouseleave_(3,5)_hidden mouseenter_(3,5)_visible">
-<title>a((3,5),(2,5))</title>
-<polygon fill="red" stroke="black" points="144,-360 72,-360 72,-288 144,-288 144,-360"/>
-<text text-anchor="middle" x="108" y="-320.3" font-family="Times,serif" font-size="14.00">(2,5)</text>
-</g>
-<!-- a((4,3),(1,3)) -->
-<g id="a((4,3),(1,3))" class="node mouseleave_(4,3)_hidden hidden mouseenter_(4,3)_visible">
-<title>a((4,3),(1,3))</title>
-<polygon fill="red" stroke="black" points="72,-216 0,-216 0,-144 72,-144 72,-216"/>
-<text text-anchor="middle" x="36" y="-176.3" font-family="Times,serif" font-size="14.00">(1,3)</text>
-</g>
-<!-- a((2,2),(2,2)) -->
-<g id="a((2,2),(2,2))" class="node hidden mouseleave_(2,2)_hidden mouseenter_(2,2)_visible">
-<title>a((2,2),(2,2))</title>
-<polygon fill="red" stroke="black" points="144,-144 72,-144 72,-72 144,-72 144,-144"/>
-<text text-anchor="middle" x="108" y="-95.5" font-family="Times,serif" font-size="50.00">♕</text>
-</g>
-<!-- (4,1) -->
-<g id="(4,1)" class="node mouseleave_(5,1)_visible mouseenter_(5,1)_hidden mouseleave_(1,4)_visible mouseenter_(4,3)_hidden mouseenter_(1,4)_hidden mouseleave_(4,3)_visible">
-<title>(4,1)</title>
-<polygon fill="white" stroke="black" points="288,-72 216,-72 216,0 288,0 288,-72"/>
-<text text-anchor="middle" x="252" y="-32.3" font-family="Times,serif" font-size="14.00">(4,1)</text>
-</g>
-<!-- a((3,5),(5,5)) -->
-<g id="a((3,5),(5,5))" class="node hidden mouseleave_(3,5)_hidden mouseenter_(3,5)_visible">
-<title>a((3,5),(5,5))</title>
-<polygon fill="red" stroke="black" points="360,-360 288,-360 288,-288 360,-288 360,-360"/>
-<text text-anchor="middle" x="324" y="-320.3" font-family="Times,serif" font-size="14.00">(5,5)</text>
-</g>
-<!-- a((5,1),(5,1)) -->
-<g id="a((5,1),(5,1))" class="node hidden mouseenter_(5,1)_visible mouseleave_(5,1)_hidden">
-<title>a((5,1),(5,1))</title>
-<polygon fill="red" stroke="black" points="360,-72 288,-72 288,0 360,0 360,-72"/>
-<text text-anchor="middle" x="324" y="-23.5" font-family="Times,serif" font-size="50.00">♕</text>
-</g>
-<!-- a((2,2),(2,4)) -->
-<g id="a((2,2),(2,4))" class="node hidden mouseenter_(2,2)_visible mouseleave_(2,2)_hidden">
-<title>a((2,2),(2,4))</title>
-<polygon fill="red" stroke="black" points="144,-288 72,-288 72,-216 144,-216 144,-288"/>
-<text text-anchor="middle" x="108" y="-248.3" font-family="Times,serif" font-size="14.00">(2,4)</text>
-</g>
-<!-- (5,2) -->
-<g id="(5,2)" class="node mouseleave_(4,3)_visible mouseenter_(2,2)_hidden mouseleave_(2,2)_visible mouseenter_(5,1)_hidden mouseleave_(5,1)_visible mouseenter_(4,3)_hidden">
-<title>(5,2)</title>
-<polygon fill="white" stroke="black" points="360,-144 288,-144 288,-72 360,-72 360,-144"/>
-<text text-anchor="middle" x="324" y="-104.3" font-family="Times,serif" font-size="14.00">(5,2)</text>
-</g>
-<!-- a((4,3),(5,3)) -->
-<g id="a((4,3),(5,3))" class="node mouseenter_(4,3)_visible mouseleave_(4,3)_hidden hidden">
-<title>a((4,3),(5,3))</title>
-<polygon fill="red" stroke="black" points="360,-216 288,-216 288,-144 360,-144 360,-216"/>
-<text text-anchor="middle" x="324" y="-176.3" font-family="Times,serif" font-size="14.00">(5,3)</text>
-</g>
-<!-- a((3,5),(3,1)) -->
-<g id="a((3,5),(3,1))" class="node mouseenter_(3,5)_visible hidden mouseleave_(3,5)_hidden">
-<title>a((3,5),(3,1))</title>
-<polygon fill="red" stroke="black" points="216,-72 144,-72 144,0 216,0 216,-72"/>
-<text text-anchor="middle" x="180" y="-32.3" font-family="Times,serif" font-size="14.00">(3,1)</text>
-</g>
-<!-- a((2,2),(1,3)) -->
-<g id="a((2,2),(1,3))" class="node hidden mouseleave_(2,2)_hidden mouseenter_(2,2)_visible">
-<title>a((2,2),(1,3))</title>
-<polygon fill="red" stroke="black" points="72,-216 0,-216 0,-144 72,-144 72,-216"/>
-<text text-anchor="middle" x="36" y="-176.3" font-family="Times,serif" font-size="14.00">(1,3)</text>
-</g>
-<!-- a((5,1),(5,5)) -->
-<g id="a((5,1),(5,5))" class="node mouseenter_(5,1)_visible hidden mouseleave_(5,1)_hidden">
-<title>a((5,1),(5,5))</title>
-<polygon fill="red" stroke="black" points="360,-360 288,-360 288,-288 360,-288 360,-360"/>
-<text text-anchor="middle" x="324" y="-320.3" font-family="Times,serif" font-size="14.00">(5,5)</text>
-</g>
-<!-- a((4,3),(3,3)) -->
-<g id="a((4,3),(3,3))" class="node mouseenter_(4,3)_visible hidden mouseleave_(4,3)_hidden">
-<title>a((4,3),(3,3))</title>
-<polygon fill="red" stroke="black" points="216,-216 144,-216 144,-144 216,-144 216,-216"/>
-<text text-anchor="middle" x="180" y="-176.3" font-family="Times,serif" font-size="14.00">(3,3)</text>
-</g>
-<!-- a((3,5),(5,3)) -->
-<g id="a((3,5),(5,3))" class="node mouseenter_(3,5)_visible hidden mouseleave_(3,5)_hidden">
-<title>a((3,5),(5,3))</title>
-<polygon fill="red" stroke="black" points="360,-216 288,-216 288,-144 360,-144 360,-216"/>
-<text text-anchor="middle" x="324" y="-176.3" font-family="Times,serif" font-size="14.00">(5,3)</text>
 </g>
 <!-- (2,4) -->
-<g id="(2,4)" class="node mouseenter_(3,5)_hidden mouseleave_(1,4)_visible mouseenter_(1,4)_hidden mouseleave_(3,5)_visible mouseenter_(2,2)_hidden mouseleave_(2,2)_visible mouseenter_(5,1)_hidden mouseleave_(5,1)_visible">
+<g id="(2,4)" class="node mouseleave_(3,5)_color_white mouseleave_(5,1)_color_white mouseleave_(1,4)_color_white mouseenter_(3,5)_color_red mouseleave_(2,2)_color_white mouseenter_(5,1)_color_red mouseenter_(2,2)_color_red mouseenter_(1,4)_color_red init_color_white">
 <title>(2,4)</title>
-<polygon fill="gray" stroke="black" points="144,-288 72,-288 72,-216 144,-216 144,-288"/>
+<polygon fill="currentcolor" stroke="black" points="144,-288 72,-288 72,-216 144,-216 144,-288"/>
 <text text-anchor="middle" x="108" y="-248.3" font-family="Times,serif" font-size="14.00">(2,4)</text>
 </g>
-<!-- a((4,3),(4,4)) -->
-<g id="a((4,3),(4,4))" class="node mouseenter_(4,3)_visible mouseleave_(4,3)_hidden hidden">
-<title>a((4,3),(4,4))</title>
-<polygon fill="red" stroke="black" points="288,-288 216,-288 216,-216 288,-216 288,-288"/>
-<text text-anchor="middle" x="252" y="-248.3" font-family="Times,serif" font-size="14.00">(4,4)</text>
-</g>
 <!-- (5,5) -->
-<g id="(5,5)" class="node mouseleave_(5,1)_visible mouseenter_(2,2)_hidden mouseleave_(2,2)_visible mouseenter_(5,1)_hidden mouseleave_(3,5)_visible mouseenter_(3,5)_hidden">
+<g id="(5,5)" class="node init_color_white mouseleave_(5,1)_color_white mouseenter_(3,5)_color_red mouseleave_(2,2)_color_white mouseleave_(3,5)_color_white mouseenter_(5,1)_color_red mouseenter_(2,2)_color_red">
 <title>(5,5)</title>
-<polygon fill="gray" stroke="black" points="360,-360 288,-360 288,-288 360,-288 360,-360"/>
+<polygon fill="currentcolor" stroke="black" points="360,-360 288,-360 288,-288 360,-288 360,-360"/>
 <text text-anchor="middle" x="324" y="-320.3" font-family="Times,serif" font-size="14.00">(5,5)</text>
 </g>
-<!-- (4,4) -->
-<g id="(4,4)" class="node mouseenter_(2,2)_hidden mouseleave_(2,2)_visible mouseleave_(3,5)_visible mouseleave_(1,4)_visible mouseenter_(4,3)_hidden mouseenter_(3,5)_hidden mouseenter_(1,4)_hidden mouseleave_(4,3)_visible">
-<title>(4,4)</title>
-<polygon fill="gray" stroke="black" points="288,-288 216,-288 216,-216 288,-216 288,-288"/>
-<text text-anchor="middle" x="252" y="-248.3" font-family="Times,serif" font-size="14.00">(4,4)</text>
+<!-- (3,2) -->
+<g id="(3,2)" class="node mouseleave_(1,4)_color_gray init_color_gray mouseenter_(2,2)_color_red mouseleave_(3,5)_color_gray mouseenter_(4,3)_color_red mouseenter_(1,4)_color_red mouseleave_(2,2)_color_gray mouseleave_(4,3)_color_gray mouseenter_(3,5)_color_red">
+<title>(3,2)</title>
+<polygon fill="currentcolor" stroke="black" points="216,-144 144,-144 144,-72 216,-72 216,-144"/>
+<text text-anchor="middle" x="180" y="-104.3" font-family="Times,serif" font-size="14.00">(3,2)</text>
 </g>
-<!-- a((2,2),(2,5)) -->
-<g id="a((2,2),(2,5))" class="node mouseleave_(2,2)_hidden mouseenter_(2,2)_visible hidden">
-<title>a((2,2),(2,5))</title>
-<polygon fill="red" stroke="black" points="144,-360 72,-360 72,-288 144,-288 144,-360"/>
-<text text-anchor="middle" x="108" y="-320.3" font-family="Times,serif" font-size="14.00">(2,5)</text>
+<!-- (4,1) -->
+<g id="(4,1)" class="node mouseleave_(1,4)_color_gray init_color_gray mouseenter_(5,1)_color_red mouseenter_(4,3)_color_red mouseenter_(1,4)_color_red mouseleave_(5,1)_color_gray mouseleave_(4,3)_color_gray">
+<title>(4,1)</title>
+<polygon fill="currentcolor" stroke="black" points="288,-72 216,-72 216,0 288,0 288,-72"/>
+<text text-anchor="middle" x="252" y="-32.3" font-family="Times,serif" font-size="14.00">(4,1)</text>
+</g>
+<!-- (5,3) -->
+<g id="(5,3)" class="node mouseleave_(3,5)_color_white mouseleave_(4,3)_color_white mouseenter_(3,5)_color_red mouseenter_(5,1)_color_red mouseenter_(4,3)_color_red init_color_white mouseleave_(5,1)_color_white">
+<title>(5,3)</title>
+<polygon fill="currentcolor" stroke="black" points="360,-216 288,-216 288,-144 360,-144 360,-216"/>
+<text text-anchor="middle" x="324" y="-176.3" font-family="Times,serif" font-size="14.00">(5,3)</text>
 </g>
 <!-- (1,2) -->
-<g id="(1,2)" class="node mouseleave_(2,2)_visible mouseleave_(1,4)_visible mouseenter_(1,4)_hidden mouseenter_(2,2)_hidden">
+<g id="(1,2)" class="node mouseleave_(2,2)_color_gray mouseleave_(1,4)_color_gray init_color_gray mouseenter_(1,4)_color_red mouseenter_(2,2)_color_red">
 <title>(1,2)</title>
-<polygon fill="white" stroke="black" points="72,-144 0,-144 0,-72 72,-72 72,-144"/>
+<polygon fill="currentcolor" stroke="black" points="72,-144 0,-144 0,-72 72,-72 72,-144"/>
 <text text-anchor="middle" x="36" y="-104.3" font-family="Times,serif" font-size="14.00">(1,2)</text>
+</g>
+<!-- (1,4) -->
+<g id="(1,4)" class="node mouseleave_(1,4)_color_gray init_color_gray mouseenter_(1,4)_color_red">
+<title>(1,4)</title>
+<polygon fill="currentcolor" stroke="black" points="72,-288 0,-288 0,-216 72,-216 72,-288"/>
+<text text-anchor="middle" x="36" y="-239.5" font-family="Times,serif" font-size="50.00">♕</text>
+</g>
+<!-- (4,5) -->
+<g id="(4,5)" class="node mouseenter_(3,5)_color_red init_color_gray mouseleave_(3,5)_color_gray mouseenter_(4,3)_color_red mouseleave_(4,3)_color_gray">
+<title>(4,5)</title>
+<polygon fill="currentcolor" stroke="black" points="288,-360 216,-360 216,-288 288,-288 288,-360"/>
+<text text-anchor="middle" x="252" y="-320.3" font-family="Times,serif" font-size="14.00">(4,5)</text>
+</g>
+<!-- (2,1) -->
+<g id="(2,1)" class="node mouseenter_(5,1)_color_red init_color_gray mouseenter_(2,2)_color_red mouseenter_(4,3)_color_red mouseleave_(2,2)_color_gray mouseleave_(4,3)_color_gray mouseleave_(5,1)_color_gray">
+<title>(2,1)</title>
+<polygon fill="currentcolor" stroke="black" points="144,-72 72,-72 72,0 144,0 144,-72"/>
+<text text-anchor="middle" x="108" y="-32.3" font-family="Times,serif" font-size="14.00">(2,1)</text>
+</g>
+<!-- (4,2) -->
+<g id="(4,2)" class="node mouseenter_(4,3)_color_red init_color_white mouseleave_(4,3)_color_white mouseleave_(2,2)_color_white mouseleave_(5,1)_color_white mouseenter_(5,1)_color_red mouseenter_(2,2)_color_red">
+<title>(4,2)</title>
+<polygon fill="currentcolor" stroke="black" points="288,-144 216,-144 216,-72 288,-72 288,-144"/>
+<text text-anchor="middle" x="252" y="-104.3" font-family="Times,serif" font-size="14.00">(4,2)</text>
+</g>
+<!-- (1,5) -->
+<g id="(1,5)" class="node mouseleave_(1,4)_color_white mouseleave_(3,5)_color_white mouseleave_(5,1)_color_white mouseenter_(3,5)_color_red mouseenter_(5,1)_color_red mouseenter_(1,4)_color_red init_color_white">
+<title>(1,5)</title>
+<polygon fill="currentcolor" stroke="black" points="72,-360 0,-360 0,-288 72,-288 72,-360"/>
+<text text-anchor="middle" x="36" y="-320.3" font-family="Times,serif" font-size="14.00">(1,5)</text>
+</g>
+<!-- (1,3) -->
+<g id="(1,3)" class="node mouseleave_(1,4)_color_white mouseleave_(4,3)_color_white mouseenter_(3,5)_color_red mouseleave_(2,2)_color_white mouseleave_(3,5)_color_white mouseenter_(2,2)_color_red mouseenter_(1,4)_color_red init_color_white mouseenter_(4,3)_color_red">
+<title>(1,3)</title>
+<polygon fill="currentcolor" stroke="black" points="72,-216 0,-216 0,-144 72,-144 72,-216"/>
+<text text-anchor="middle" x="36" y="-176.3" font-family="Times,serif" font-size="14.00">(1,3)</text>
+</g>
+<!-- (5,2) -->
+<g id="(5,2)" class="node mouseenter_(5,1)_color_red mouseenter_(4,3)_color_red mouseleave_(2,2)_color_gray mouseleave_(5,1)_color_gray mouseleave_(4,3)_color_gray mouseenter_(2,2)_color_red init_color_gray">
+<title>(5,2)</title>
+<polygon fill="currentcolor" stroke="black" points="360,-144 288,-144 288,-72 360,-72 360,-144"/>
+<text text-anchor="middle" x="324" y="-104.3" font-family="Times,serif" font-size="14.00">(5,2)</text>
+</g>
+<!-- (3,3) -->
+<g id="(3,3)" class="node mouseleave_(4,3)_color_white mouseenter_(2,2)_color_red mouseleave_(5,1)_color_white mouseenter_(3,5)_color_red mouseleave_(2,2)_color_white mouseleave_(3,5)_color_white mouseenter_(5,1)_color_red mouseenter_(4,3)_color_red init_color_white">
+<title>(3,3)</title>
+<polygon fill="currentcolor" stroke="black" points="216,-216 144,-216 144,-144 216,-144 216,-216"/>
+<text text-anchor="middle" x="180" y="-176.3" font-family="Times,serif" font-size="14.00">(3,3)</text>
+</g>
+<!-- (2,5) -->
+<g id="(2,5)" class="node mouseenter_(2,2)_color_red init_color_gray mouseleave_(3,5)_color_gray mouseenter_(1,4)_color_red mouseenter_(4,3)_color_red mouseleave_(4,3)_color_gray mouseleave_(2,2)_color_gray mouseleave_(1,4)_color_gray mouseenter_(3,5)_color_red">
+<title>(2,5)</title>
+<polygon fill="currentcolor" stroke="black" points="144,-360 72,-360 72,-288 144,-288 144,-360"/>
+<text text-anchor="middle" x="108" y="-320.3" font-family="Times,serif" font-size="14.00">(2,5)</text>
+</g>
+<!-- (3,1) -->
+<g id="(3,1)" class="node mouseenter_(5,1)_color_red init_color_white mouseleave_(2,2)_color_white mouseleave_(3,5)_color_white mouseleave_(5,1)_color_white mouseenter_(3,5)_color_red mouseenter_(2,2)_color_red">
+<title>(3,1)</title>
+<polygon fill="currentcolor" stroke="black" points="216,-72 144,-72 144,0 216,0 216,-72"/>
+<text text-anchor="middle" x="180" y="-32.3" font-family="Times,serif" font-size="14.00">(3,1)</text>
+</g>
+<!-- (4,4) -->
+<g id="(4,4)" class="node mouseleave_(1,4)_color_white mouseenter_(3,5)_color_red mouseleave_(3,5)_color_white mouseleave_(4,3)_color_white mouseenter_(2,2)_color_red mouseenter_(4,3)_color_red mouseenter_(1,4)_color_red init_color_white mouseleave_(2,2)_color_white">
+<title>(4,4)</title>
+<polygon fill="currentcolor" stroke="black" points="288,-288 216,-288 216,-216 288,-216 288,-288"/>
+<text text-anchor="middle" x="252" y="-248.3" font-family="Times,serif" font-size="14.00">(4,4)</text>
+</g>
+<!-- (3,5) -->
+<g id="(3,5)" class="node mouseleave_(3,5)_color_white init_color_white mouseenter_(3,5)_color_red">
+<title>(3,5)</title>
+<polygon fill="currentcolor" stroke="black" points="216,-360 144,-360 144,-288 216,-288 216,-360"/>
+<text text-anchor="middle" x="180" y="-311.5" font-family="Times,serif" font-size="50.00">♕</text>
+</g>
+<!-- (2,3) -->
+<g id="(2,3)" class="node mouseleave_(1,4)_color_gray init_color_gray mouseenter_(2,2)_color_red mouseenter_(4,3)_color_red mouseenter_(1,4)_color_red mouseleave_(2,2)_color_gray mouseleave_(4,3)_color_gray">
+<title>(2,3)</title>
+<polygon fill="currentcolor" stroke="black" points="144,-216 72,-216 72,-144 144,-144 144,-216"/>
+<text text-anchor="middle" x="108" y="-176.3" font-family="Times,serif" font-size="14.00">(2,3)</text>
+</g>
+<!-- (3,4) -->
+<g id="(3,4)" class="node mouseleave_(3,5)_color_gray mouseenter_(4,3)_color_red mouseenter_(1,4)_color_red mouseleave_(4,3)_color_gray mouseleave_(1,4)_color_gray mouseenter_(3,5)_color_red init_color_gray">
+<title>(3,4)</title>
+<polygon fill="currentcolor" stroke="black" points="216,-288 144,-288 144,-216 216,-216 216,-288"/>
+<text text-anchor="middle" x="180" y="-248.3" font-family="Times,serif" font-size="14.00">(3,4)</text>
+</g>
+<!-- (1,1) -->
+<g id="(1,1)" class="node mouseleave_(1,4)_color_white mouseleave_(5,1)_color_white mouseleave_(2,2)_color_white mouseenter_(2,2)_color_red mouseenter_(5,1)_color_red mouseenter_(1,4)_color_red init_color_white">
+<title>(1,1)</title>
+<polygon fill="currentcolor" stroke="black" points="72,-72 0,-72 0,0 72,0 72,-72"/>
+<text text-anchor="middle" x="36" y="-32.3" font-family="Times,serif" font-size="14.00">(1,1)</text>
+</g>
+<!-- (5,4) -->
+<g id="(5,4)" class="node mouseenter_(4,3)_color_red mouseleave_(4,3)_color_gray mouseleave_(5,1)_color_gray mouseleave_(1,4)_color_gray init_color_gray mouseenter_(5,1)_color_red mouseenter_(1,4)_color_red">
+<title>(5,4)</title>
+<polygon fill="currentcolor" stroke="black" points="360,-288 288,-288 288,-216 360,-216 360,-288"/>
+<text text-anchor="middle" x="324" y="-248.3" font-family="Times,serif" font-size="14.00">(5,4)</text>
+</g>
+<!-- (5,1) -->
+<g id="(5,1)" class="node mouseenter_(5,1)_color_red init_color_white mouseleave_(5,1)_color_white">
+<title>(5,1)</title>
+<polygon fill="currentcolor" stroke="black" points="360,-72 288,-72 288,0 360,0 360,-72"/>
+<text text-anchor="middle" x="324" y="-23.5" font-family="Times,serif" font-size="50.00">♕</text>
+</g>
+<!-- (2,2) -->
+<g id="(2,2)" class="node mouseleave_(2,2)_color_white mouseenter_(2,2)_color_red init_color_white">
+<title>(2,2)</title>
+<polygon fill="currentcolor" stroke="black" points="144,-144 72,-144 72,-72 144,-72 144,-144"/>
+<text text-anchor="middle" x="108" y="-95.5" font-family="Times,serif" font-size="50.00">♕</text>
 </g>
 </g>
 
-<style>
-.hidden{
-    visibility: hidden;
-    pointer-events: none;
-}
-g{
-    pointer-events: all;
-}
-</style>
 <script>
       <script type="text/javascript">
+        
         var edges = Object.values(document.getElementsByClassName('edge'));
         var nodes = Object.values(document.getElementsByClassName('node'));
         var elements = edges.concat(nodes);
-        const events = ["click","mouseenter","mouseleave"];
-        const actions = ["visible","hidden","focus","blur"];
-        const properties = {
-            'visible':['visibility','visible'],
-            'hidden':['visibility','hidden'],
-            'focus':['opacity','1'],
-            'blur':['opacity','0.2']
-            }
+        const events = ["click","mouseenter","mouseleave","contextmenu"];
         window.onload=function(){
             elements.forEach(elem => {
+                elem.classList.forEach(c => {
+                    c_vals = c.split('_')
+                    if (c_vals[0] == 'init'){
+                        property = c_vals[1]
+                        property_val = c_vals[2]
+                        elem.style[property]=property_val
+                    }
+                    if (events.includes(c_vals[0])){
+                        elem.classList.add(c_vals[0]+"_"+c_vals[1])
+                    }
+                })
+            })
+            elements.forEach(elem => {
+                elem.addEventListener("contextmenu", e => e.preventDefault());
                 events.forEach(event => {
-                    actions.forEach(action => {
-                        elem.addEventListener(event, function() {
-                            local_event = event;
-                            property = properties[action][0];
-                            property_val = properties[action][1];
-                            class_name = local_event + "_" + elem.id + "_" + action;
-                            var children = Object.values(document.getElementsByClassName(class_name));
-                            children.forEach(c => {
-                                c.style[property]=property_val
+                    elem.addEventListener(event, function() {
+                        console.log(event)
+                        local_event = event;
+                        class_name = local_event + "_" + elem.id;
+                        var children = Object.values(document.getElementsByClassName(class_name));
+                        children.forEach(c => {
+                            c.classList.forEach(c_elem =>{
+                                c_vals = c_elem.split('_')
+                                if (c_vals.length == 4){
+                                    if (c_vals[0]==local_event){
+                                        if(c_vals[1]==elem.id){
+                                            property = c_vals[2]
+                                            property_val = c_vals[3]
+                                            c.style[property]=property_val
+                                        }
+                                    }
+                                }
                             })
                         })
+                        
+                        
                     })
                 })
             });

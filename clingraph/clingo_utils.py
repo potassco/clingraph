@@ -21,7 +21,7 @@ class ClingraphContext:
     passed in the command line via option `--viz-encoding`
     """
 
-    def pos(self, x,y):
+    def pos(self, x,y,scale=1):
         """
         Args:
             x (clingo.Symbol.Number): Number for the X coordinate
@@ -29,8 +29,10 @@ class ClingraphContext:
         Returns:
             (clingo.Symbol.String) position as a string of form (x,y)!
         """
-
-        return String(f"{str(x)},{str(y)}!")
+        scale = float(str(scale).strip('"'))
+        x = float(str(x))*scale
+        y = float(str(y))*scale
+        return String(f"{x},{y}!")
 
     def concat(self, *args):
         """
@@ -41,6 +43,43 @@ class ClingraphContext:
             (clingo.Symbol.String) The string concatenating all symbols
         """
         return String(''.join([str(x).strip('"') for x in args]))
+
+    def svg_init(self, property_name, property_value):
+        """
+        Generates an svg string for interactive actions
+        Args:
+            args: All symbols
+        Returns:
+            (clingo.Symbol.String) The string concatenating all symbols
+        """
+        property_name = str(property_name).strip('"')
+        property_value = str(property_value).strip('"')
+        return String(f"init___{property_name}___{property_value}")
+
+    def svg_color(self):
+        """
+        Generates an svg string for interactive actions
+        Args:
+            args: All symbols
+        Returns:
+            (clingo.Symbol.String) The string concatenating all symbols
+        """
+        return String(f"#111111")
+
+    def svg(self, event, element, property_name, property_value):
+        """
+        Generates an svg string for interactive actions
+        Args:
+            args: All symbols
+        Returns:
+            (clingo.Symbol.String) The string concatenating all symbols
+        """
+        event = str(event).strip('"')
+        element = str(element).strip('"')
+        property_name = str(property_name).strip('"')
+        property_value = str(property_value).strip('"')
+        s=String(f"{event}___{element}___{property_name}___{property_value}")
+        return s
 
     def __getattr__(self, name):
         # pylint: disable=import-outside-toplevel
