@@ -248,42 +248,51 @@ def _get_parser():
 
 
 SVG_SCRIPT = """
-<style>
-.hidden{
-    visibility: hidden;
-    pointer-events: none;
-}
-g{
-    pointer-events: all;
-}
-</style>
 <script>
       <script type="text/javascript">
+        
         var edges = Object.values(document.getElementsByClassName('edge'));
         var nodes = Object.values(document.getElementsByClassName('node'));
         var elements = edges.concat(nodes);
-        const events = ["click","mouseenter","mouseleave"];
-        const actions = ["visible","hidden","focus","blur"];
-        const properties = {
-            'visible':['visibility','visible'],
-            'hidden':['visibility','hidden'],
-            'focus':['opacity','1'],
-            'blur':['opacity','0.2']
-            }
+        const events = ["click","mouseenter","mouseleave","contextmenu"];
         window.onload=function(){
             elements.forEach(elem => {
+                elem.classList.forEach(c => {
+                    c_vals = c.split('___')
+                    if (c_vals[0] == 'init'){
+                        property = c_vals[1]
+                        property_val = c_vals[2]
+                        elem.style[property]=property_val
+                    }
+                    if (events.includes(c_vals[0])){
+                        elem.classList.add(c_vals[0]+"_"+c_vals[1])
+                    }
+                })
+            })
+            elements.forEach(elem => {
+                elem.addEventListener("contextmenu", e => e.preventDefault());
                 events.forEach(event => {
-                    actions.forEach(action => {
-                        elem.addEventListener(event, function() {
-                            local_event = event;
-                            property = properties[action][0];
-                            property_val = properties[action][1];
-                            class_name = local_event + "_" + elem.id + "_" + action;
-                            var children = Object.values(document.getElementsByClassName(class_name));
-                            children.forEach(c => {
-                                c.style[property]=property_val
+                    elem.addEventListener(event, function() {
+                        console.log(event)
+                        local_event = event;
+                        class_name = local_event + "_" + elem.id;
+                        var children = Object.values(document.getElementsByClassName(class_name));
+                        children.forEach(c => {
+                            c.classList.forEach(c_elem =>{
+                                c_vals = c_elem.split('___')
+                                if (c_vals.length == 4){
+                                    if (c_vals[0]==local_event){
+                                        if(c_vals[1]==elem.id){
+                                            property = c_vals[2]
+                                            property_val = c_vals[3]
+                                            c.style[property]=property_val
+                                        }
+                                    }
+                                }
                             })
                         })
+                        
+                        
                     })
                 })
             });
@@ -408,16 +417,18 @@ def main():
                     print(out_str("Image",g_name,p))
 
         if args.format=="svg":
+            log.info("Rendering svg with interactive script")
             for path_dic in paths:
+                if not path_dic:
+                    continue
                 for path in path_dic.values():
                     with open(path, 'r', encoding='UTF-8') as f:
                         lines = f.readlines()
+                        lines = [s.replace("#111111","currentcolor") for s in lines]
                         lines[-1] = ""
                         lines+=[s+"\n" for s in SVG_SCRIPT.split("\n")]
                     with open(path, 'w', encoding='UTF-8') as f:
                         f.writelines(lines)
-
-
 
         sys.exit()
 
