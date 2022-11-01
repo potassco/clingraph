@@ -11,6 +11,7 @@ https://en.wikipedia.org/wiki/Minesweeper_(video_game)
 
 `clingo examples/minesweeper/encoding.lp --outf=2 | clingraph --viz-encoding examples/minesweeper/viz.lp --out=render --view --engine=neato --select-model=0 --format=svg`
 
-Notice that you must download the `svg` file. Otherwise GitHub will prevent the `svg` scripts from running.
+Notice that you must download the `svg` [file](./default.svg) and run it on your computer. Otherwise GitHub will prevent the `svg` scripts from running.
 
-![](default.svg)
+![](default1.png)
+![](default2.png)
