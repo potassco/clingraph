@@ -19,7 +19,6 @@ attr(graph,default,fontname,"Copperplate").
 node(C):-cell(C).
 node(hide(C)):-cell(C).
 node(flag(C)):-cell(C).
-attr(node,C,id,C) :- node(C). %Needed for inteactivity
 
 % Common style
 attr(node,C,fontsize,20):-node(C).

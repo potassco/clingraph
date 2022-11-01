@@ -1,4 +1,5 @@
 clingo>=5.5.2
 sphinx>=4.5.0
 sphinx-rtd-theme==0.5.2
-nbsphinx==0.8.8
+nbsphinx>=0.8.8
+jinja2>=3.0.3

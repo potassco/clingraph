@@ -31,6 +31,8 @@ Our **[examples folder](https://github.com/potassco/clingraph/tree/master/exampl
   - *Clingo integration*
   - *Multi graphs*
   - *Animation via Gif*
+- SVG interaction ([family_tree](https://github.com/potassco/clingraph/tree/master/examples/family_tree), [queens_interactive](https://github.com/potassco/clingraph/tree/master/examples/queens_interactive), [minesweeper](https://github.com/potassco/clingraph/tree/master/examples/minesweeper))
+  - *Interaction using SVG*
 
 
 

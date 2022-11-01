@@ -355,6 +355,8 @@ Furthermore, the functions defined in :ref:`ClingraphContext <Clingo Utils>` wil
 
           ``out/1/default.png``
 
+
+
 .. _Latex:
 
 Latex integration

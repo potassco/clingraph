@@ -5,6 +5,7 @@ import os
 import logging
 import networkx as nx
 from graphviz import Graph, Digraph
+from clingo.symbol import SymbolType
 from .utils import apply
 log = logging.getLogger('custom')
 
@@ -78,6 +79,11 @@ def _compute_graphs_single_fb(fb, graphviz_type = 'graph',seed=None):
                 if e_type == 'node':
                     graph.node(str(e).strip('"'), **attr)
                 else:
+                    if e.symbol.type != SymbolType.Function or len(e.symbol.arguments) < 2:
+                        msg =f"Edge predicate ignore edge({str(e)}). Identifiers must be tupples"
+                        log.warning(msg)
+                        continue
+
                     graph.edge(str(e.symbol.arguments[0]).strip('"'),
                                 str(e.symbol.arguments[1]).strip('"'), **attr)
 
