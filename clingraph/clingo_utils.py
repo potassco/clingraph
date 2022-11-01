@@ -1,7 +1,6 @@
 """
 Functions used for the clingo integration
 """
-
 import json
 import logging
 import jsonschema
@@ -46,11 +45,16 @@ class ClingraphContext:
 
     def svg_init(self, property_name, property_value):
         """
-        Generates an svg string for interactive actions
+        Generates an svg string for the initial state. This string has a format that is handled
+        by clingraph internally in the generation of svg files. This property will be set on the
+        group tag `<g>` used around the elements. Notice that any properties set using the `attr`
+        predicates will not be overwritten.
+
         Args:
-            args: All symbols
+            property_name: The name of the css property to set.
+            property_value: The value of the property to set
         Returns:
-            (clingo.Symbol.String) The string concatenating all symbols
+            (clingo.Symbol.String) The string representing the property
         """
         property_name = str(property_name).strip('"')
         property_value = str(property_value).strip('"')
@@ -58,21 +62,25 @@ class ClingraphContext:
 
     def svg_color(self):
         """
-        Generates an svg string for interactive actions
-        Args:
-            args: All symbols
+        Generates an svg string that is used as a placeholder for the color in properties.
+        This string will be mapped into the css variable `currentcolor`.
         Returns:
-            (clingo.Symbol.String) The string concatenating all symbols
+            (clingo.Symbol.String) The string as a color placeholder
         """
-        return String(f"#111111")
+        return String("#111111")
 
     def svg(self, event, element, property_name, property_value):
         """
-        Generates an svg string for interactive actions
+        Generates an svg string for interactive actions This property will be set on the group tag
+        `<g>` used around the elements. Notice that any properties set using the `attr` predicates
+        will not be overwritten.
         Args:
-            args: All symbols
+            event: The svg event one of: "click","mouseenter","mouseleave","contextmenu"
+            element: The id on the element in which the action is performed. This element must have the id property set: `attr(node,ID,id,ID):-node(ID).`
+            property_name: The name of the css property to set.
+            property_value: The value of the property to set
         Returns:
-            (clingo.Symbol.String) The string concatenating all symbols
+            (clingo.Symbol.String) The string internal representation of the interaction
         """
         event = str(event).strip('"')
         element = str(element).strip('"')
@@ -176,6 +184,109 @@ def _get_json(args, stdin):
             return None
 
 
+SVG_SCRIPT = """
+<script>
+      <script type="text/javascript">
+
+        var edges = Object.values(document.getElementsByClassName('edge'));
+        var nodes = Object.values(document.getElementsByClassName('node'));
+        var elements = edges.concat(nodes);
+        const events = ["click","mouseenter","mouseleave","contextmenu"];
+        window.onload=function(){
+            elements.forEach(elem => {
+                elem.classList.forEach(c => {
+                    c_vals = c.split('___')
+                    if (c_vals[0] == 'init'){
+                        property = c_vals[1]
+                        property_val = c_vals[2]
+                        elem.style[property]=property_val
+                    }
+                    if (events.includes(c_vals[0])){
+                        elem.classList.add(c_vals[0]+"_"+c_vals[1])
+                    }
+                })
+            })
+            elements.forEach(elem => {
+                elem.addEventListener("contextmenu", e => e.preventDefault());
+                events.forEach(event => {
+                    elem.addEventListener(event, function() {
+                        console.log(event)
+                        local_event = event;
+                        class_name = local_event + "_" + elem.id;
+                        var children = Object.values(document.getElementsByClassName(class_name));
+                        children.forEach(c => {
+                            c.classList.forEach(c_elem =>{
+                                c_vals = c_elem.split('___')
+                                if (c_vals.length == 4){
+                                    if (c_vals[0]==local_event){
+                                        if(c_vals[1]==elem.id){
+                                            property = c_vals[2]
+                                            property_val = c_vals[3]
+                                            c.style[property]=property_val
+                                        }
+                                    }
+                                }
+                            })
+                        })
+
+
+                    })
+                })
+            });
+        }
+      </script>
+
+</script>
+</svg>
+"""
+
+
+def add_svg_interaction(paths):
+    """
+    Adds the svg interaction script to a list of svg files defined in the paths.
+    This paths can be the output of the render function.
+
+    Args:
+        paths [dic | list[dic]]: A dictionary with the paths where the images where saved as values for each graph.
+        Or a list of such dictionaries, each element corresponding to a model.
+    """
+    for path_dic in paths:
+        if not path_dic:
+            continue
+        for path in path_dic.values():
+            with open(path, 'r', encoding='UTF-8') as f:
+                lines = f.readlines()
+                lines = [s.replace("#111111","currentcolor") for s in lines]
+                lines[-1] = ""
+                lines+=[s+"\n" for s in SVG_SCRIPT.split("\n")]
+            with open(path, 'w', encoding='UTF-8') as f:
+                f.writelines(lines)
+
+ADD_IDS_PRG = """
+#defined edge/2.
+#defined edge/1.
+#defined node/1.
+#defined node/2.
+#defined graph/1.
+#defined graph/2.
+attr(node,ID,id,ID):-node(ID).
+attr(node,ID,id,ID):-node(ID,_).
+attr(edge,ID,id,ID):-edge(ID).
+attr(edge,ID,id,ID):-edge(ID,_).
+attr(graph,ID,id,ID):-graph(ID).
+attr(graph,ID,id,ID):-graph(ID,_).
+"""
+
+def add_elements_ids(ctl):
+    """
+    Adds a program to the control that will set the ids of the elements to the id attribute
+    Args:
+        ctl Clingo.Control: The clingo control object that is used
+    """
+
+    ctl.add("base",[],ADD_IDS_PRG)
+
+
 def _get_fbs_from_encoding(args,stdin,prgs_from_json):
     """
     Obtains the factbase by running clingo to compute the stable models
@@ -195,12 +306,16 @@ def _get_fbs_from_encoding(args,stdin,prgs_from_json):
             ctl = Control(cl_args)
             ctl.load(args.viz_encoding.name)
             ctl.add("base",[],prg)
+            if args.format == 'svg':
+                add_elements_ids(ctl)
             ctl.ground([("base", [])],ClingraphContext())
             ctl.solve(on_model=add_fb_model)
     else:
         ctl = Control(cl_args)
         ctl.load(args.viz_encoding.name)
         ctl.add("base",[],stdin)
+        if args.format == 'svg':
+            add_elements_ids(ctl)
         for f in args.files:
             ctl.load(f.name)
         ctl.ground([("base", [])],ClingraphContext())

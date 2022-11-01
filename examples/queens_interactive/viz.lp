@@ -2,7 +2,6 @@
 
 node((X,Y)) :- cell(X,Y).
 
-attr(node,(X,Y),id,(X,Y)) :- cell(X,Y).
 attr(node,(X,Y),overlap,true) :- cell(X,Y).
 attr(node,(X,Y),sep) :- cell(X,Y).
 attr(node,(X,Y),esep) :- cell(X,Y).

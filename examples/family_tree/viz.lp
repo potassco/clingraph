@@ -3,7 +3,6 @@ edge((X,Y)):-parent(X,Y).
 
 attr(graph,default,label,"Modern Family Tree (click on the nodes to expand)"):-edge((X,Y)).
 attr(node,X,style,"filled"):-node(X).
-attr(node,X,id,X):-node(X). %Needed to referenciate the nodes in the svg file!
 
 % linked(E,(X,Y)) X is linked to Y by edge E
 linked((X,Y),(Y,X)):-edge((X,Y)).

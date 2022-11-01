@@ -11,7 +11,7 @@ from ..gif import save_gif
 from ..tex import tex
 from ..utils import write
 from .utils import get_example_file, clean_out
-
+from ..clingo_utils import add_elements_ids, add_svg_interaction, ClingraphContext
 
 def test_compute_graphs():
     cg = Factbase()
@@ -34,7 +34,6 @@ def test_compute_graphs():
     graphs = compute_graphs(cg,graphviz_type='digraph')
     assert list(graphs.keys())==['other']
     assert isinstance(graphs['other'], Digraph)
-
 
 def test_dot():
     s = get_example_file(1)
@@ -258,3 +257,23 @@ def test_multi_model():
     write(texs,'out',format='tex',name_format="{model_number}/{graph_name}")
     assert os.path.isfile(os.path.join('out','0','default.tex'))
     assert os.path.isfile(os.path.join('out','1','default.tex'))
+
+
+def test_svg():
+
+    fbs = []
+    ctl = Control(['--warn=none'])
+    add_elements_ids(ctl)
+    ctl.load(get_example_file(7))
+    ctl.ground([("base", [])],ClingraphContext())
+    ctl.solve(on_model=lambda m: fbs.append(Factbase.from_model(m)))
+    graphs = compute_graphs(fbs)
+    paths = render(graphs,directory ='out',format='svg')
+    add_svg_interaction(paths)
+    with open(os.path.join('out','default.svg'),'r',encoding="UTF8") as f:
+        s = f.read()
+        assert '</script>' in s
+        assert 'init___visibility___hidden' in s
+        assert 'mouseleave___4___color___blue' in s
+        assert 'click___3___visibility___visible' in s
+        assert 'fill="currentcolor"' in s

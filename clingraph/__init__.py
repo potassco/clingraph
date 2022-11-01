@@ -1,7 +1,6 @@
 """
 Clingraph functionality
 """
-import os
 from ast import parse
 import sys
 import argparse
@@ -12,7 +11,7 @@ from .logger import setup_logger_str, COLORS
 from .orm import Factbase
 from .utils import write, apply
 from .exceptions import InvalidSyntaxJSON, InvalidSyntax
-from .clingo_utils import _get_fbs_from_encoding, _get_json
+from .clingo_utils import _get_fbs_from_encoding, _get_json, add_svg_interaction
 
 try:
     VERSION = pkg_resources.require("clingraph")[0].version
@@ -244,64 +243,8 @@ def _get_parser():
                 nargs='*',
                 metavar='')
 
+
     return parser
-
-
-SVG_SCRIPT = """
-<script>
-      <script type="text/javascript">
-        
-        var edges = Object.values(document.getElementsByClassName('edge'));
-        var nodes = Object.values(document.getElementsByClassName('node'));
-        var elements = edges.concat(nodes);
-        const events = ["click","mouseenter","mouseleave","contextmenu"];
-        window.onload=function(){
-            elements.forEach(elem => {
-                elem.classList.forEach(c => {
-                    c_vals = c.split('___')
-                    if (c_vals[0] == 'init'){
-                        property = c_vals[1]
-                        property_val = c_vals[2]
-                        elem.style[property]=property_val
-                    }
-                    if (events.includes(c_vals[0])){
-                        elem.classList.add(c_vals[0]+"_"+c_vals[1])
-                    }
-                })
-            })
-            elements.forEach(elem => {
-                elem.addEventListener("contextmenu", e => e.preventDefault());
-                events.forEach(event => {
-                    elem.addEventListener(event, function() {
-                        console.log(event)
-                        local_event = event;
-                        class_name = local_event + "_" + elem.id;
-                        var children = Object.values(document.getElementsByClassName(class_name));
-                        children.forEach(c => {
-                            c.classList.forEach(c_elem =>{
-                                c_vals = c_elem.split('___')
-                                if (c_vals.length == 4){
-                                    if (c_vals[0]==local_event){
-                                        if(c_vals[1]==elem.id){
-                                            property = c_vals[2]
-                                            property_val = c_vals[3]
-                                            c.style[property]=property_val
-                                        }
-                                    }
-                                }
-                            })
-                        })
-                        
-                        
-                    })
-                })
-            });
-        }
-      </script>
-
-</script>
-</svg>
-"""
 
 def _get_fbs_normal(args,stdin,prgs_from_json):
     fbs = []
@@ -418,17 +361,7 @@ def main():
 
         if args.format=="svg":
             log.info("Rendering svg with interactive script")
-            for path_dic in paths:
-                if not path_dic:
-                    continue
-                for path in path_dic.values():
-                    with open(path, 'r', encoding='UTF-8') as f:
-                        lines = f.readlines()
-                        lines = [s.replace("#111111","currentcolor") for s in lines]
-                        lines[-1] = ""
-                        lines+=[s+"\n" for s in SVG_SCRIPT.split("\n")]
-                    with open(path, 'w', encoding='UTF-8') as f:
-                        f.writelines(lines)
+            add_svg_interaction(paths)
 
         sys.exit()
 
