@@ -170,11 +170,12 @@ Multi-attribute
 
 If multiple occurrences of the same attribute name for a specific
 element are present, then the values will be concatenated in no
-specific order. To define an order the attribute name can be a tuple
-where the second value is the position where the value will be
-considered. Furthermore, if the position is
-``sep`` the value will be considered as the separator of the strings
-in the concatenation.
+specific order. To define an order, the attribute name can be a tuple
+where the second value is the position in which the value will be
+considered. Furthermore, if multiple occurrences of a tuple ``(attr_name,X)`` appear,
+the different values will be considered as a set without order.
+If the position is ``sep`` the value will be considered as the separator
+of the strings in the concatenation.
 
 .. rubric:: *Example 4*
     :name: example-4
