@@ -135,6 +135,21 @@ def test_missing_graph():
     graphs = cg.get_all_graphs()
     cg.get_graph_elements('node',graphs[0])
 
+def test_multi_value():
+    s = """
+    node(n).
+    attr(node,n,label,a).
+    attr(node,n,label,a).
+    attr(node,n,(label,1),a11).
+    attr(node,n,(label,1),a12).
+    attr(node,n,(label,2),a21).
+    """
+    cg = Factbase()
+    cg.add_fact_string(s)
+    graphs = cg.get_all_graphs()
+    nodes = cg.get_graph_elements('node',graphs[0])
+    attr = cg.get_element_attr('node',nodes[0])
+    assert attr['label']=='a  a12 a11 a21' or attr['label']=='a  a11 a12 a21'
 
 def test_from_json():
 

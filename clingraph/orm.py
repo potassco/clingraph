@@ -391,9 +391,11 @@ class Factbase():
                     i = int(opt)
                     if i >= len(info["idx"]):
                         info["idx"] = info["idx"] + \
-                            [""]*(1+i-len(info["idx"]))
-                    info["idx"][i] = val_str
-            attrs[str(name)] = info["sep"].join(info["set"]+info["idx"])
+                            [set()]*(1+i-len(info["idx"]))
+                    if len(info["idx"][i]) == 0:
+                        info["idx"][i]=set()
+                    info["idx"][i].add(val_str)
+            attrs[str(name)] = info["sep"].join(info["set"]+[info["sep"].join(i) for i in info["idx"]])
             if str(name)=='texlbl': #Used for latex
                 attrs[str(name)] = attrs[str(name)].replace('\\\\','\\')
 
