@@ -42,6 +42,9 @@ Our **[examples folder](.)** shows how to use the range of functionalities in di
 #### Reify
 ![](./reify/theory-label.png)
 
+#### UML Class Diagram
+![](./uml_class/default.png)
+
 ----
 ## Dynamic applications
 
