@@ -43,6 +43,20 @@ class ClingraphContext:
         """
         return String(''.join([str(x).strip('"') for x in args]))
 
+    def stringify(self, s, capitalize=False):
+        """
+        Turns a value into a string without underscore and capitalized if requested
+        Args:
+            s: The value to transform
+        Returns:
+            (clingo.Symbol.String) The string 
+        """
+        val = str(s).strip('"')
+        val = val.replace('_',' ')
+        if capitalize:
+            val = val[0].upper() + val[1:]
+        return String(val)
+
     def svg_init(self, property_name, property_value):
         """
         Generates an svg string for the initial state. This string has a format that is handled
