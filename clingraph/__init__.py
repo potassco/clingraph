@@ -132,7 +132,8 @@ def _get_parser():
     graphs_params.add_argument('--select-model',
             help = textwrap.dedent('''\
                 Select only one of the models when using a json input.
-                Defined by a number starting in index 0.
+                Defined by an idex for accessing the models, starting in index 0.
+                Negative indexes are also allowed (-1 refers to the last model)
                 Can appear multiple times to select multiple models.'''),
             type=int,
             action='append',
@@ -302,6 +303,10 @@ def main():
         for m in args.select_model:
             if m>=len(fbs):
                 raise ValueError(f"Invalid model number selected {m}")
+            if m<0:
+                if m<-1*len(fbs):
+                    raise ValueError(f"Invalid model number selected {m}")
+                args.select_model.append(len(fbs)+m)
         fbs = [f if i in args.select_model else None
                     for i, f in enumerate(fbs) ]
 

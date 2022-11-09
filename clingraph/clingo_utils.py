@@ -49,7 +49,7 @@ class ClingraphContext:
         Args:
             s: The value to transform
         Returns:
-            (clingo.Symbol.String) The string 
+            (clingo.Symbol.String) The string
         """
         val = str(s).strip('"')
         val = val.replace('_',' ')
