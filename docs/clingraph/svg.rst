@@ -72,6 +72,7 @@ As mentioned above, some properties, like `fillcolor` will not be overwritten by
 Change the color on hover
 
 ::
+    
     attr(node,N,style,filled):-node(N).
     attr(node,N,fillcolor,@svg_color()):-node(N).
     attr(node,N,class,@svg(mouseenter,N,color,green)):-node(N).
