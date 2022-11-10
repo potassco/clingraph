@@ -18,7 +18,7 @@ Our **[examples folder](.)** shows how to use the range of functionalities in di
   - Clingo integration
   - Multi graphs
   - Animation
-- :rabbit2: SVG interaction ([family_tree](family_tree), [queens_interactive](queens_interactive), [minesweeper](minesweeper)),  [traveling_sales_person_clickable](traveling_sales_person_clickable)), 
+- :rabbit2: SVG interaction ([tree](tree), [family_tree](family_tree), [queens_interactive](queens_interactive), [minesweeper](minesweeper)),  [traveling_sales_person_clickable](traveling_sales_person_clickable)), 
   - Interactivity using svg
 
 ----
@@ -59,6 +59,10 @@ Our **[examples folder](.)** shows how to use the range of functionalities in di
 
 ----
 ## SVG interaction
+
+#### Tree
+![](./tree/default.png)
+
 
 #### Queens interactive 
 ![](./queens_interactive/default.png)
