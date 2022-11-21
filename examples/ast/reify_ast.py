@@ -38,7 +38,7 @@ class ReifiedAST:
 
     def add_node(
         self,
-        node: Union[AST, ASTSequence, Location, Symbol, int, str],
+        node: Union[AST, ASTSequence, Location, None, Symbol, int, str],
         parent_id: int = 0,
         parent_key: Optional[int] = None,
         level: int = 1
@@ -75,6 +75,10 @@ class ReifiedAST:
             self.__factbase.add(Node(node_id, "type", "Location"))
             self.__factbase.add(Node(node_id, "level", level))
             items = [('begin', node.begin), ("end", node.end)]
+
+        elif node is None:
+            self.__factbase.add(Node(node_id, "type", "None"))
+            self.__factbase.add(Node(node_id, "level", level))
 
         elif isinstance(node, Position):
             self.__factbase.add(Node(node_id, "type", "Position"))
