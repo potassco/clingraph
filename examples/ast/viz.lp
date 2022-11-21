@@ -17,9 +17,23 @@ attr(node, I, (label,   5), V) :- node(I), ast_node(I, variant, V).
 attr(node, I, (label,   6), "</td></tr><tr><td colspan='2'>") :- node(I), ast_node(I, value, _), not ast_node(I, variant, _).
 attr(node, I, (label,   6), "</td></tr><tr><td colspan='3'>") :- node(I), ast_node(I, value, _), ast_node(I, variant, _).
 attr(node, I, (label,   7), "<font face='monospace'>") :- node(I), ast_node(I, value, _).
-attr(node, I, (label,   8), V) :- node(I), ast_node(I, value, V).
+attr(node, I, (label,   8), @escape(V)) :- node(I), ast_node(I, value, V).
 attr(node, I, (label,   9), "</font>") :- node(I), ast_node(I, value, _).
 attr(node, I, (label, 127), "</td></tr></table>>") :- node(I).
 
 attr(graph_edges, default, fontsize, 10).
 attr(edge, I, label, L) :- edge(I), ast_edge(I, key, L).
+
+#script (python)
+from clingo.symbol import String
+
+def escape(symbol):
+    return String(
+        str(symbol)
+            .removeprefix('"')
+            .removesuffix('"')
+            .replace('&', '&amp;')
+            .replace('"', '&quot;')
+            .replace('<', '&lt;')
+            .replace('>', '&gt;'))
+#end.
