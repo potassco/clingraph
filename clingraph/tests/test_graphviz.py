@@ -100,17 +100,11 @@ def test_dot():
     default = source['default']
 
     assert 'graph default {' in default
-    assert '	mike [label="Michel Scott"]' in default
-    assert '	toby' in default
-    label_in = False
-    label_in |= '	mike -- toby [label="enemy-hate-boss"]' in default
-    label_in |= '	mike -- toby [label="enemy-boss-hate"]' in default
-    label_in |= '	mike -- toby [label="boss-enemy-hate"]' in default
-    label_in |= '	mike -- toby [label="boss-hate-enemy"]' in default
-    label_in |= '	mike -- toby [label="hate-enemy-boss"]' in default
-    label_in |= '	mike -- toby [label="hate-boss-enemy"]' in default
+    assert '	mike [label=<<b>Michel Scott</b>>]' in default
+    assert '	pam [label=<Pamela Morgan <b>Beesly</b>>]' in default
+    assert '	angela [label=<Angela Noelle <b>Martin</b>>]' in default
+    assert '	jim [label=HalpertJim]' in default 
 
-    assert label_in
     assert '}' in default
 
 def test_render():

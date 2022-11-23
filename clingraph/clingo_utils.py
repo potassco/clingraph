@@ -43,7 +43,7 @@ class ClingraphContext:
         """
         return String(''.join([str(x).strip('"') for x in args]))
 
-    def f(self, s, *args):
+    def format(self, s, *args):
         """
         Formats the string with the given arguments
         Args:

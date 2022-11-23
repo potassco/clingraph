@@ -56,24 +56,27 @@ attr(graph, default, fontsize, 20).
 % Classes as Nodes
 node(Name) :- uml_class(Name).
 
-attr(node,Class,label,@concat("<<TABLE BORDER='0' CELLBORDER='1' CELLSPACING='0' CELLPADDING='1'>",
+attr(node,Class,label,@concat(
+                        "{% set attr = attr|default({}) %}",
+                        "{% set op = op|default({}) %}",
+                        "<<TABLE BORDER='0' CELLBORDER='1' CELLSPACING='0' CELLPADDING='1'>",
                         "<TR><TD ><B>{{name}} </B></TD></TR>",
-                        "<TR><TD ALIGN='left'> {% if attr is string %}{{ attr }} {% else %} {% for a in attr %} {{a}} {% endfor %} {% endif %}</TD></TR>",
-                        "<TR><TD ALIGN='left'> {% if op is string %}{{ op }} {% else %} {% for a in op %} {{a}} {% endfor %} {% endif %}</TD></TR>",
+                        "<TR><TD ALIGN='left'> {% for a in attr.values() %} {{a}} {% endfor %} </TD></TR>",
+                        "<TR><TD ALIGN='left'> {% for a in op.values() %} {{a}} {% endfor %} </TD></TR>",
                         "</TABLE>>")):-
     uml_class(Class).
 
 attr(node,Class,(label,name),Name):-
     uml_class_name_i(Class,Name).
 
-attr(node,Class,(label,attr),@f("{2}{0}: {1}<br ALIGN='left' />",Name,Type,V)):-
+attr(node,Class,(label,attr,Attr),@format("{2}{0}: {1}<br ALIGN='left' />",Name,Type,V)):-
     uml_attr(Class,Attr),
     uml_attr_name_i(Class,Attr,Name),
     uml_attr_type(Class,Attr,Type),
     uml_attr_visibility_i(Class,Attr,Visibility),
     visibility_symbol(Visibility, V).
 
-attr(node,Class,(label,op),@op_str(Name,Type,V,Args)):-
+attr(node,Class,(label,op,Op),@op_str(Name,Type,V,Args)):-
     uml_op(Class,Op),
     uml_op_name_i(Class,Op,Name),
     uml_op_type(Class,Op,Type),
