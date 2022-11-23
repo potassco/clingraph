@@ -41,28 +41,28 @@ attr(node, pos(X,Y), label, V ):- _true(initial(X,Y,V)).
 % Values defined as true
 attr(node, pos(X,Y), fontsize, 20) :- _true(sudoku(X,Y,V)), not _true(initial(X,Y,_)).
 attr(node, pos(X,Y), label, @concat("<<table BORDER='0'>",
-                                "<tr><td BGCOLOR='{{",@concat(color,V),"}}{{",@concat(opacity,V),"}}'",
-                                       " BORDER='{{",@concat(border,V),"}}'>",
-                                      "{{",@concat(value,V),"}}",
+                                "<tr><td BGCOLOR='{{",color,"[",V,"]}}{{",opacity,"[",V,"]}}'",
+                                       " BORDER='{{",border,"[",V,"]}}'>",
+                                      "{{",value,"[",V,"]}}",
                                 "</td></tr></table>>")):-
   _true(sudoku(X,Y,V)), not  _true(initial(X,Y,_)). 
 
 % Cells with multiple options
 attr(node, pos(X,Y), label, @concat("<<table BORDER='0'>",
                               "<tr>",
-                                "<td BGCOLOR='{{color1}}{{opacity1}}' BORDER='{{border1}}'>{{value1}}</td>",
-                                "<td BGCOLOR='{{color2}}{{opacity2}}' BORDER='{{border2}}'>{{value2}}</td>",
-                                "<td BGCOLOR='{{color3}}{{opacity3}}' BORDER='{{border3}}'>{{value3}}</td>",
+                                "<td BGCOLOR='{{color[1]}}{{opacity[1]}}' BORDER='{{border[1]}}'>{{value[1]}}</td>",
+                                "<td BGCOLOR='{{color[2]}}{{opacity[2]}}' BORDER='{{border[2]}}'>{{value[2]}}</td>",
+                                "<td BGCOLOR='{{color[3]}}{{opacity[3]}}' BORDER='{{border[3]}}'>{{value[3]}}</td>",
                               "</tr>",
                               "<tr>",
-                                "<td BGCOLOR='{{color4}}{{opacity4}}' BORDER='{{border4}}'>{{value4}}</td>",
-                                "<td BGCOLOR='{{color5}}{{opacity5}}' BORDER='{{border5}}'>{{value5}}</td>",
-                                "<td BGCOLOR='{{color6}}{{opacity6}}' BORDER='{{border6}}'>{{value6}}</td>",
+                                "<td BGCOLOR='{{color[4]}}{{opacity[4]}}' BORDER='{{border[4]}}'>{{value[4]}}</td>",
+                                "<td BGCOLOR='{{color[5]}}{{opacity[5]}}' BORDER='{{border[5]}}'>{{value[5]}}</td>",
+                                "<td BGCOLOR='{{color[6]}}{{opacity[6]}}' BORDER='{{border[6]}}'>{{value[6]}}</td>",
                               "</tr>",
                               "<tr>",
-                                "<td BGCOLOR='{{color7}}{{opacity7}}' BORDER='{{border7}}'>{{value7}}</td>",
-                                "<td BGCOLOR='{{color8}}{{opacity8}}' BORDER='{{border8}}'>{{value8}}</td>",
-                                "<td BGCOLOR='{{color9}}{{opacity9}}' BORDER='{{border9}}'>{{value9}}</td>",
+                                "<td BGCOLOR='{{color[7]}}{{opacity[7]}}' BORDER='{{border[7]}}'>{{value[7]}}</td>",
+                                "<td BGCOLOR='{{color[8]}}{{opacity[8]}}' BORDER='{{border[8]}}'>{{value[8]}}</td>",
+                                "<td BGCOLOR='{{color[9]}}{{opacity[9]}}' BORDER='{{border[9]}}'>{{value[9]}}</td>",
                               "</tr>",
                               "</table>>")):- 
   _true(pos(X,Y)), not  _true(initial(X,Y,_)), not _true(sudoku(X,Y,_)).
@@ -70,20 +70,20 @@ attr(node, pos(X,Y), label, @concat("<<table BORDER='0'>",
 % --- Label values for replacement 
 
 % Changes shown with opacity
-attr(node, pos(X,Y), (label,@concat(opacity,V)), 25):- not _change(sudoku(X,Y,V)), not _decide(sudoku(X,Y,V),_), _true(sudoku(X,Y,V)).
-attr(node, pos(X,Y), (label,@concat(opacity,V)), "00"):- not _true(sudoku(X,Y,V)), not _decide(sudoku(X,Y,V),neg), _true(pos(X,Y)), value(V).
+attr(node, pos(X,Y), (label,opacity,V), 25):- not _change(sudoku(X,Y,V)), not _decide(sudoku(X,Y,V),_), _true(sudoku(X,Y,V)).
+attr(node, pos(X,Y), (label,opacity,V), "00"):- not _true(sudoku(X,Y,V)), not _decide(sudoku(X,Y,V),neg), _true(pos(X,Y)), value(V).
 
 % Decisions shown with border
-attr(node, pos(X,Y), (label,@concat(border,V)), 1):-_decide(sudoku(X,Y,V),_).
-attr(node, pos(X,Y), (label,@concat(border,V)), 0):-not _decide(sudoku(X,Y,V),_), _true(pos(X,Y)), value(V).
+attr(node, pos(X,Y), (label,border,V), 1):-_decide(sudoku(X,Y,V),_).
+attr(node, pos(X,Y), (label,border,V), 0):-not _decide(sudoku(X,Y,V),_), _true(pos(X,Y)), value(V).
 
 % State shown with color
-attr(node, pos(X,Y), (label,@concat(color,V)), white):-not _true(sudoku(X,Y,V)), not _decide(sudoku(X,Y,V),_), _true(pos(X,Y)), value(V).
-attr(node, pos(X,Y), (label,@concat(color,V)), green):-_true(sudoku(X,Y,V)).
-attr(node, pos(X,Y), (label,@concat(color,V)), red):-_decide(sudoku(X,Y,V),neg).
-attr(node, pos(X,Y), (label,@concat(color,V)), green):-_decide(sudoku(X,Y,V),pos).
+attr(node, pos(X,Y), (label,color,V), white):-not _true(sudoku(X,Y,V)), not _decide(sudoku(X,Y,V),_), _true(pos(X,Y)), value(V).
+attr(node, pos(X,Y), (label,color,V), green):-_true(sudoku(X,Y,V)).
+attr(node, pos(X,Y), (label,color,V), red):-_decide(sudoku(X,Y,V),neg).
+attr(node, pos(X,Y), (label,color,V), green):-_decide(sudoku(X,Y,V),pos).
 
 % Value for everything but _false
-attr(node, pos(X,Y), (label,@concat(value,V)), V):-_true(sudoku(X,Y,V)).
-attr(node, pos(X,Y), (label,@concat(value,V)), V):-_undefined(sudoku(X,Y,V)).
-attr(node, pos(X,Y), (label,@concat(value,V)), ""):-_false(sudoku(X,Y,V)).
+attr(node, pos(X,Y), (label,value,V), V):-_true(sudoku(X,Y,V)).
+attr(node, pos(X,Y), (label,value,V), V):-_undefined(sudoku(X,Y,V)).
+attr(node, pos(X,Y), (label,value,V), ""):-_false(sudoku(X,Y,V)).

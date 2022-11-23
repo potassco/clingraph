@@ -3,13 +3,14 @@
 """
 import logging
 import clorm
-from clorm import Predicate, RawField, ComplexTerm, refine_field, ConstantField, SimpleField, Raw
+from clorm import Predicate, RawField, ComplexTerm, refine_field, ConstantField, SimpleField, Raw, ConstantField
 from clorm import FactBase as ClormFactBase
-from clingo.symbol import Function, Number
-import clingo
+from clingo.symbol import Function, String
 from .exceptions import InvalidSyntax
 log = logging.getLogger('custom')
 from jinja2 import Template
+
+from .utils import pythonify_symbol, stringify_symbol
 
 if hasattr(clorm.orm.symbols_facts, 'NonFactError'):
     NonFactError = clorm.orm.symbols_facts.NonFactError # NOLINT
@@ -23,8 +24,17 @@ else:
 
 class AttrID(ComplexTerm):
     # pylint: disable=missing-class-docstring
-    attr_name = SimpleField
-    attr_pos = RawField
+    attr_name = ConstantField #SimpleField HELP Dave
+    attr_variable = RawField
+    attr_key = RawField
+
+    class Meta:
+        is_tuple = True
+
+class AttrIDSugar(ComplexTerm):
+    # pylint: disable=missing-class-docstring
+    attr_name = ConstantField #SimpleField HELP Dave
+    attr_variable = RawField
 
     class Meta:
         is_tuple = True
@@ -90,10 +100,19 @@ class Factbase():
             class Meta:
                 name = prefix+"attr"
 
-        class AttrSugar(Predicate):
+        class AttrSugarSimple(Predicate):
             element_type = ElementType
             element_id = RawField
             attr_id = SimpleField
+            attr_value = RawField
+
+            class Meta:
+                name = prefix+"attr"
+
+        class AttrSugarDouble(Predicate):
+            element_type = ElementType
+            element_id = RawField
+            attr_id = AttrIDSugar.Field
             attr_value = RawField
 
             class Meta:
@@ -119,7 +138,8 @@ class Factbase():
         self.Attr = Attr
         self.NodeSugar = NodeSugar
         self.EdgeSugar = EdgeSugar
-        self.AttrSugar = AttrSugar
+        self.AttrSugarSimple = AttrSugarSimple
+        self.AttrSugarDouble = AttrSugarDouble
 
         self.default_graph = default_graph
         self.fb = ClormFactBase(indexes=[Attr.element_id])
@@ -172,7 +192,8 @@ class Factbase():
         """
         main_unifiers = [self.Graph, self.SubGraph,
                          self.Node, self.Edge, self.Attr]
-        sugar_unifiers = [self.NodeSugar, self.EdgeSugar, self.AttrSugar]
+        sugar_unifiers = [self.NodeSugar, self.EdgeSugar, 
+                        self.AttrSugarSimple, self.AttrSugarDouble]
         return main_unifiers+sugar_unifiers
 
     def _get_element_class(self, element_type):
@@ -264,12 +285,41 @@ class Factbase():
         - for each node(ID) add node(ID,default)  same for edge
         - replace attr(E,ID,Name,Val) with attr(E,ID,(Name,-1),Val)
         """
-        q = fb.query(self.AttrSugar)
+        q = fb.query(self.AttrSugarSimple)
         for attr in set(q.all()):
+            # print(attr)
+            name = Function(attr.attr_id,[]) #help dave make general
+            var = String("__NONE__")
+            key = String("__NONE__")
+            new_attr_id = AttrID(attr_name=ConstantField(name), 
+                            attr_variable=Raw(var),
+                            attr_key=Raw(key))
             e = self.Attr(element_type=attr.element_type,
                           element_id=attr.element_id,
                           attr_value=attr.attr_value,
-                          attr_id=AttrID(attr_name=attr.attr_id, attr_pos=Raw(Number(-1))))
+                          attr_id=new_attr_id)
+            # print(e)
+            # print()
+            fb.remove(attr)
+            fb.add(e)
+
+        q = fb.query(self.AttrSugarDouble)
+        for attr in set(q.all()):
+            # print(attr)
+            attr_id = attr.attr_id.symbol
+            name = attr_id.arguments[0]
+            var = attr_id.arguments[1]
+            key = String("__NONE__")
+            # print((name,var,key))
+            new_attr_id = AttrID(attr_name=Raw(name), 
+                            attr_variable=Raw(var),
+                            attr_key=Raw(key))
+            e = self.Attr(element_type=attr.element_type,
+                          element_id=attr.element_id,
+                          attr_value=attr.attr_value,
+                          attr_id=new_attr_id)
+            # print(e)
+            # print()
             fb.remove(attr)
             fb.add(e)
 
@@ -379,48 +429,56 @@ class Factbase():
                     self.Attr.element_id == element_id)
         # pylint: disable=no-member
         q = q.group_by(self.Attr.attr_id.attr_name)
-        q = q.select(self.Attr.attr_id.attr_pos, self.Attr.attr_value)
+        q = q.select(self.Attr.attr_id.attr_variable, self.Attr.attr_id.attr_key, self.Attr.attr_value)
         attrs = {}
         for name, list_opts in q.all():
             
-            print('----')
-            print(name)
+            # print('----')
+            # print(name)
+            custom_template = False
             template = "{% for k,v in data.items() %}{{v}}{% endfor %}"
             data = {}
 
             # info = {"set": [], "idx": [], "sep": " "}
-            for opt, val in list_opts:
-                print("")
-                print(opt)
-                val_str = str(val).strip('"')
-                print(opt.symbol.type)
-                # symbol = opt.symbol
-                # is_tuple = symbol.type == clingo.SymbolType.Function and symbol.name == ""
-                # is_number = symbol.type == clingo.SymbolType.Number
-                # if is_tuple:
-                    # opt_str = tuple([str(s).strip('"') for s in symbol.arguments])
-                # elif is_number:
-                    # opt_str = symbol.number
-                # else:
-                    # opt_str = str(opt).strip('"')
-                opt_str = str(opt).strip('"')
+            for var, key, val in list_opts:
+                # print("")
+                # print((var,key,val))
+                var = stringify_symbol(var.symbol)
+                val = pythonify_symbol(val.symbol)
+                key = pythonify_symbol(key.symbol)
 
-                if opt_str == '-1':
-                    template = val_str
-                else:
-                    if opt_str in data:
-                        if type(data[opt_str])!=set:
-                            aux = data[opt_str]
-                            data[opt_str]=set([aux])
-                        data[opt_str].add(val_str)
+                is_template = var=="__NONE__"
+                if is_template:
+                    if custom_template:
+                        template = template + val
                     else:
-                        data[opt_str]=val_str
-            log.debug(f"Formatting template {template} with data {data}")
-            # print(data)   
+                        template = val
+                    custom_template= True
+                    continue
+                    
+                is_dict = key!="__NONE__"
+                if is_dict:
+                    if not var in data:
+                        data[var]={}
+                    if key in data[var]:
+                        log.warn(f"Entry ({name},{var},{key}) repeated on element {element_id}. Duplicates will be ignored")
+                    data[var][key]= val
+                    continue
+
+                if var in data:
+                    log.warn(f"Entry ({name},{var}) repeated on element {element_id}. Duplicates will be ignored")
+
+                data[var]=val
 
             # print(template)
-            s = Template(template).render(data,data = data)
-            attrs[str(name)] = s
+            # print(template.type)
+            if type(template) == str:
+                # print(f"Formatting template {template} with data {data}")
+                log.debug(f"Formatting template {template} with data {data}")
+                s = Template(template).render(data,data = data)
+            else:
+                s = template    
+            attrs[str(name)] = str(s)
                 
             
             if str(name)=='texlbl': #Used for latex

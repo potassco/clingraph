@@ -84,7 +84,7 @@ class ClingraphContext:
         """
         property_name = str(property_name).strip('"')
         property_value = str(property_value).strip('"')
-        return String(f"init___{property_name}___{property_value}")
+        return String(f"init___{property_name}___{property_value} ")
 
     def svg_color(self):
         """
@@ -112,7 +112,7 @@ class ClingraphContext:
         element = str(element).strip('"')
         property_name = str(property_name).strip('"')
         property_value = str(property_value).strip('"')
-        s=String(f"{event}___{element}___{property_name}___{property_value}")
+        s=String(f"{event}___{element}___{property_name}___{property_value} ")
         return s
 
     def __getattr__(self, name):
