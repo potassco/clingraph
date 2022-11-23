@@ -28,11 +28,9 @@ edge((((X,Y),T),((X+DX,Y+DY),T)),T) :- move(robot(R),(DX,DY),T),
 attr(node,((X,Y),T),pos,@pos(X,YMax-Y)):- position((X,Y)), step(T), #max{Y':position((X',Y'))}=YMax.
 
 % Label Simpler option without using HTML and without subindex
-attr(node,(P,T),(label,0),"R") :- position(robot(R),P,T).
-attr(node,(P,T),(label,1),R) :- position(robot(R),P,T).
-attr(node,(P,T),(label,2),"S") :- position(shelf(S),P,T).
-attr(node,(P,T),(label,3),S) :- position(shelf(S),P,T).
-attr(node,(P,T),(label,sep),"") :- node((P,T),T).
+attr(node,(P,T),label,"R{{robot}}{%if shelf%}S{{shelf}}{%endif%}") :- position(robot(R),P,T).
+attr(node,(P,T),(label,robot),R) :- position(robot(R),P,T).
+attr(node,(P,T),(label,shelf),S) :- position(shelf(S),P,T).
 
 % Shape
 attr(node,(P,T),shape,"point") :- free(P,T).
