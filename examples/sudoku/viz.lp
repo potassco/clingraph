@@ -20,7 +20,7 @@ viz_node(pos(X,Y), sudoku):- pos(X,Y).
 viz_attr(node, pos(X,Y), fillcolor, "grey88"):- pos(X,Y), subgrid(X,Y,S), S\2==0.
 
 viz_attr(node, pos(X,Y), label, V):- sudoku(X,Y,V), not initial(X,Y,_).
-viz_attr(node, pos(X,Y), label, @f("<<B>{}</B>>",V)):- initial(X,Y,V).
+viz_attr(node, pos(X,Y), label, @format("<<B>{}</B>>",V)):- initial(X,Y,V).
 viz_attr(node, pos(X,Y), fontcolor, gray):- sudoku(X,Y,V), not initial(X,Y,_).
 viz_attr(node, pos(X,Y), pos, @pos(X,Y)):- pos(X,Y).
 

@@ -103,7 +103,7 @@ class Factbase():
         class AttrSugarSimple(Predicate):
             element_type = ElementType
             element_id = RawField
-            attr_id = SimpleField
+            attr_id = ConstantField
             attr_value = RawField
 
             class Meta:
@@ -287,32 +287,29 @@ class Factbase():
         """
         q = fb.query(self.AttrSugarSimple)
         for attr in set(q.all()):
-            # print(attr)
-            name = Function(attr.attr_id,[]) #help dave make general
-            var = String("__NONE__")
-            key = String("__NONE__")
-            new_attr_id = AttrID(attr_name=ConstantField(name), 
+            name = attr.attr_id 
+            var = String("__")
+            key = String("__")
+            new_attr_id = AttrID(attr_name=name, 
                             attr_variable=Raw(var),
                             attr_key=Raw(key))
             e = self.Attr(element_type=attr.element_type,
                           element_id=attr.element_id,
                           attr_value=attr.attr_value,
                           attr_id=new_attr_id)
-            # print(e)
-            # print()
             fb.remove(attr)
             fb.add(e)
 
         q = fb.query(self.AttrSugarDouble)
         for attr in set(q.all()):
             # print(attr)
-            attr_id = attr.attr_id.symbol
-            name = attr_id.arguments[0]
-            var = attr_id.arguments[1]
-            key = String("__NONE__")
+            attr_id = attr.attr_id
+            name = attr_id.attr_name
+            var = attr_id.attr_variable
+            key = String("__")
             # print((name,var,key))
-            new_attr_id = AttrID(attr_name=Raw(name), 
-                            attr_variable=Raw(var),
+            new_attr_id = AttrID(attr_name=name, 
+                            attr_variable=var,
                             attr_key=Raw(key))
             e = self.Attr(element_type=attr.element_type,
                           element_id=attr.element_id,
@@ -436,7 +433,7 @@ class Factbase():
             # print('----')
             # print(name)
             custom_template = False
-            template = "{% for k,v in data.items() %}{{v}}{% endfor %}"
+            template = "{% for k,v in data| dictsort %}{{v}}{% endfor %}"
             data = {}
 
             # info = {"set": [], "idx": [], "sep": " "}
@@ -444,10 +441,10 @@ class Factbase():
                 # print("")
                 # print((var,key,val))
                 var = stringify_symbol(var.symbol)
-                val = pythonify_symbol(val.symbol)
+                val = stringify_symbol(val.symbol)
                 key = pythonify_symbol(key.symbol)
 
-                is_template = var=="__NONE__"
+                is_template = var=="__"
                 if is_template:
                     if custom_template:
                         template = template + val
@@ -456,17 +453,17 @@ class Factbase():
                     custom_template= True
                     continue
                     
-                is_dict = key!="__NONE__"
+                is_dict = key!="__"
                 if is_dict:
                     if not var in data:
                         data[var]={}
                     if key in data[var]:
-                        log.warn(f"Entry ({name},{var},{key}) repeated on element {element_id}. Duplicates will be ignored")
+                        log.warning(f"Entry ({name},{var},{key}) repeated on element {element_id}. Duplicates will be ignored")
                     data[var][key]= val
                     continue
 
                 if var in data:
-                    log.warn(f"Entry ({name},{var}) repeated on element {element_id}. Duplicates will be ignored")
+                    log.warning(f"Entry ({name},{var}) repeated on element {element_id}. Duplicates will be ignored")
 
                 data[var]=val
 
