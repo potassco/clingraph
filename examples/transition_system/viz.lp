@@ -29,6 +29,5 @@ attr(node,red,color,red):-state(red).
 
 edge((X,Z),system):-transition(X,Y,Z).
 attr(edge,(X,Z),label,Z):-transition(X,Y,Z).
-attr(edge,(X,Z),(texlbl,0),"$\\mathcal{C}_{\\textit{"):-transition(X,Y,Z).
-attr(edge,(X,Z),(texlbl,1),Z):-transition(X,Y,Z).
-attr(edge,(X,Z),(texlbl,2),"}}$"):-transition(X,Y,Z).
+attr(edge,(X,Z),texlbl,"$\\mathcal{C}_{\\textit{ {{ z }} }}$"):-transition(X,Y,Z).
+attr(edge,(X,Z),(texlbl,z),Z):-transition(X,Y,Z).

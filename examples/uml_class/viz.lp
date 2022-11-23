@@ -39,6 +39,10 @@ uml_op_args_i(Class,Op,()):-
 uml_op_args_i(Class,Op,Args):- 
     uml_op_args(Class,Op,Args).
 
+visibility_symbol(protected,"#").
+visibility_symbol(private,"-").
+visibility_symbol(public,"+").
+visibility_symbol(none,"").
 %--------------- Graph
 
 attr(graph_nodes, default, shape, rectangle).
@@ -52,25 +56,30 @@ attr(graph, default, fontsize, 20).
 % Classes as Nodes
 node(Name) :- uml_class(Name).
 
-attr(node,Class,(label,0),@record_label(Name,Type)):-
-    uml_class(Class), 
-    uml_class_name_i(Class,Name), 
-    uml_class_type_i(Class,Type).
-attr(node,Class,(label,4),@record_end()):-
+attr(node,Class,label,@concat("<<TABLE BORDER='0' CELLBORDER='1' CELLSPACING='0' CELLPADDING='1'>",
+                        "<TR><TD ><B>{{name}} </B></TD></TR>",
+                        "<TR><TD ALIGN='left'> {% if attr is string %}{{ attr }} {% else %} {% for a in attr %} {{a}} {% endfor %} {% endif %}</TD></TR>",
+                        "<TR><TD ALIGN='left'> {% if op is string %}{{ op }} {% else %} {% for a in op %} {{a}} {% endfor %} {% endif %}</TD></TR>",
+                        "</TABLE>>")):-
     uml_class(Class).
-attr(node,Class,(label,2),@new_row()):-
-    uml_class(Class).
-attr(node,Class,(label,1),@attr_str(Name,Type,Visibility)):-
+
+attr(node,Class,(label,name),Name):-
+    uml_class_name_i(Class,Name).
+
+attr(node,Class,(label,attr),@f("{2}{0}: {1}<br ALIGN='left' />",Name,Type,V)):-
     uml_attr(Class,Attr),
     uml_attr_name_i(Class,Attr,Name),
     uml_attr_type(Class,Attr,Type),
-    uml_attr_visibility_i(Class,Attr,Visibility).
-attr(node,Class,(label,3),@op_str(Name,Type,Visibility,Args)):-
+    uml_attr_visibility_i(Class,Attr,Visibility),
+    visibility_symbol(Visibility, V).
+
+attr(node,Class,(label,op),@op_str(Name,Type,V,Args)):-
     uml_op(Class,Op),
     uml_op_name_i(Class,Op,Name),
     uml_op_type(Class,Op,Type),
     uml_op_visibility_i(Class,Op,Visibility),
-    uml_op_args_i(Class,Op,Args).
+    uml_op_args_i(Class,Op,Args),
+    visibility_symbol(Visibility, V).
 
 
 attr(node, T, style, "filled"):- node(T).
@@ -123,8 +132,21 @@ attr(edge,(Class1,Class2,Assoc),arrowtail,none):-
 
 
 % Labels
+
+% Label for the association
 attr(edge,(Class1,Class2,Assoc),xlabel,Name):-
     uml_assoc_name(Class1,Class2,Assoc,Name).
+
+% Label for the multiplicity
+edge_property(headlabel).
+edge_property(taillabel).
+
+attr(edge,(Class1,Class2,Assoc), P, @concat("<<TABLE BORDER='0'>",
+                                                "<TR><TD><FONT POINT-SIZE='11'>{{name}}</FONT></TD></TR>",
+                                                "<TR><TD><FONT POINT-SIZE='8' COLOR='gray40'>{{min}}{{sep}}{{max}}</FONT></TD></TR>",
+                                         "</TABLE>>")):-
+    uml_assoc(Class1,Class2,Assoc),
+    edge_property(P).
 
 assoc_label((Class1,Class2,Assoc),Class3,min,Min) :- 
     uml_assoc_cadinality(Class1,Class2,Assoc,Class3,Min,Max).
@@ -139,41 +161,14 @@ assoc_label((Class1,Class2,Assoc),Class3,max,"") :-
 assoc_label((Class1,Class2,Assoc),Class3,name,Name) :- 
     uml_assoc_name(Class1,Class2,Assoc,Class3,Name).
 
-assoc_label((Class1,Class2,Assoc),taillabel,X,Y) :- assoc_label((Class1,Class2,Assoc),Class1,X,Y).
-assoc_label((Class1,Class2,Assoc),headlabel,X,Y) :- assoc_label((Class1,Class2,Assoc),Class2,X,Y).
+attr(edge,(Class1,Class2,Assoc),(taillabel,Name),Value) :- assoc_label((Class1,Class2,Assoc),Class1,Name,Value).
+attr(edge,(Class1,Class2,Assoc),(headlabel,Name),Value) :- assoc_label((Class1,Class2,Assoc),Class2,Name,Value).
 
-edge_property(headlabel).
-edge_property(taillabel).
-attr(edge,(Class1,Class2,Assoc), (Property,0), "<<TABLE BORDER='0'><TR><TD><FONT POINT-SIZE='11'>"):-
-    uml_assoc(Class1,Class2,Assoc),
-    edge_property(Property).
-
-attr(edge,(Class1,Class2,Assoc), (Property,2), "</FONT></TD></TR><TR><TD><FONT POINT-SIZE='8' COLOR='gray40'>"):-
-    uml_assoc(Class1,Class2,Assoc),
-    edge_property(Property).
-
-attr(edge,(Class1,Class2,Assoc), (Property,6), "</FONT></TD></TR></TABLE>>"):-
-    uml_assoc(Class1,Class2,Assoc),
-    edge_property(Property).
-
-pos(min,3). pos(sep,4). pos(max,5). pos(name,1).
-attr(edge,ID, (Property,N), V):-
-    assoc_label(ID,Property,O,V), pos(O,N).
 
 
 
 #script (python)
 from clingo.symbol import String
-visibility_symbols={'protected':'#', 'public':'+','private':'-','none':' '}
-
-def attr_str(name,attr_type,visibility):
-    name = str(name).strip('"')
-    attr_type = str(attr_type).strip('"')
-    visibility = str(visibility).strip('"')
-    if not visibility in visibility_symbols:
-        raise RuntimeError(f'Invalid visibility: {visibility}')
-    s = f"{visibility_symbols[visibility]} {name} : {attr_type}<br ALIGN='left' /> "
-    return String(s)
 
 def op_str(name,op_type,visibility,args):
     name = str(name).strip('"')
@@ -185,31 +180,7 @@ def op_str(name,op_type,visibility,args):
         t = str(a.arguments[1])
         args_processed.append(f"{n}:{t}")
     args_str = ",".join(args_processed)
-    if not visibility in visibility_symbols:
-        raise RuntimeError(f'Invalid visibility: {visibility}')
-    s = f"{visibility_symbols[visibility]} {name}({args_str}) : {op_type}<br ALIGN='left' /> "
+    s = f"{visibility} {name}({args_str}) : {op_type}<br ALIGN='left' /> "
     return String(s)
 
-def record_label(name,record_type):
-    str_name = str(name).strip('"')
-    str_type = str(record_type)
-    if str_type =="abstract":
-        t= ("<I>","</I>")
-    else:
-        t = ("","")
-    
-    s = f"<<TABLE BORDER='0' CELLBORDER='1' CELLSPACING='0' CELLPADDING='1'><TR><TD ><B>{t[0]}{str_name}{t[1]}</B></TD></TR><TR><TD ALIGN='left'>"
-    return String(s)
-
-def end_row():
-    s = f"</TD></TR>"
-    return String(s)
-
-def new_row():
-    
-    s = f"</TD></TR><TR><TD ALIGN='left'>"
-    return String(s)
-
-def record_end():
-    return String("</TD></TR></TABLE>>")
 #end.

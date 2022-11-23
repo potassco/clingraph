@@ -43,6 +43,18 @@ class ClingraphContext:
         """
         return String(''.join([str(x).strip('"') for x in args]))
 
+    def f(self, s, *args):
+        """
+        Formats the string with the given arguments
+        Args:
+            s (clingo.Symbol.String): The string to format, for example "{0} and {1}"
+            args: All symbols that can be accessed by the position starting in 0
+        Returns:
+            (clingo.Symbol.String) The string concatenating all symbols
+        """
+        args_str = [str(v).strip('"') for v in args]
+        return String(s.string.format(*args_str))
+
     def stringify(self, s, capitalize=False):
         """
         Turns a value into a string without underscore and capitalized if requested

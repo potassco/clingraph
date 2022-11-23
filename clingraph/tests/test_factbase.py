@@ -135,21 +135,130 @@ def test_missing_graph():
     graphs = cg.get_all_graphs()
     cg.get_graph_elements('node',graphs[0])
 
-def test_multi_value():
+def test_multi_value_simple():
     s = """
     node(n).
-    attr(node,n,label,a).
-    attr(node,n,label,a).
-    attr(node,n,(label,1),a11).
-    attr(node,n,(label,1),a12).
-    attr(node,n,(label,2),a21).
+    attr(node,n,label,"{{a}}{{b}}").
+    attr(node,n,(label,a),a11).
+    attr(node,n,(label,b),a12).
     """
     cg = Factbase()
     cg.add_fact_string(s)
     graphs = cg.get_all_graphs()
     nodes = cg.get_graph_elements('node',graphs[0])
     attr = cg.get_element_attr('node',nodes[0])
-    assert attr['label']=='a  a12 a11 a21' or attr['label']=='a  a11 a12 a21'
+    assert attr['label']=='a11a12'
+
+def test_multi_value_none():
+    s = """
+    node(n).
+    attr(node,n,label,"value").
+    attr(node,n,(label,a),a11).
+    attr(node,n,(label,b),a12).
+    """
+    cg = Factbase()
+    cg.add_fact_string(s)
+    graphs = cg.get_all_graphs()
+    nodes = cg.get_graph_elements('node',graphs[0])
+    attr = cg.get_element_attr('node',nodes[0])
+    assert attr['label']=='value'
+
+def test_multi_value_list():
+    s = """
+    node(n).
+    attr(node,n,label,"{% for e in a %}a:{{e}} {% endfor %}").
+    attr(node,n,(label,a),x).
+    attr(node,n,(label,a),y).
+    """
+    cg = Factbase()
+    cg.add_fact_string(s)
+    graphs = cg.get_all_graphs()
+    nodes = cg.get_graph_elements('node',graphs[0])
+    attr = cg.get_element_attr('node',nodes[0])
+    assert attr['label']=='a:x a:y ' or attr['label']=='a:y a:x '
+
+def test_multi_value_for_data():
+    s = """
+    node(n).
+    attr(node,n,label,"{% for k,v in data.items() %}{{v}}!{% endfor %}").
+    attr(node,n,(label,arg1),x).
+    attr(node,n,(label,arg2),y).
+    """
+    cg = Factbase()
+    cg.add_fact_string(s)
+    graphs = cg.get_all_graphs()
+    nodes = cg.get_graph_elements('node',graphs[0])
+    attr = cg.get_element_attr('node',nodes[0])
+    print(attr)
+    assert attr['label']=='x!y!' or attr['label']=='y!x!'
+
+
+def test_multi_value_if():
+    s = """
+    node(n).
+    attr(node,n,label,"{% if arg1 %}1 is {{arg1}} {% endif %}2 is {{arg2}}").
+    attr(node,n,(label,arg2),y).
+    """
+    cg = Factbase()
+    cg.add_fact_string(s)
+    graphs = cg.get_all_graphs()
+    nodes = cg.get_graph_elements('node',graphs[0])
+    attr = cg.get_element_attr('node',nodes[0])
+    assert attr['label']=='2 is y'
+    s = s+ """
+    attr(node,n,(label,arg1),x).
+    """
+    cg = Factbase()
+    cg.add_fact_string(s)
+    graphs = cg.get_all_graphs()
+    nodes = cg.get_graph_elements('node',graphs[0])
+    attr = cg.get_element_attr('node',nodes[0])
+    assert attr['label']=='1 is x 2 is y'
+
+
+def test_multi_value_tuple():
+    s = """
+    node(n).
+    attr(node,n,label,"{{data['(a,1)'].pop()}}{{data['(a,1)'].pop()}}").
+    attr(node,n,(label,(a,1)),y1).
+    attr(node,n,(label,(a,1)),y2).
+    """
+    cg = Factbase()
+    cg.add_fact_string(s)
+    graphs = cg.get_all_graphs()
+    nodes = cg.get_graph_elements('node',graphs[0])
+    attr = cg.get_element_attr('node',nodes[0])
+    print(attr)
+    assert attr['label']=='y1y2' or attr['label']=='y2y1'
+
+def test_multi_value_default():
+    s = """
+    node(n).
+    attr(node,n,(label,(a,1)),y).
+    attr(node,n,(label,(b,1)),x).
+    """
+    cg = Factbase()
+    cg.add_fact_string(s)
+    graphs = cg.get_all_graphs()
+    nodes = cg.get_graph_elements('node',graphs[0])
+    attr = cg.get_element_attr('node',nodes[0])
+    print(attr)
+    assert attr['label']=='xy' or attr['label']=='yx'
+
+def test_multi_value_numbers():
+    s = """
+    node(n).
+    attr(node,n,(label,1),y).
+    attr(node,n,(label,2),x).
+    """
+    cg = Factbase()
+    cg.add_fact_string(s)
+    graphs = cg.get_all_graphs()
+    nodes = cg.get_graph_elements('node',graphs[0])
+    attr = cg.get_element_attr('node',nodes[0])
+    print(attr)
+    assert attr['label']=='xy' or attr['label']=='yx'
+
 
 def test_from_json():
 

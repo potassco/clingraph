@@ -5,10 +5,11 @@ import logging
 import clorm
 from clorm import Predicate, RawField, ComplexTerm, refine_field, ConstantField, SimpleField, Raw
 from clorm import FactBase as ClormFactBase
-from clingo.symbol import Function
+from clingo.symbol import Function, Number
+import clingo
 from .exceptions import InvalidSyntax
 log = logging.getLogger('custom')
-
+from jinja2 import Template
 
 if hasattr(clorm.orm.symbols_facts, 'NonFactError'):
     NonFactError = clorm.orm.symbols_facts.NonFactError # NOLINT
@@ -23,7 +24,7 @@ else:
 class AttrID(ComplexTerm):
     # pylint: disable=missing-class-docstring
     attr_name = SimpleField
-    attr_pos = SimpleField
+    attr_pos = RawField
 
     class Meta:
         is_tuple = True
@@ -268,7 +269,7 @@ class Factbase():
             e = self.Attr(element_type=attr.element_type,
                           element_id=attr.element_id,
                           attr_value=attr.attr_value,
-                          attr_id=AttrID(attr_name=attr.attr_id, attr_pos=-1))
+                          attr_id=AttrID(attr_name=attr.attr_id, attr_pos=Raw(Number(-1))))
             fb.remove(attr)
             fb.add(e)
 
@@ -372,6 +373,7 @@ class Factbase():
         Returns:
             (`dic`) A dictionary with attribute names as key and  attribute values as values.
         """
+        # print(self.fb)
         q = self.fb.query(self.Attr)
         q = q.where(self.Attr.element_type == element_type,
                     self.Attr.element_id == element_id)
@@ -380,22 +382,47 @@ class Factbase():
         q = q.select(self.Attr.attr_id.attr_pos, self.Attr.attr_value)
         attrs = {}
         for name, list_opts in q.all():
-            info = {"set": [], "idx": [], "sep": " "}
+            
+            print('----')
+            print(name)
+            template = "{% for k,v in data.items() %}{{v}}{% endfor %}"
+            data = {}
+
+            # info = {"set": [], "idx": [], "sep": " "}
             for opt, val in list_opts:
+                print("")
+                print(opt)
                 val_str = str(val).strip('"')
-                if opt == "sep":
-                    info["sep"] = val_str
-                elif opt == -1:
-                    info["set"].append(val_str)
+                print(opt.symbol.type)
+                # symbol = opt.symbol
+                # is_tuple = symbol.type == clingo.SymbolType.Function and symbol.name == ""
+                # is_number = symbol.type == clingo.SymbolType.Number
+                # if is_tuple:
+                    # opt_str = tuple([str(s).strip('"') for s in symbol.arguments])
+                # elif is_number:
+                    # opt_str = symbol.number
+                # else:
+                    # opt_str = str(opt).strip('"')
+                opt_str = str(opt).strip('"')
+
+                if opt_str == '-1':
+                    template = val_str
                 else:
-                    i = int(opt)
-                    if i >= len(info["idx"]):
-                        info["idx"] = info["idx"] + \
-                            [set()]*(1+i-len(info["idx"]))
-                    if len(info["idx"][i]) == 0:
-                        info["idx"][i]=set()
-                    info["idx"][i].add(val_str)
-            attrs[str(name)] = info["sep"].join(info["set"]+[info["sep"].join(i) for i in info["idx"]])
+                    if opt_str in data:
+                        if type(data[opt_str])!=set:
+                            aux = data[opt_str]
+                            data[opt_str]=set([aux])
+                        data[opt_str].add(val_str)
+                    else:
+                        data[opt_str]=val_str
+            log.debug(f"Formatting template {template} with data {data}")
+            # print(data)   
+
+            # print(template)
+            s = Template(template).render(data,data = data)
+            attrs[str(name)] = s
+                
+            
             if str(name)=='texlbl': #Used for latex
                 attrs[str(name)] = attrs[str(name)].replace('\\\\','\\')
 

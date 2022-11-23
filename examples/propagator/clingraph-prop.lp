@@ -86,7 +86,6 @@ def main(prg):
     all_graphs = {}
     for d in graphs:
         all_graphs.update(d)
-        print(d)
         render(d,format='pdf',engine='neato')
     save_gif(all_graphs,engine='neato',fps='0.5')
 #end.

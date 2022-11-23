@@ -165,17 +165,17 @@ specified by name-value pairs to the element.
 
 .. figure:: ../../examples/doc/example1/example1.2.png
 
-Multi-attribute
----------------
+Template attribute
+------------------
 
-If multiple occurrences of the same attribute name for a specific
-element are present, then the values will be concatenated in no
-specific order. To define an order, the attribute name can be a tuple
-where the second value is the position in which the value will be
-considered. Furthermore, if multiple occurrences of a tuple ``(attr_name,X)`` appear,
-the different values will be considered as a set without order.
-If the position is ``sep`` the value will be considered as the separator
-of the strings in the concatenation.
+The value of any attribute can also be a template.
+More specifically, we use Jinja templates (See the template syntax `here <https://jinja.palletsprojects.com/en/3.1.x/templates/>`__ ). 
+The template is then rendered with the variables provided in additional ``attr`` predicates. 
+In such predicates, the name attribute name will be a tuple ``(ATTR_NAME, VARIABLE)`` and the corresponding ``ATTR_VALUE`` will correspond to the value of the given variable. 
+We can see an example bellow, where the value of attribute ``label`` is now a template ``"<<b>{{name}} {{lastname}}</b>>"`` in which variables enclosed under ``{{ }}``` will be substituted. The following lines give values to such variables by using the tuples ``(label,name)`` and ``(label,lastname)`` as attribute names.
+As a result, the value of label will be ``"<<b>Michel Scott</b>>"``.
+Moreover, this label corresponds to an `HTML-Like label <https://graphviz.org/doc/info/shapes.html#html>`__, since it is encosed by ``<>``. 
+Particularly, the tag ``<b>`` used in this label will make the font boldface as seen in the figure bellow.
 
 .. rubric:: *Example 4*
     :name: example-4
@@ -183,13 +183,42 @@ of the strings in the concatenation.
 ::
 
     node(mike).
-    attr(node, mike, (label,0), "Michel").
-    attr(node, mike, (label,1), "Scott").
-    node(toby).
-    edge((mike,toby)).
-    attr(edge, (mike,toby)), label, "enemy").
-    attr(edge, (mike,toby)), label, "hate").
-    attr(edge, (mike,toby)), label, "boss").
-    attr(edge, (mike,toby)), (label,sep), "-").
+    attr(node, mike, label, "<<b>{{name}} {{lastname}}</b>>").
+    attr(node, mike, (label,name), "Michel").
+    attr(node, mike, (label,lastname), "Scott").
 
-.. figure:: ../../examples/doc/example4/example4.png
+.. figure:: ../../examples/doc/example4/example4-1.png
+
+The default template will simply concatenate all variable values in no specific order as follows: ``{% for k,v in data.items() %}{{v}}{% endfor %}``. 
+This template uses the ``for`` statement, to iterate over the items in ``data``.
+The special variable ``data`` is a dictionary containing all variables defined via tuples with their corresponding value. 
+In the example below, no template is provided for attribute ``label`` of node ``jim`` therefore the value will be either ``JimHalpert`` or ``HalpertJim``
+
+.. rubric:: *Example 4 (continuation)*
+    :name: example-4-continuation
+
+::
+
+    node(jim).
+    attr(node, jim, (label,name), "Jim").
+    attr(node, jim, (label,lastname), "Halpert").
+
+
+If multiple occurrences of a variable name appear, then the variable will be a set which can be further iterated in the template. In our example, the variable ``name``
+
+TODO! I dont like this 
+
+.. rubric:: *Example 4 (continuation)*
+    :name: example-4-continuation2
+
+::
+
+    node(pam).
+    attr(node, pam, label, "{%for n in name %}{{n}} {% endfor %}{{lastname}}").
+    attr(node, pam, label, "Pam").
+    attr(node, pam, (label,name), "Pamela").
+    attr(node, pam, (label,name), "Morgan").
+    attr(node, pam, (label,lastname), "Beesly").
+
+
+Although the variable names can be things other than constants, such as tuples, functions, integers or more complex strings, these type of values wont be accessible in the template in the same way. For instance in predicate ``attr(node, n, (label,1), a)`` the variable ``1`` is assigned value ``a``. Notice that ``1`` is not really a variable that can be accessed via ``{{1}}`` since this would be the number 1 rather than the variable. Therefore, these variables should be accessed via the ``data`` dictionary like ``{{data[1]}}``. 
