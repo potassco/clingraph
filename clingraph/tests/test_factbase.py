@@ -39,10 +39,10 @@ def test_from_str():
     assert 'node(john,default).' in facts
     assert 'node(jane,default).' in facts
     assert 'edge((john,jane),default).' in facts
-    assert 'attr(graph,default,(label,-1),"Does family").' in facts
-    assert 'attr(graph_nodes,default,(style,-1),filled).' in facts
-    assert 'attr(node,john,(label,-1),"John Doe").' in facts
-    assert 'attr(node,jane,(label,-1),"Jane Doe").' in facts
+    assert 'attr(graph,default,(label,"__NONE__","__NONE__"),"Does family").' in facts
+    assert 'attr(graph_nodes,default,(style,"__NONE__","__NONE__"),filled).' in facts
+    assert 'attr(node,john,(label,"__NONE__","__NONE__"),"John Doe").' in facts
+    assert 'attr(node,jane,(label,"__NONE__","__NONE__"),"Jane Doe").' in facts
 
     cg = Factbase(default_graph='other')
     cg.add_fact_string(s)
@@ -50,10 +50,10 @@ def test_from_str():
     assert 'node(john,other).' in facts
     assert 'node(jane,other).' in facts
     assert 'edge((john,jane),other).' in facts
-    assert 'attr(graph,default,(label,-1),"Does family").' in facts
-    assert 'attr(graph_nodes,default,(style,-1),filled).' in facts
-    assert 'attr(node,john,(label,-1),"John Doe").' in facts
-    assert 'attr(node,jane,(label,-1),"Jane Doe").' in facts
+    assert 'attr(graph,default,(label,"__NONE__","__NONE__"),"Does family").' in facts
+    assert 'attr(graph_nodes,default,(style,"__NONE__","__NONE__"),filled).' in facts
+    assert 'attr(node,john,(label,"__NONE__","__NONE__"),"John Doe").' in facts
+    assert 'attr(node,jane,(label,"__NONE__","__NONE__"),"Jane Doe").' in facts
 
     cg = Factbase()
     with pytest.raises(InvalidSyntax):
@@ -64,20 +64,20 @@ def test_from_str():
     assert 'node(john,default).' in facts
     assert 'node(jane,default).' in facts
     assert 'edge((john,jane),default).' in facts
-    assert 'attr(graph,default,(label,-1),"Does family").' in facts
-    assert 'attr(graph_nodes,default,(style,-1),filled).' in facts
-    assert 'attr(node,john,(label,-1),"John Doe").' in facts
-    assert 'attr(node,jane,(label,-1),"Jane Doe").' in facts
+    assert 'attr(graph,default,(label,"__NONE__","__NONE__"),"Does family").' in facts
+    assert 'attr(graph_nodes,default,(style,"__NONE__","__NONE__"),filled).' in facts
+    assert 'attr(node,john,(label,"__NONE__","__NONE__"),"John Doe").' in facts
+    assert 'attr(node,jane,(label,"__NONE__","__NONE__"),"Jane Doe").' in facts
 
     cg = Factbase.from_string(s, default_graph='other')
     facts = cg.get_facts()
     assert 'node(john,other).' in facts
     assert 'node(jane,other).' in facts
     assert 'edge((john,jane),other).' in facts
-    assert 'attr(graph,default,(label,-1),"Does family").' in facts
-    assert 'attr(graph_nodes,default,(style,-1),filled).' in facts
-    assert 'attr(node,john,(label,-1),"John Doe").' in facts
-    assert 'attr(node,jane,(label,-1),"Jane Doe").' in facts
+    assert 'attr(graph,default,(label,"__NONE__","__NONE__"),"Does family").' in facts
+    assert 'attr(graph_nodes,default,(style,"__NONE__","__NONE__"),filled).' in facts
+    assert 'attr(node,john,(label,"__NONE__","__NONE__"),"John Doe").' in facts
+    assert 'attr(node,jane,(label,"__NONE__","__NONE__"),"Jane Doe").' in facts
 
 def test_from_file():
     s = get_example_file(1)
@@ -87,10 +87,10 @@ def test_from_file():
     assert 'node(john,default).' in facts
     assert 'node(jane,default).' in facts
     assert 'edge((john,jane),default).' in facts
-    assert 'attr(graph,default,(label,-1),"Does family").' in facts
-    assert 'attr(graph_nodes,default,(style,-1),filled).' in facts
-    assert 'attr(node,john,(label,-1),"John Doe").' in facts
-    assert 'attr(node,jane,(label,-1),"Jane Doe").' in facts
+    assert 'attr(graph,default,(label,"__NONE__","__NONE__"),"Does family").' in facts
+    assert 'attr(graph_nodes,default,(style,"__NONE__","__NONE__"),filled).' in facts
+    assert 'attr(node,john,(label,"__NONE__","__NONE__"),"John Doe").' in facts
+    assert 'attr(node,jane,(label,"__NONE__","__NONE__"),"Jane Doe").' in facts
 
     cg = Factbase(default_graph='other')
     cg.add_fact_file(s)
@@ -98,10 +98,10 @@ def test_from_file():
     assert 'node(john,other).' in facts
     assert 'node(jane,other).' in facts
     assert 'edge((john,jane),other).' in facts
-    assert 'attr(graph,default,(label,-1),"Does family").' in facts
-    assert 'attr(graph_nodes,default,(style,-1),filled).' in facts
-    assert 'attr(node,john,(label,-1),"John Doe").' in facts
-    assert 'attr(node,jane,(label,-1),"Jane Doe").' in facts
+    assert 'attr(graph,default,(label,"__NONE__","__NONE__"),"Does family").' in facts
+    assert 'attr(graph_nodes,default,(style,"__NONE__","__NONE__"),filled).' in facts
+    assert 'attr(node,john,(label,"__NONE__","__NONE__"),"John Doe").' in facts
+    assert 'attr(node,jane,(label,"__NONE__","__NONE__"),"Jane Doe").' in facts
 
     cg = Factbase()
     file_name = make_file("def: __init__()")
@@ -135,10 +135,22 @@ def test_missing_graph():
     graphs = cg.get_all_graphs()
     cg.get_graph_elements('node',graphs[0])
 
-def test_multi_value_simple():
+def test_multi_value_simple_numbers():
     s = """
     node(n).
-    attr(node,n,label,"{{a}}{{b}}").
+    attr(node,n,label,1).
+    """
+    cg = Factbase()
+    cg.add_fact_string(s)
+    graphs = cg.get_all_graphs()
+    nodes = cg.get_graph_elements('node',graphs[0])
+    attr = cg.get_element_attr('node',nodes[0])
+    assert attr['label']==1
+
+def test_multi_value_simple_args():
+    s = """
+    node(n).
+    attr(node,n,label,"<{{a}}{{b}}>").
     attr(node,n,(label,a),a11).
     attr(node,n,(label,b),a12).
     """
@@ -147,7 +159,19 @@ def test_multi_value_simple():
     graphs = cg.get_all_graphs()
     nodes = cg.get_graph_elements('node',graphs[0])
     attr = cg.get_element_attr('node',nodes[0])
-    assert attr['label']=='a11a12'
+    assert attr['label']=='<a11a12>'
+
+def test_multi_value_simple():
+    s = """
+    node(n).
+    attr(node,n,label,"value").
+    """
+    cg = Factbase()
+    cg.add_fact_string(s)
+    graphs = cg.get_all_graphs()
+    nodes = cg.get_graph_elements('node',graphs[0])
+    attr = cg.get_element_attr('node',nodes[0])
+    assert attr['label']=='value'
 
 def test_multi_value_none():
     s = """
@@ -163,10 +187,9 @@ def test_multi_value_none():
     attr = cg.get_element_attr('node',nodes[0])
     assert attr['label']=='value'
 
-def test_multi_value_list():
+def test_multi_value_overwrite():
     s = """
     node(n).
-    attr(node,n,label,"{% for e in a %}a:{{e}} {% endfor %}").
     attr(node,n,(label,a),x).
     attr(node,n,(label,a),y).
     """
@@ -175,7 +198,35 @@ def test_multi_value_list():
     graphs = cg.get_all_graphs()
     nodes = cg.get_graph_elements('node',graphs[0])
     attr = cg.get_element_attr('node',nodes[0])
-    assert attr['label']=='a:x a:y ' or attr['label']=='a:y a:x '
+    assert attr['label']=='x' or attr['label']=='y'
+
+def test_multi_value_dict():
+    s = """
+    node(n).
+    attr(node,n,label,"{% for k,v in a.items() %}{{k}}:{{v}} {% endfor %}").
+    attr(node,n,(label,a,1),x).
+    attr(node,n,(label,a,2),y).
+    """
+    cg = Factbase()
+    cg.add_fact_string(s)
+    graphs = cg.get_all_graphs()
+    nodes = cg.get_graph_elements('node',graphs[0])
+    attr = cg.get_element_attr('node',nodes[0])
+    assert attr['label']=='1:x 2:y ' or attr['label']=='2:y 1:x '
+
+
+    s = """
+    node(n).
+    attr(node,n,label,"{% for k,v in a | dictsort %}{{k}}:{{v}} {% endfor %}").
+    attr(node,n,(label,a,2),y).
+    attr(node,n,(label,a,1),x).
+    """
+    cg = Factbase()
+    cg.add_fact_string(s)
+    graphs = cg.get_all_graphs()
+    nodes = cg.get_graph_elements('node',graphs[0])
+    attr = cg.get_element_attr('node',nodes[0])
+    assert attr['label']=='1:x 2:y '
 
 def test_multi_value_for_data():
     s = """
@@ -189,7 +240,6 @@ def test_multi_value_for_data():
     graphs = cg.get_all_graphs()
     nodes = cg.get_graph_elements('node',graphs[0])
     attr = cg.get_element_attr('node',nodes[0])
-    print(attr)
     assert attr['label']=='x!y!' or attr['label']=='y!x!'
 
 
@@ -219,17 +269,15 @@ def test_multi_value_if():
 def test_multi_value_tuple():
     s = """
     node(n).
-    attr(node,n,label,"{{data['(a,1)'].pop()}}{{data['(a,1)'].pop()}}").
+    attr(node,n,label,"{{data['(a,1)']}}").
     attr(node,n,(label,(a,1)),y1).
-    attr(node,n,(label,(a,1)),y2).
     """
     cg = Factbase()
     cg.add_fact_string(s)
     graphs = cg.get_all_graphs()
     nodes = cg.get_graph_elements('node',graphs[0])
     attr = cg.get_element_attr('node',nodes[0])
-    print(attr)
-    assert attr['label']=='y1y2' or attr['label']=='y2y1'
+    assert attr['label']=='y1'
 
 def test_multi_value_default():
     s = """
@@ -242,7 +290,6 @@ def test_multi_value_default():
     graphs = cg.get_all_graphs()
     nodes = cg.get_graph_elements('node',graphs[0])
     attr = cg.get_element_attr('node',nodes[0])
-    print(attr)
     assert attr['label']=='xy' or attr['label']=='yx'
 
 def test_multi_value_numbers():
@@ -256,7 +303,6 @@ def test_multi_value_numbers():
     graphs = cg.get_all_graphs()
     nodes = cg.get_graph_elements('node',graphs[0])
     attr = cg.get_element_attr('node',nodes[0])
-    print(attr)
     assert attr['label']=='xy' or attr['label']=='yx'
 
 

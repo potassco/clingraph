@@ -21,6 +21,8 @@ identifier.
     node(john).
     node(jane).
 
+.. figure:: ../../examples/doc/example1/example1.0.png
+
 Edges
 =====
 
@@ -37,6 +39,22 @@ when creating a ``digraph`` and not directed one created a ``graph``.
 
 .. figure:: ../../examples/doc/example1/example1.1.png
 
+Multiple edges
+--------------
+
+To generate multiple edges between nodes, the edge will be defined with a tuple of size three: ``(A,B,N)``.
+In this case, an edge between ``A`` and ``B`` will be identified by ``N``.
+
+.. rubric:: *Example 1 (continuation)*
+    :name: example-1-continuation-2
+
+::
+
+    node(joe).
+    edge((john,joe,1)).
+    edge((john,joe,2)).
+
+.. figure:: ../../examples/doc/example1/example1.11.png
 
 Graphs
 ======
@@ -153,6 +171,9 @@ specified by name-value pairs to the element.
 
 .. note:: To edit the attributes of the default graph one must use the default name as element id.
 
+.. note:: If an attribute name appears more than once all occurrences will be concatenated.
+
+
 .. rubric:: *Example 1 (continuation)*
     :name: example-1-continuation-1
 
@@ -165,14 +186,22 @@ specified by name-value pairs to the element.
 
 .. figure:: ../../examples/doc/example1/example1.2.png
 
+
 Template attribute
 ------------------
 
-The value of any attribute can also be a template.
-More specifically, we use Jinja templates (See the template syntax `here <https://jinja.palletsprojects.com/en/3.1.x/templates/>`__ ). 
-The template is then rendered with the variables provided in additional ``attr`` predicates. 
-In such predicates, the name attribute name will be a tuple ``(ATTR_NAME, VARIABLE)`` and the corresponding ``ATTR_VALUE`` will correspond to the value of the given variable. 
-We can see an example bellow, where the value of attribute ``label`` is now a template ``"<<b>{{name}} {{lastname}}</b>>"`` in which variables enclosed under ``{{ }}``` will be substituted. The following lines give values to such variables by using the tuples ``(label,name)`` and ``(label,lastname)`` as attribute names.
+Attributes can also be formatted using templates with `Jinja <https://jinja.palletsprojects.com/en/3.1.x/>`__ 
+(See the template syntax `here <https://jinja.palletsprojects.com/en/3.1.x/templates/>`__ ). 
+The template is defined as any other value before: when the ``ATTR_NAME`` is a constant, 
+the ``ATTR_VALUE`` will be considered a template.
+The template is then rendered using the variables provided in additional ``attr`` predicates, 
+where the name ``ATTR_NAME`` is a tuple ``(ATTR_NAME, VARIABLE)`` 
+and the corresponding ``ATTR_VALUE`` is the value of the given variable. 
+If multiple occurrences of a variable name appear, then the latest appearance will overwrite any previous ones. 
+
+We can see an example bellow, where the value of attribute ``label`` is template ``"<<b>{{name}} {{lastname}}</b>>"``
+in which variables enclosed under ``{{ }}``` will be substituted by those provided in the other predicates. 
+The next lines give values to such variables by using the tuples ``(label,name)`` and ``(label,lastname)`` as attribute names.
 As a result, the value of label will be ``"<<b>Michel Scott</b>>"``.
 Moreover, this label corresponds to an `HTML-Like label <https://graphviz.org/doc/info/shapes.html#html>`__, since it is encosed by ``<>``. 
 Particularly, the tag ``<b>`` used in this label will make the font boldface as seen in the figure bellow.
@@ -189,10 +218,15 @@ Particularly, the tag ``<b>`` used in this label will make the font boldface as 
 
 .. figure:: ../../examples/doc/example4/example4-1.png
 
-The default template will simply concatenate all variable values in no specific order as follows: ``{% for k,v in data.items() %}{{v}}{% endfor %}``. 
-This template uses the ``for`` statement, to iterate over the items in ``data``.
+
+If no template is provided, the default template will simply concatenate all variable values in order. 
+This is done using the special variable ``data`` which is a dictionary containing all defined variables. 
+The default template: ``{% for k,v in data | dictsort %}{{v}}{% endfor %}`` uses the ``for`` statement,
+and the filter operation ``dictsort`` to iterate over the items in ``data`` after sorting.
 The special variable ``data`` is a dictionary containing all variables defined via tuples with their corresponding value. 
-In the example below, no template is provided for attribute ``label`` of node ``jim`` therefore the value will be either ``JimHalpert`` or ``HalpertJim``
+
+In the example below, no template is provided for attribute ``label`` of node ``jim``.
+Therefore the value will be ``HalpertJim``, as variable names are ordered in an ascendent fashion.
 
 .. rubric:: *Example 4 (continuation)*
     :name: example-4-continuation
@@ -203,22 +237,60 @@ In the example below, no template is provided for attribute ``label`` of node ``
     attr(node, jim, (label,name), "Jim").
     attr(node, jim, (label,lastname), "Halpert").
 
+.. figure:: ../../examples/doc/example4/example4-2.png
 
-If multiple occurrences of a variable name appear, then the variable will be a set which can be further iterated in the template. In our example, the variable ``name``
+Attribute names can also be tuples of size three: ``(ATTR_NAME, VARIABLE, KEY)``.
+In this case the ``VRIABLE`` will be a dictionary where the key ``KEY`` has value  ``ATTR_VALUE``. 
+In the example below, the variable ``name`` will have as value the dictionary ``{'first':'Pamela', 'second':'Morgan'}```.
+This dictionary can then be accessed in the template using ``{{name['first']}}`` and ``{{name['second']}}``
 
-TODO! I dont like this 
 
 .. rubric:: *Example 4 (continuation)*
     :name: example-4-continuation2
 
 ::
-
+    
     node(pam).
-    attr(node, pam, label, "{%for n in name %}{{n}} {% endfor %}{{lastname}}").
-    attr(node, pam, label, "Pam").
-    attr(node, pam, (label,name), "Pamela").
-    attr(node, pam, (label,name), "Morgan").
+    attr(node, pam, label, "<{{name['first']}} {{name['second']}} <b>{{lastname}}</b>>").
+    attr(node, pam, (label,name,first), "Pamela").
+    attr(node, pam, (label,name,second), "Morgan").
     attr(node, pam, (label,lastname), "Beesly").
 
+.. figure:: ../../examples/doc/example4/example4-3.png
 
-Although the variable names can be things other than constants, such as tuples, functions, integers or more complex strings, these type of values wont be accessible in the template in the same way. For instance in predicate ``attr(node, n, (label,1), a)`` the variable ``1`` is assigned value ``a``. Notice that ``1`` is not really a variable that can be accessed via ``{{1}}`` since this would be the number 1 rather than the variable. Therefore, these variables should be accessed via the ``data`` dictionary like ``{{data[1]}}``. 
+Similarly dictionary variables can be iterated in the template like the example below. 
+In this case we iterate through the key-value pairs in ``name`` in no specific order. 
+
+.. rubric:: *Example 4 (continuation)*
+    :name: example-4-continuation3
+
+::
+    
+    node(angela).
+    attr(node, angela, label, "<{% for k, n in name.items() %}{{n}} {% endfor %}<b>{{lastname}}</b>>").
+    attr(node, angela, (label,name,1), "Angela").
+    attr(node, angela, (label,name,2), "Noelle").
+    attr(node, angela, (label,lastname), "Martin").
+
+.. figure:: ../../examples/doc/example4/example4-4.png
+
+
+.. warning::
+
+    Notice that if no attribute predicates with name ``(label,name,_)`` are provided, then the variable name will be undefined and the operation ``name.items()`` will throw an error. 
+    To avoid this, one can add a statement in the template to use the empty dictionary as default value: ``{% set name = name|default({}) %}``
+
+.. warning:: 
+
+    All variable names are transformed into strings (unlike key names which keep their type).
+    Although the variable names can be things other than strings, such as constants or tuples, these type of values wont be accessible in the template directly but through the ``data`` variable.
+    For instance in predicate ``attr(node, n, (label,1), a)`` the variable ``1`` is assigned value ``a``.
+    Notice that ``1`` is not really a variable that can be accessed via ``{{1}}`` since this would be the number 1 rather than the variable. 
+    Therefore, these variables should be accessed via the ``data`` dictionary like ``{{data['1']}}``. 
+
+
+.. note:: 
+
+    Template strings might become large, however, in clingo one can not split a string into multiple lines. 
+    To overcome the difficulty of working with single line strings, one can take advantage of the built in ``@concat`` :ref:`function <Clingo Utils>` to separate the template into multiple arguments in multiple lines. 
+

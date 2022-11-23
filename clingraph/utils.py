@@ -4,6 +4,8 @@ Utils functions used across the project
 import os
 import logging
 log = logging.getLogger('custom')
+from clingo.symbol import SymbolType
+
 
 def apply(elements, function,**kwargs):
     """
@@ -87,3 +89,37 @@ def write(elements, directory, format, name_format=None):
             directory = directory,
             format = format,
             name_format=name_format)
+
+def pythonify_symbol(s):
+    """ 
+    Get a python element from a clingo symbol
+
+    Args:
+        s (clingo.Symbol): The clingo symbol
+    
+    Returns:
+        A integer, string or tuple
+    """
+
+    if s.type == SymbolType.Number:
+        return s.number
+    if s.type == SymbolType.String:
+        return s.string
+    if s.type == SymbolType.Function:
+        if s.name == "":
+            return tuple([pythonify_symbol(a) for a in s.arguments])
+        return str(s)
+    else:
+        raise RuntimeError(f"Unsupported clingo type {s.type}")
+
+def stringify_symbol(s):
+    """ 
+    Get a string representation of a clingo symbol
+
+    Args:
+        s (clingo.Symbol): The clingo symbol
+    
+    Returns:
+        A string
+    """
+    return str(s).removeprefix('"').removesuffix('"')
