@@ -98,7 +98,7 @@ class ClingraphContext:
 
         return String(
             "<td>" + str(s).removeprefix('"').removesuffix('"')+"</td>")
- 
+
     def svg_init(self, property_name, property_value):
         """
         Generates an svg string for the initial state. This string has a format that is handled
