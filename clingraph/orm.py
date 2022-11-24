@@ -2,15 +2,16 @@
     Defines an ORM for clingraphs using clorm
 """
 import logging
+from jinja2 import Template
 import clorm
-from clorm import Predicate, RawField, ComplexTerm, refine_field, ConstantField, SimpleField, Raw, ConstantField
+from clorm import Predicate, RawField, ComplexTerm, refine_field, ConstantField, Raw
 from clorm import FactBase as ClormFactBase
 from clingo.symbol import Function, String
 from .exceptions import InvalidSyntax
-log = logging.getLogger('custom')
-from jinja2 import Template
-
 from .utils import pythonify_symbol, stringify_symbol
+
+log = logging.getLogger('custom')
+
 
 if hasattr(clorm.orm.symbols_facts, 'NonFactError'):
     NonFactError = clorm.orm.symbols_facts.NonFactError # NOLINT
@@ -24,7 +25,7 @@ else:
 
 class AttrID(ComplexTerm):
     # pylint: disable=missing-class-docstring
-    attr_name = ConstantField #SimpleField HELP Dave
+    attr_name = ConstantField
     attr_variable = RawField
     attr_key = RawField
 
@@ -33,7 +34,7 @@ class AttrID(ComplexTerm):
 
 class AttrIDSugar(ComplexTerm):
     # pylint: disable=missing-class-docstring
-    attr_name = ConstantField #SimpleField HELP Dave
+    attr_name = ConstantField
     attr_variable = RawField
 
     class Meta:
@@ -192,7 +193,7 @@ class Factbase():
         """
         main_unifiers = [self.Graph, self.SubGraph,
                          self.Node, self.Edge, self.Attr]
-        sugar_unifiers = [self.NodeSugar, self.EdgeSugar, 
+        sugar_unifiers = [self.NodeSugar, self.EdgeSugar,
                         self.AttrSugarSimple, self.AttrSugarDouble]
         return main_unifiers+sugar_unifiers
 
@@ -287,10 +288,10 @@ class Factbase():
         """
         q = fb.query(self.AttrSugarSimple)
         for attr in set(q.all()):
-            name = attr.attr_id 
+            name = attr.attr_id
             var = String("__")
             key = String("__")
-            new_attr_id = AttrID(attr_name=name, 
+            new_attr_id = AttrID(attr_name=name,
                             attr_variable=Raw(var),
                             attr_key=Raw(key))
             e = self.Attr(element_type=attr.element_type,
@@ -308,7 +309,7 @@ class Factbase():
             var = attr_id.attr_variable
             key = String("__")
             # print((name,var,key))
-            new_attr_id = AttrID(attr_name=name, 
+            new_attr_id = AttrID(attr_name=name,
                             attr_variable=var,
                             attr_key=Raw(key))
             e = self.Attr(element_type=attr.element_type,
@@ -420,7 +421,6 @@ class Factbase():
         Returns:
             (`dic`) A dictionary with attribute names as key and  attribute values as values.
         """
-        # print(self.fb)
         q = self.fb.query(self.Attr)
         q = q.where(self.Attr.element_type == element_type,
                     self.Attr.element_id == element_id)
@@ -429,17 +429,12 @@ class Factbase():
         q = q.select(self.Attr.attr_id.attr_variable, self.Attr.attr_id.attr_key, self.Attr.attr_value)
         attrs = {}
         for name, list_opts in q.all():
-            
-            # print('----')
-            # print(name)
+
             custom_template = False
             template = "{% for k,v in data| dictsort %}{{v}}{% endfor %}"
             data = {}
 
-            # info = {"set": [], "idx": [], "sep": " "}
             for var, key, val in list_opts:
-                # print("")
-                # print((var,key,val))
                 var = stringify_symbol(var.symbol)
                 val = stringify_symbol(val.symbol)
                 key = pythonify_symbol(key.symbol)
@@ -452,32 +447,29 @@ class Factbase():
                         template = val
                     custom_template= True
                     continue
-                    
+
                 is_dict = key!="__"
                 if is_dict:
                     if not var in data:
                         data[var]={}
                     if key in data[var]:
-                        log.warning(f"Entry ({name},{var},{key}) repeated on element {element_id}. Duplicates will be ignored")
+                        log.warning("Entry (%s,%s,%s) repeated on element %s. Duplicates will be ignored",name,var,key,element_id)
                     data[var][key]= val
                     continue
 
                 if var in data:
-                    log.warning(f"Entry ({name},{var}) repeated on element {element_id}. Duplicates will be ignored")
+                    log.warning("Entry (%s,%s) repeated on element %s. Duplicates will be ignored",name,var,element_id)
 
                 data[var]=val
 
-            # print(template)
-            # print(template.type)
-            if type(template) == str:
-                # print(f"Formatting template {template} with data {data}")
-                log.debug(f"Formatting template {template} with data {data}")
+            if isinstance(template, str):
+                log.debug("Formatting template %s with data %s",template,data)
                 s = Template(template).render(data,data = data)
             else:
-                s = template    
+                s = template
             attrs[str(name)] = str(s)
-                
-            
+
+
             if str(name)=='texlbl': #Used for latex
                 attrs[str(name)] = attrs[str(name)].replace('\\\\','\\')
 

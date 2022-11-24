@@ -103,7 +103,7 @@ def test_dot():
     assert '	mike [label=<<b>Michel Scott</b>>]' in default
     assert '	pam [label=<Pamela Morgan <b>Beesly</b>>]' in default
     assert '	angela [label=<Angela Noelle <b>Martin</b>>]' in default
-    assert '	jim [label=HalpertJim]' in default 
+    assert '	jim [label=HalpertJim]' in default
 
     assert '}' in default
 
