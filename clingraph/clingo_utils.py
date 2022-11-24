@@ -69,7 +69,7 @@ class ClingraphContext:
             val = val[0].upper() + val[1:]
         return String(val)
 
-    def escape_html(s):
+    def html_escape(self, s):
         """
         Will escape the symbols of an HTML-Like label that provoque clashes: &, < and >
         Args:
@@ -79,13 +79,25 @@ class ClingraphContext:
         """
 
         return String(
-            str(symbol)
+            str(s)
                 .removeprefix('"')
                 .removesuffix('"')
                 .replace('&', '&amp;')
                 .replace('"', '&quot;')
                 .replace('<', '&lt;')
                 .replace('>', '&gt;'))
+
+    def html_cell(self, s):
+        """
+        Creates an html cell with the value inside
+        Args:
+            s (clingo.Symbol): The value of the cell
+        Returns:
+            (clingo.Symbol.String) The string with tag <td>
+        """
+
+        return String(
+            "<td>" + str(s).removeprefix('"').removesuffix('"')+"</td>")
  
     def svg_init(self, property_name, property_value):
         """

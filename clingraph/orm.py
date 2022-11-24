@@ -436,15 +436,15 @@ class Factbase():
 
             for var, key, val in list_opts:
                 var = stringify_symbol(var.symbol)
-                val = stringify_symbol(val.symbol)
+                val = pythonify_symbol(val.symbol)
                 key = pythonify_symbol(key.symbol)
 
                 is_template = var=="__"
                 if is_template:
                     if custom_template:
-                        template = template + val
+                        template = template + str(val)
                     else:
-                        template = val
+                        template = str(val)
                     custom_template= True
                     continue
 
