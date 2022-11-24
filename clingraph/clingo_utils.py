@@ -69,6 +69,24 @@ class ClingraphContext:
             val = val[0].upper() + val[1:]
         return String(val)
 
+    def escape_html(s):
+        """
+        Will escape the symbols of an HTML-Like label that provoque clashes: &, < and >
+        Args:
+            s (clingo.Symbol): The value that needs the symbols removed
+        Returns:
+            (clingo.Symbol.String) The string with the replacements
+        """
+
+        return String(
+            str(symbol)
+                .removeprefix('"')
+                .removesuffix('"')
+                .replace('&', '&amp;')
+                .replace('"', '&quot;')
+                .replace('<', '&lt;')
+                .replace('>', '&gt;'))
+ 
     def svg_init(self, property_name, property_value):
         """
         Generates an svg string for the initial state. This string has a format that is handled
