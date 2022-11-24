@@ -3,8 +3,8 @@ Utils functions used across the project
 """
 import os
 import logging
-log = logging.getLogger('custom')
 from clingo.symbol import SymbolType
+log = logging.getLogger('custom')
 
 
 def apply(elements, function,**kwargs):
@@ -91,12 +91,12 @@ def write(elements, directory, format, name_format=None):
             name_format=name_format)
 
 def pythonify_symbol(s):
-    """ 
+    """
     Get a python element from a clingo symbol
 
     Args:
         s (clingo.Symbol): The clingo symbol
-    
+
     Returns:
         A integer, string or tuple
     """
@@ -107,18 +107,17 @@ def pythonify_symbol(s):
         return s.string
     if s.type == SymbolType.Function:
         if s.name == "":
-            return tuple([pythonify_symbol(a) for a in s.arguments])
+            return tuple(pythonify_symbol(a) for a in s.arguments)
         return str(s)
-    else:
-        raise RuntimeError(f"Unsupported clingo type {s.type}")
+    raise RuntimeError(f"Unsupported clingo type {s.type}")
 
 def stringify_symbol(s):
-    """ 
+    """
     Get a string representation of a clingo symbol
 
     Args:
         s (clingo.Symbol): The clingo symbol
-    
+
     Returns:
         A string
     """
