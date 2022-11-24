@@ -79,25 +79,11 @@ class ClingraphContext:
         """
 
         return String(
-            str(s)
-                .removeprefix('"')
-                .removesuffix('"')
+            str(s).strip('"')
                 .replace('&', '&amp;')
                 .replace('"', '&quot;')
                 .replace('<', '&lt;')
                 .replace('>', '&gt;'))
-
-    def html_cell(self, s):
-        """
-        Creates an html cell with the value inside
-        Args:
-            s (clingo.Symbol): The value of the cell
-        Returns:
-            (clingo.Symbol.String) The string with tag <td>
-        """
-
-        return String(
-            "<td>" + str(s).removeprefix('"').removesuffix('"')+"</td>")
 
     def svg_init(self, property_name, property_value):
         """

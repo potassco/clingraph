@@ -121,4 +121,4 @@ def stringify_symbol(s):
     Returns:
         A string
     """
-    return str(s).removeprefix('"').removesuffix('"')
+    return str(s).strip('"')

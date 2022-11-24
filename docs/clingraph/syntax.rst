@@ -223,7 +223,6 @@ If no template is provided, the default template will simply concatenate all var
 This is done using the special variable ``data`` which is a dictionary containing all defined variables. 
 The default template: ``{% for k,v in data | dictsort %}{{v}}{% endfor %}`` uses the ``for`` statement,
 and the filter operation ``dictsort`` to iterate over the items in ``data`` after sorting.
-The special variable ``data`` is a dictionary containing all variables defined via tuples with their corresponding value. 
 
 In the example below, no template is provided for attribute ``label`` of node ``jim``.
 Therefore the value will be ``HalpertJim``, as variable names are ordered in an ascendent fashion.

@@ -27,7 +27,7 @@ attr(node, I, (label,   type), T) :- node(I), ast_node(I, type, T).
 attr(node, I, (label,   variant), V) :- node(I), ast_node(I, variant, V).
 attr(node, I, (label,   colspan), 2) :- node(I), ast_node(I, value, _), not ast_node(I, variant, _).
 attr(node, I, (label,   colspan), 3) :- node(I), ast_node(I, value, _), ast_node(I, variant, _).
-attr(node, I, (label,   value), @escape_html(V)) :- node(I), ast_node(I, value, V).
+attr(node, I, (label,   value), @html_escape(V)) :- node(I), ast_node(I, value, V).
 
 attr(graph_edges, default, fontsize, 10).
 attr(edge, I, label, L) :- edge(I), ast_edge(I, key, L).

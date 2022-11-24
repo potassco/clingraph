@@ -450,7 +450,7 @@ class Factbase():
 
                 is_dict = key!="__"
                 if is_dict:
-                    if not var in data:
+                    if var not in data:
                         data[var]={}
                     if key in data[var]:
                         log.warning("Entry (%s,%s,%s) repeated on element %s. Duplicates will be ignored",name,var,key,element_id)
