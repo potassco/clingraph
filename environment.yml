@@ -11,3 +11,4 @@ dependencies:
   - python-graphviz
   - jsonschema
   - libxml2
+  - jinja2

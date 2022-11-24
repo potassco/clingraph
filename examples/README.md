@@ -61,11 +61,12 @@ Our **[examples folder](.)** shows how to use the range of functionalities in di
 ## SVG interaction
 
 #### Tree
-![](./tree/default.png)
+
+![](./tree_expandable/1-tree.png) ![](./tree_expandable/2-tree.png) ![](./tree_expandable/3-tree.png) ![](./tree_expandable/4-tree.png)
 
 
 #### Queens interactive 
-![](./queens_interactive/default.png)
+![](./queens_interactive/queens-1.png) ![](./queens_interactive/queens-2.png) ![](./queens_interactive/queens-3.png) 
 
 #### Minesweeper
 ![](./minesweeper/default1.png)
