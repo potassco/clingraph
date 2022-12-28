@@ -2,7 +2,18 @@
 
 A **declarative visualizer for graphs** defined as a set of facts. The graphs are generated using [graphviz](https://graphviz.org) but are defined via fixed predicates that can be computed from logic programs. 
 
+***Graph defined by facts***
+```prolog
+node(clingraph). node(visual). node(asp).
+edge((clingraph,visual)). edge((clingraph,asp)).
+attr(node,clingraph,style,filled).
+```
+***Visualization***
+![](./docs/clingraph.png)
+
 Clingraph also contains **special features** for integration with **[clingo](https://potassco.org/clingo/)**, as well as for generating **latex** code and **gifs**!
+
+
 
 ### Usage
 
@@ -33,7 +44,7 @@ Our **[examples folder](https://github.com/potassco/clingraph/tree/master/exampl
   - *Animation via Gif*
 - SVG interaction ([family_tree](https://github.com/potassco/clingraph/tree/master/examples/family_tree), [queens_interactive](https://github.com/potassco/clingraph/tree/master/examples/queens_interactive), [minesweeper](https://github.com/potassco/clingraph/tree/master/examples/minesweeper))
   - *Interaction using SVG*
-
+- Visualizing  the [solving](https://github.com/potassco/clingraph/tree/master/examples/propagator) and [program structure](https://github.com/potassco/clingraph/tree/master/examples/ast)
 
 
 ## Installation
