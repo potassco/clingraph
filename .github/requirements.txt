@@ -6,3 +6,4 @@ imageio>=2.14.0
 networkx>=2.6.0
 pylint>=2.12.0
 pytest>=6.2.0
+jinja2>=3.0.3
