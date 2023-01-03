@@ -45,6 +45,7 @@ conda:
           - networkx
           - python-graphviz
           - libxml2
+          - jinja2
 
       build:
         noarch: python
