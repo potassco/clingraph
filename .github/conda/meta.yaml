@@ -23,6 +23,7 @@ requirements:
   - networkx
   - python-graphviz
   - libxml2
+  - jinja2
 
 build:
   number: {{ build }}
