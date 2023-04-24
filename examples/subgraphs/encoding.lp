@@ -1,0 +1,14 @@
+room(bedroom).
+room(kitchen).
+room(bathroom).
+room(livingroom).
+thing(bed,bedroom).
+thing(lamp,bedroom).
+thing(table,kitchen).
+thing(table,fridge).
+thing(desk,livingroom).
+thing(sofa,livingroom).
+thing(tub,bathroom).
+door(livingroom,kitchen).
+door(livingroom,bedroom).
+door(bedroom,bathroom).

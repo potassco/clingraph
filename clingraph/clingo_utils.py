@@ -69,6 +69,18 @@ class ClingraphContext:
             val = val[0].upper() + val[1:]
         return String(val)
 
+    def cluster(self, s):
+        """
+        Returns the cluster name for a graph
+        Args:
+            s: The identifier of the graph
+        Returns:
+            (clingo.Symbol.String) The string with the cluster name
+        """
+        val = str(s).strip('"')
+        return String("cluster_"+val)
+
+
     def html_escape(self, s):
         """
         Will escape the symbols of an HTML-Like label that provoque clashes: &, < and >
