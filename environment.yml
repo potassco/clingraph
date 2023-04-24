@@ -6,7 +6,7 @@ dependencies:
   - clingo
   - clorm>=1.3.6
   - dot2tex
-  - imageio
+  - imageio==2.20
   - networkx
   - python-graphviz
   - jsonschema
