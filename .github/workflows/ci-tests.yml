@@ -78,10 +78,14 @@ jobs:
           auto-update-conda: true
           environment-file: environment.yml
 
+      - name: Export env
+        shell: pwsh
+        run: conda env export
+
       - name: Install development tools
         shell: pwsh
         run: conda install pylint pytest
-      
+
       - name: Install extra tools
         shell: pwsh
         run: conda install -c conda-forge dot2tex imageio
