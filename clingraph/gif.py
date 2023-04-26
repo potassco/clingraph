@@ -7,8 +7,13 @@ import logging
 from .graphviz import render
 try:
     import imageio.v2 as imageio
+    import numpy
 except ImportError:
     raise RuntimeError("imageio module has to be installed to save gifs") from None
+try:
+    from PIL import Image
+except ImportError:
+    raise RuntimeError("pillow module has to be installed to save gifs") from None
 log = logging.getLogger('custom')
 
 def save_gif(graphs, directory='out', name_format="movie", engine="dot", fps=1, sort="asc-str"):
@@ -66,14 +71,26 @@ def save_gif(graphs, directory='out', name_format="movie", engine="dot", fps=1, 
         name = name_format.replace('{graph_name}','movie').replace('{model_number}',str(model_n))
         gif_path = os.path.join(directory, f'{name}.gif')
         images = []
+        max_x = 0
+        max_y = 0
         for k in all_keys[model_n]:
             img_path = img_name_format.replace('{graph_name}',k)
             img_path = img_path.replace('{model_number}',str(model_n))+".png"
-            images.append(imageio.imread(os.path.join(images_dir, img_path)))
+            img_arr = imageio.imread(os.path.join(images_dir, img_path),mode="RGBA")
+            x,y,channel = img_arr.shape
+            max_x = x if x>max_x else max_x
+            max_y = y if y>max_y else max_y
+            images.append(img_arr)
+        for idx,img in enumerate(images):
+            p_img= Image.fromarray(img).resize((max_y, max_x))
+            images[idx]=numpy.asarray(p_img)
+
+
         os.makedirs(os.path.dirname(gif_path), exist_ok=True)
 
+        duration = int(1000 * 1/fps)
         imageio.mimsave(gif_path,
-                        images, fps=fps)
+                        images, duration=duration)
         paths.append({'all':gif_path})
 
     if not is_multi:
