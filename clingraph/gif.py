@@ -77,7 +77,7 @@ def save_gif(graphs, directory='out', name_format="movie", engine="dot", fps=1, 
             img_path = img_name_format.replace('{graph_name}',k)
             img_path = img_path.replace('{model_number}',str(model_n))+".png"
             img_arr = imageio.imread(os.path.join(images_dir, img_path),mode="RGBA")
-            x,y,channel = img_arr.shape
+            x,y,_ = img_arr.shape
             max_x = x if x>max_x else max_x
             max_y = y if y>max_y else max_y
             images.append(img_arr)
