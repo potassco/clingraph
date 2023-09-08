@@ -7,18 +7,31 @@ Shows the reification output of gringo
 - Select graph
 - View
 - Viz encoding
-- Legend
 
-For this example one must first compute the reification calling `gringo`.
-Then we call clingo with our visualization encoding
+For this example one must first compute the reification with `output=reify`.
+Then we call clingraph with our visualization encoding
 
-`gringo examples/reify/program1.lp --output=reify | clingraph --dir='out/reify' --default-graph=program --format=png --select-model=0 --out=render --view --viz-encoding=examples/reify/viz_basic.lp --name-format=basic`
+`clingo examples/reify/program.lp --output=reify | clingraph --dir='out/reify' --format=png --select-model=0 --out=render --view --viz-encoding=examples/reify/viz.lp`
 
-![](basic.png)
+#### Program:
+```
+#theory theory{
+    term {
+	 >   : 2, unary;
+	 >?  : 1, binary, left
+	 };
+    &tel/0     : term, any;
+    &tel_eq/0     : term, {=}, term, any
+}.
 
+:- &tel{ > f(a,1) }, c.
+{a}.
 
-Run example that uses theory atoms and has a legend
+#show f(a,1) : &tel{ > f(a,1) }.
+#external c.
+```
 
-`gringo examples/reify/program2.lp --output=reify | clingraph --dir='out/reify' --default-graph=program --format=png --select-model=0 --out=render --view --viz-encoding=examples/reify/viz_all.lp --name-format=theory-label`
+#### Output:
 
-![](theory-label.png)
+![](default.png)
+

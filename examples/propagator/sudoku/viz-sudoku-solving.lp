@@ -3,7 +3,7 @@
 #defined _true/1.
 #defined _undefined/1.
 
-#const green= "#05BE1C".
+#const green= "#B5D99C".
 % #const yellow= "#EEDC07".
 #const red= "#F90B0B".
 #const white= "#FFFFFF".
