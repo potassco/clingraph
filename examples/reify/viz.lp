@@ -1,49 +1,85 @@
+#const pos_body_lit_color= "#B5D99C".
+#const neg_body_lit_color= "#D9A69C".
+#const tab_color= "#E0E0C8".
+#const program_color = "#A4C9DE".
+#const rule_color = "#C8D7E0".
+#const external_color = "#EED2AA".
+#const theory_symbol_color = "#DBCCDA".
 
-graph(program).
 
-attr(graph_edges, program, dir, both).
-attr(graph_edges, program, arrowtail, none).
-attr(graph_edges, program, arrowhead, none).
+atom(E, atom_tuple(A,E)):- atom_tuple(A,E), E>0.
+atom(E, external(E,V)):- external(E,V).
+atom(E, theory_atom(E,S,ET)):- theory_atom(E,S,ET).
+node(P):-atom(E,P).
+attr(node, P, shape, box):- atom(E, P).
+attr(node, P, (label,value), S):- atom(E, P), literal_tuple(L,E), output(S,L).
+
+attr(node, N, fillcolor, tab_color):- attr(node, N, shape, tab).
+
+
+attr(graph_edges, default, dir, both).
+attr(graph_edges, default, arrowtail, none).
+attr(graph_edges, default, arrowhead, none).
+
+attr(node,N,label,"<{{name}}{% if value is defined %} <br/><br/> <FONT POINT-SIZE='15pt'> <i><b>{{value}} </b></i></FONT> {% else %} {% endif %}>") :- node(N).
+attr(node,N,(label,name),N) :- node(N).
+attr(node,N,style,filled) :- node(N), not attr(node,N,shape,plaintext).
+attr(edge,(N1,N2),fontsize,8):-edge((N1,N2)).
+
 
 node(atom_tuple(I)) :- atom_tuple(I).
-attr(node, atom_tuple(E), shape, invhouse):- node(atom_tuple(E)).
+attr(node, atom_tuple(E), shape, tab):- node(atom_tuple(E)).
 
 node(literal_tuple(I)) :- literal_tuple(I).
-attr(node, literal_tuple(E), shape, house):- node(literal_tuple(E)).
+attr(node, literal_tuple(E), shape, tab):- node(literal_tuple(E)).
+
+% Internal atoms 
+
 
 node(rule(H,B)):-rule(H,B).
-attr(node, rule(H,B), shape, rectangle):- node(rule(H,B)).
+attr(node,rule(H,B),shape,box) :- node(rule(H,B)).
+attr(node,rule(H,B),fillcolor,rule_color) :- node(rule(H,B)).
+
 
 node(output(S,L)):- output(S,L).
-attr(node, output(S,L), shape, underline):- node(output(S,L)).
+attr(node, output(S,L), shape, plaintext):- node(output(S,L)).
+attr(node, output(S,L), (label,value), S):- node(output(S,L)).
 
-node(atom(E)) :- literal_tuple(I,E), E>0.
-node(atom(E)) :- atom_tuple(I,E), E>0.
-attr(node, atom(E), shape, ellipse):- node(atom(E)).
+% node(atom_tuple(A,E)) :- literal_tuple(I,E), E>0, atom_tuple(A,E).
+node(atom_tuple(I,E)) :- atom_tuple(I,E), E>0.
+attr(node, P, shape, box):- atom(E,P).
+attr(node, P, (label,value), S):- atom(E,P), literal_tuple(L,E), output(S,L).
+
+
+attr(node,external(E,V),fillcolor,external_color) :- node(external(E,V)).
 
 
 % Atoms as part of an atom tuple
-edge((atom_tuple(I),atom(E))):-atom_tuple(I,E).
+edge((atom_tuple(I),atom_tuple(I,E))):-atom_tuple(I,E).
 
 % Positive atom in a literal tuple
-edge((literal_tuple(I),atom(E))):-literal_tuple(I,E), E>0.
-attr(edge, (literal_tuple(I),atom(E)), arrowhead, dot):-literal_tuple(I,E), E>0.
+edge((literal_tuple(I),P)):-literal_tuple(I,E), E>0, atom(E,P).
+attr(edge, (literal_tuple(I),P), color, pos_body_lit_color):-literal_tuple(I,E), E>0, atom(E,P).
+attr(edge, (literal_tuple(I),P), label, literal_tuple(I,E)):-literal_tuple(I,E), E>0, atom(E,P).
+attr(edge, (literal_tuple(I),P), arrowhead, dot):-literal_tuple(I,E), E>0, atom(E,P).
 
 % Negative atom_tuple in a literal tuple
-edge((literal_tuple(I),atom(-1*E))):-literal_tuple(I,E), E<0.
-attr(edge, (literal_tuple(I),atom(-1*E)), arrowhead, odot):-literal_tuple(I,E), E<0.
+edge((literal_tuple(I),P)):-literal_tuple(I,E), E<0, atom(-1*E,P).
+attr(edge, (literal_tuple(I),P), color, neg_body_lit_color):-literal_tuple(I,E), E<0, atom(-1*E,P).
+attr(edge, (literal_tuple(I),P), arrowhead, dot):-literal_tuple(I,E), E<0, atom(-1*E,P).
 
 % Literals as body of a rule
 edge((rule(H,normal(B)),literal_tuple(B))):-rule(H,normal(B)).
-attr(edge,(rule(H,normal(B)),literal_tuple(B)),arrowtail,normal):-rule(H,normal(B)).
+attr(edge,(rule(H,normal(B)),literal_tuple(B)),label,"body"):-rule(H,normal(B)).
 
 % Atoms as choice head of a rule
 edge((rule(choice(H),B),atom_tuple(H))):-rule(choice(H),B).
-attr(edge,(rule(choice(H),B),atom_tuple(H)),arrowtail,oinv):-rule(choice(H),B).
+attr(edge,(rule(choice(H),B),atom_tuple(H)),label,"head"):-rule(choice(H),B).
+% attr(edge,(rule(choice(H),B),atom_tuple(H)),arrowtail,oinv):-rule(choice(H),B).
 
 % Atoms as disjuction head of a rule
 edge((rule(disjunction(H),B),atom_tuple(H))):-rule(disjunction(H),B).
-attr(edge,(rule(disjunction(H),B),atom_tuple(H)),arrowtail,inv):-rule(disjunction(H),B).
+attr(edge,(rule(disjunction(H),B),atom_tuple(H)),label,"head"):-rule(disjunction(H),B).
 
 % Outputs
 edge((literal_tuple(L),output(S,L))):-output(S,L).
@@ -52,69 +88,48 @@ attr(edge,(literal_tuple(L),output(S,L)),style,dotted):-output(S,L).
 
 
 
-%%%%%%%%%%%% Legend
-graph(legend,program).
-attr(graph, legend, label, "LEGEND").
-attr(graph, legend, fontsize, "20").
-attr(graph,legend,style,filled).
-attr(graph,legend,fillcolor,gray).
+% -------- Theory
 
-graph(legend1,legend).
-attr(graph, legend1, label, "Literal tuples (Bodys)").
-node(literal_tuple,legend1).
-node(positive_atom,legend1).
-node(negative_atom,legend1).
-attr(node, literal_tuple, shape, house).
-attr(node, positive_atom, shape, ellipse).
-attr(node, negative_atom, shape, ellipse).
-attr(edge,(literal_tuple,positive_atom),arrowhead,dot).
-attr(edge,(literal_tuple,negative_atom),arrowhead,odot).
-node(literal_tuple_meaning,legend1).
-attr(node,literal_tuple_meaning,shape, plaintext).
-attr(node,literal_tuple_meaning,label, "A set of literals defined as the conjuction \\n of positive and negative atoms").
+theory_symbol(I,theory_number(I,N)):-theory_number(I,N).
+theory_symbol(I,theory_string(I,@html_escape(S))):-theory_string(I,S).
+theory_symbol(I,theory_function(I,S,T)):-theory_function(I,S,T).
+theory_symbol(I,theory_sequence(I,tuple,T)):-theory_sequence(I,tuple,T).
 
-graph(legend2,legend).
-attr(graph, legend2, label, "Atoms tuples (Heads)").
-node(atom_tuple,legend2).
-attr(node, atom_tuple, shape, invhouse).
-node(atom_tuple_meaning,legend2).
-attr(node,atom_tuple_meaning,shape, plaintext).
-attr(node,atom_tuple_meaning,label, "A set of atoms defined as \\n the disjuction or choice among atoms").
+node(N):-theory_symbol(I,N).
+attr(node,N,fillcolor,theory_symbol_color):-theory_symbol(I,N).
+
+attr(node,theory_string(I,S),shape,plaintext):-theory_symbol(I,theory_string(I,S)).
+attr(node,theory_string(I,S),(label,value),S):-theory_symbol(I,theory_string(I,S)).
+
+attr(node,theory_number(I,N),shape,plaintext):-theory_symbol(I,theory_number(I,N)).
+attr(node,theory_number(I,N),(label,value),N):-theory_symbol(I,theory_number(I,N)).
 
 
-graph(legend3,legend).
-attr(graph, legend3, label, "Atoms").
-node(atom,legend3).
-attr(node, atom, shape, ellipse).
-node(atom_meaning,legend3).
-attr(node,atom_meaning,shape, plaintext).
-attr(node,atom_meaning,label, "An atom").
+edge((N,theory_tuple(T))):-theory_function(I,S,T), theory_symbol(I,N).
+edge((N,SN)):-theory_function(I,S,T), theory_symbol(I,N), theory_symbol(S,SN).
 
-graph(legend4,legend).
-attr(graph, legend4, label, "Rules").
-node(rule,legend4).
-node(rule_head,legend4).
-node(rule_body,legend4).
-attr(node, rule, shape, rectangle).
-attr(node, rule_head, shape, invhouse).
-attr(node, rule_body, shape, house).
+% Tuples
 
-attr(edge,(rule,rule_body),arrowtail,normal).
-attr(edge,(rule,rule_head),arrowtail,inv).
-node(rule_meaning,legend4).
-attr(node,rule_meaning,shape, plaintext).
-attr(node,rule_meaning,label, "An rule defined by a \\n head  which is a choice or a disjuction of atoms (pointing to an atom tuple)\\n and a body which is a conjuction of literals (pointing to a literal_tuple)").
+node(theory_tuple(I)):-theory_tuple(I).
+attr(node,theory_tuple(I),shape,tab):-theory_tuple(I).
+edge((theory_tuple(I),N)):-theory_tuple(I,P,E), theory_symbol(E,N).
+attr(edge,(theory_tuple(I),N),label,theory_tuple(I,P,E)):-theory_tuple(I,P,E), theory_symbol(E,N).
 
-graph(legend5,legend).
-attr(graph, legend5, label, "Output").
-node(output,legend5).
-node(literal_outpt,legend5).
-attr(node, output, shape, underline).
-attr(node, literal_outpt, shape, house).
 
-attr(edge,(output,literal_outpt),style,dotted).
-node(out_meaning,legend5).
-attr(node,out_meaning,shape, plaintext).
-attr(node,out_meaning,label, "An output that will be printed when the \\n literals from the literal_tuple hold").
+% Elements
+node(theory_element(I,T,C)):-theory_element(I,T,C).
+attr(node,theory_element(I,T,C), fillcolor, theory_symbol_color ):-theory_element(I,T,C).
+edge((theory_element(I,T,C),theory_tuple(T))):-theory_element(I,T,C).
+edge((theory_element(I,T,C),literal_tuple(C))):-theory_element(I,T,C), C!=true.
 
-attr(graph,X,style,dotted):-graph(X,legend).
+
+node(theory_element_tuple(I)):-theory_element_tuple(I).
+attr(node,theory_element_tuple(I),shape,tab):-theory_element_tuple(I).
+edge((theory_element_tuple(I),theory_element(ET,T,C))):-theory_element_tuple(I,ET), theory_element(ET,T,C).
+
+
+% Atom
+edge((theory_atom(I,S,ET),theory_element_tuple(ET))):-theory_atom(I,S,ET).
+edge((theory_atom(I,S,ET),SN)):-theory_atom(I,S,ET), theory_symbol(S,SN).
+
+
