@@ -5,7 +5,7 @@ from ast import parse
 import sys
 import argparse
 import textwrap
-import pkg_resources
+import importlib.metadata
 from .graphviz import compute_graphs, dot, render
 from .logger import setup_logger_str, COLORS
 from .orm import Factbase
@@ -14,8 +14,8 @@ from .exceptions import InvalidSyntaxJSON, InvalidSyntax
 from .clingo_utils import _get_fbs_from_encoding, _get_json, add_svg_interaction
 
 try:
-    VERSION = pkg_resources.require("clingraph")[0].version
-except pkg_resources.DistributionNotFound:
+    VERSION = importlib.metadata.version("clingraph")
+except importlib.metadata.PackageNotFoundError:
     VERSION = '0.0.0'
 
 
