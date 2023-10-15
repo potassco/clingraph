@@ -26,7 +26,7 @@ def _get_parser():
     Get the parser for the command line
     """
     # pylint: disable=anomalous-backslash-in-string
-    parser = argparse.ArgumentParser(description=textwrap.dedent("""
+    parser = argparse.ArgumentParser(description=textwrap.dedent(r"""
         _ _                         _
      __| (_)_ _  __ _ _ _ __ _ _ __| |_
     / _| | | ' \/ _` | '_/ _` | '_ \ ' \\
