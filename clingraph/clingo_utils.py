@@ -143,6 +143,44 @@ class ClingraphContext:
         s=String(f"{event}___{element}___{property_name}___{property_value} ")
         return s
 
+    def color(self, option, opacity=None):
+        """
+        Gets the html color code for the different options and the given opacity
+        Args:
+            option: primary, secondary, success, info, warning, danger, light
+            opacity: Numeric value indicating the opacity of the color
+        """
+        option = str(option)
+        opacity = str(opacity) if opacity is not None else None
+        colors = {
+            "primary": "#0052CC",
+            "blue": "#0052CC",
+            "secondary": "#6554C0",
+            "purple": "#6554C0",
+            "success": "#36B37E",
+            "green": "#36B37E",
+            "info": "#B3BAC5",
+            "gray": "#B3BAC5",
+            "warning": "#FFAB00",
+            "yellow": "#FFAB00",
+            "danger": "#FF5630",
+            "red": "#FF5630",
+            "light": "#F4F5F7"
+        }
+        if option not in colors:
+            return String("#000000")
+
+        hex_color = colors[option]
+
+        if opacity is not None and opacity.isnumeric():
+            o = int(opacity)
+            if 0 <= o < 100:
+                hex_color = f"{hex_color}{o:02d}"
+        return String(hex_color)
+
+
+
+
     def __getattr__(self, name):
         # pylint: disable=import-outside-toplevel
 

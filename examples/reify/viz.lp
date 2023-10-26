@@ -1,10 +1,10 @@
-#const pos_body_lit_color= "#36B37E".
-#const neg_body_lit_color= "#FF5630".
-#const tab_color= "#FFAB0050".
-#const rule_color = "#0052CC50".
-#const external_color = "#FFAB00".
-#const atom_color = "#B3BAC550".
-#const theory_symbol_color = "#6554C050".
+#const pos_body_lit_color= @color(green).
+#const neg_body_lit_color= @color(red).
+#const tab_color= @color(yellow,50).
+#const rule_color = @color(blue,50).
+#const external_color = @color(green,70).
+#const atom_color = @color(gray,50).
+#const theory_symbol_color = @color(purple,50).
 
 #defined atom_tuple/1.
 #defined atom_tuple/2.

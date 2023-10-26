@@ -268,6 +268,6 @@ def test_svg():
         s = f.read()
         assert '</script>' in s
         assert 'init___visibility___hidden' in s
-        assert 'mouseleave___4___color___blue' in s
+        assert 'mouseleave___4___color___#0052CC' in s
         assert 'click___3___visibility___visible' in s
         assert 'fill="currentcolor"' in s
