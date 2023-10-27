@@ -178,6 +178,12 @@ class ClingraphContext:
                 hex_color = f"{hex_color}{o:02d}"
         return String(hex_color)
 
+    def clinguin_fontname(self):
+        """
+        Gets the font name used in clinguin
+        """
+
+        return String("Helvetica Neue")
 
 
 
@@ -332,6 +338,17 @@ SVG_SCRIPT = """
 </svg>
 """
 
+def add_svg_interaction_to_string(s):
+    """
+    Adds the svg interaction script to string representation of the svg image
+
+    Args:
+        s [str]: the svg string
+    """
+    s = s.replace("#111111","currentcolor")
+    s = s[:-8]
+    s+= SVG_SCRIPT
+    return s
 
 def add_svg_interaction(paths):
     """
@@ -347,12 +364,10 @@ def add_svg_interaction(paths):
             continue
         for path in path_dic.values():
             with open(path, 'r', encoding='UTF-8') as f:
-                lines = f.readlines()
-                lines = [s.replace("#111111","currentcolor") for s in lines]
-                lines[-1] = ""
-                lines+=[s+"\n" for s in SVG_SCRIPT.split("\n")]
+                s = f.read()
+                s = add_svg_interaction_to_string(s)
             with open(path, 'w', encoding='UTF-8') as f:
-                f.writelines(lines)
+                f.write(s)
 
 ADD_IDS_PRG = """
 #defined edge/2.
