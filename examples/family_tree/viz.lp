@@ -2,6 +2,8 @@ related(X,Y):-parent(X,Y).
 related(Y,X):-parent(X,Y).
 related(X,X):-person(X).
 
+attr(graph,default,fontname,@clinguin_fontname):-node(X).
+attr(graph_nodes,default,fontname,@clinguin_fontname):-node(X).
 node(X):-person(X).
 attr(node,X,label,@stringify(X,true)):-person(X).
 attr(node,X,style,"filled"):-node(X).
