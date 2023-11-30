@@ -28,6 +28,7 @@ Then clingraph will load these facts and construct a graphviz object that can be
 
 .. figure:: ../examples/doc/example1/example1.2.png
 
+Check out our paper `here <https://arxiv.org/pdf/2303.10118.pdf>`_. This work was published in LPNMR22 where it recived the "Best student paper award".
 
 
 .. note:: Clingraph is part the Potassco umbrella (which is the home of Clingo and the other ASP tools)

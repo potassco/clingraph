@@ -13,7 +13,7 @@ attr(node,clingraph,style,filled).
 
 Clingraph also contains **special features** for integration with **[clingo](https://potassco.org/clingo/)**, as well as for generating **latex** code and **gifs**!
 
-
+Check out our paper **[here](https://arxiv.org/pdf/2303.10118.pdf)**. This work was published in LPNMR22 where it recived the *"Best student paper award"*.
 
 ### Usage
 
