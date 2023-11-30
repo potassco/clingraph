@@ -88,7 +88,7 @@ def save_gif(graphs, directory='out', name_format="movie", engine="dot", fps=1, 
 
         os.makedirs(os.path.dirname(gif_path), exist_ok=True)
 
-        duration = int(1000 * 1/fps)
+        duration = int(1000 * 1/float(fps))
         imageio.mimsave(gif_path,
                         images, duration=duration)
         paths.append({'all':gif_path})
