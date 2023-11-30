@@ -132,7 +132,7 @@ def _get_parser():
     graphs_params.add_argument('--select-model',
             help = textwrap.dedent('''\
                 Select only one of the models when using a json input.
-                Defined by an idex for accessing the models, starting in index 0.
+                Defined by an index for accessing the models, starting in index 0.
                 Negative indexes are also allowed (-1 refers to the last model)
                 Can appear multiple times to select multiple models.'''),
             type=int,
@@ -162,7 +162,7 @@ def _get_parser():
     graphs_params.add_argument('--save',
                 action='store_true',
                 help = textwrap.dedent('''\
-                    Saves the output in files based on the directory, name format and fortmat provided.
+                    Saves the output in files based on the directory, name format and format provided.
                     Otherwise the output is just printed on the stdout'''))
 
     graphviz_params = parser.add_argument_group('OUTPUT {dot|render|tex|animate}','Options for the functionality regarding graphviz.')
