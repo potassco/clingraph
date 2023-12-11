@@ -38,7 +38,7 @@ class ClingraphContext:
     def concat(self, *args):
         """
         Concatenates the given symbols as a string
-        
+
         Args:
             args: All symbols
         Returns:
@@ -49,7 +49,7 @@ class ClingraphContext:
     def format(self, s, *args):
         """
         Formats the string with the given arguments
-        
+
         Args:
             s (clingo.Symbol.String): The string to format, for example "{0} and {1}"
             args: All symbols that can be accessed by the position starting in 0
@@ -62,7 +62,7 @@ class ClingraphContext:
     def stringify(self, s, capitalize=False):
         """
         Turns a value into a string without underscore and capitalized if requested
-        
+
         Args:
             s: The value to transform
         Returns:
@@ -77,7 +77,7 @@ class ClingraphContext:
     def cluster(self, s):
         """
         Returns the cluster name for a graph
-        
+
         Args:
             s: The identifier of the graph
         Returns:
@@ -90,7 +90,7 @@ class ClingraphContext:
     def html_escape(self, s):
         """
         Will escape the symbols of an HTML-Like label that provoque clashes: &, < and >
-        
+
         Args:
             s (clingo.Symbol): The value that needs the symbols removed
         Returns:
@@ -125,7 +125,7 @@ class ClingraphContext:
         """
         Generates an svg string that is used as a placeholder for the color in properties.
         This string will be mapped into the css variable `currentcolor`.
-        
+
         Returns:
             (clingo.Symbol.String) The string as a color placeholder
         """
@@ -136,7 +136,7 @@ class ClingraphContext:
         Generates an svg string for interactive actions This property will be set on the group tag
         `<g>` used around the elements. Notice that any properties set using the `attr` predicates
         will not be overwritten.
-        
+
         Args:
             event: The svg event one of: "click","mouseenter","mouseleave","contextmenu"
             element: The id on the element in which the action is performed. This element must have the id property set: `attr(node,ID,id,ID):-node(ID).`
@@ -155,7 +155,7 @@ class ClingraphContext:
     def color(self, option, opacity=None):
         """
         Gets the html color code for the different options and the given opacity
-        
+
         Args:
             option: primary, secondary, success, info, warning, danger, light
             opacity: Numeric value indicating the opacity of the color
