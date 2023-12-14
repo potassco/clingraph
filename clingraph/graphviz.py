@@ -80,7 +80,7 @@ def _compute_graphs_single_fb(fb, graphviz_type = 'graph',seed=None):
                     graph.node(str(e).strip('"'), **attr)
                 else:
                     if e.symbol.type != SymbolType.Function or len(e.symbol.arguments) < 2:
-                        msg =f"Edge predicate ignore edge({str(e)}). Identifiers must be tupples"
+                        msg =f"Edge predicate ignore edge({str(e)}). Identifiers must be tuples"
                         log.warning(msg)
                         continue
 
