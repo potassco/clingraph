@@ -1,0 +1,34 @@
+div.admonition.example {
+    border-color: hsl(257, 20%, 50%);
+    background-color: hsl(257, 20%, 80%);
+}
+
+div.admonition.example > .admonition-title {
+    color: white;
+    background-color: hsl(257, 20%, 50%);
+}
+
+div.admonition.example > .admonition-title::before {
+    content: "\f2a7";
+    }
+
+.sidebar-logo {
+    margin: inherit;
+}
+.sidebar-logo-container{
+    max-width: 20%!important;
+    margin-top: 0.2rem;
+    margin-right: 0.2rem;
+    justify-content: flex-end;
+    display: flex;
+}
+.sidebar-brand-text {
+    text-align: center !important;
+    /* color: #004C6E !important; */
+    align-items: center;
+    display: inline-flex;
+}
+
+.sidebar-brand {
+    flex-direction: row !important;
+}

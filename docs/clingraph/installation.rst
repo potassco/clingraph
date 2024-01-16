@@ -8,7 +8,7 @@ Installing with conda
 
 The conda clingraph package can be found `here <https://anaconda.org/potassco/clingraph>`_.
 
-.. code-block:: bash
+.. code-block:: console
 
     $ conda install -c potassco clingraph 
     $ conda install -c potassco/label/dev clingraph
@@ -17,7 +17,7 @@ The conda clingraph package can be found `here <https://anaconda.org/potassco/cl
     The conda installation does not include optional dependencies for latex and gifs.
     The additional dependencies can also be installed with conda using: 
 
-    .. code-block:: bash
+    .. code-block:: console
 
         $ conda install -c conda-forge dot2tex imageio
 
@@ -31,7 +31,7 @@ The python clingraph package can be found `here <https://pypi.org/project/clingr
 .. warning:: 
     For the installation using ``pip`` the user must first install `graphviz <https://www.graphviz.org/download/>`_  (version 2.50 or greater) manually.
 
-.. code-block:: bash
+.. code-block:: console
 
     $ pip install clingraph
 
@@ -42,7 +42,7 @@ The following dependencies used in `clingraph` are optional.
 
 To include them in the installation use:
 
-.. code-block:: bash
+.. code-block:: console
 
     $ pip install clingraph[tex,gif]
 
@@ -56,7 +56,7 @@ also be installed from source. We recommend this only for development purposes.
 
 With conda: 
 
-.. code-block:: bash
+.. code-block:: console
 
     $ git clone https://github.com/potassco/clingraph
     $ cd clingraph
@@ -66,7 +66,7 @@ With conda:
 
 With pip:
 
-.. code-block:: bash
+.. code-block:: console
 
     $ git clone https://github.com/potassco/clingraph
     $ cd clingraph

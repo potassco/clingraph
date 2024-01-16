@@ -10,6 +10,13 @@ A visualizer for graphs defined as a set of facts that can be computed from logi
 
 The package also contains special features for integration with `clingo <https://potassco.org/clingo>`_ as well as to create gifs, interactive svg files and latex code!
 
+.. tip::
+
+   **Publication**
+
+   Check out our `paper <https://arxiv.org/pdf/2303.10118.pdf>`_. This work was published in LPNMR22 where it recived the "Best student paper award".
+
+
 **Here is a motivation example:**
 
 .. code-block::
@@ -28,7 +35,6 @@ Then clingraph will load these facts and construct a graphviz object that can be
 
 .. figure:: ../examples/doc/example1/example1.2.png
 
-Check out our paper `here <https://arxiv.org/pdf/2303.10118.pdf>`_. This work was published in LPNMR22 where it recived the "Best student paper award".
 
 
 .. note:: Clingraph is part the Potassco umbrella (which is the home of Clingo and the other ASP tools)
@@ -36,11 +42,12 @@ Check out our paper `here <https://arxiv.org/pdf/2303.10118.pdf>`_. This work wa
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   :hidden:
    
    clingraph/installation
    clingraph/syntax
    clingraph/console
-   ./../notebook
    clingraph/api
+   ./../notebook
    clingraph/svg
 
