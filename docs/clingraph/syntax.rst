@@ -13,15 +13,15 @@ Nodes
 A node is defined using predicate ``node`` where the argument is an
 identifier.
 
-.. rubric:: *Example 1*
-    :name: example-1
 
-::
+.. admonition:: Example 1
 
-    node(john).
-    node(jane).
+    .. code:: prolog
 
-.. figure:: ../../examples/doc/example1/example1.0.png
+        node(john).
+        node(jane).
+
+    .. figure:: ../../examples/doc/example1/example1.0.png
 
 Edges
 =====
@@ -30,14 +30,13 @@ An edge from ``A`` to ``B`` is defined using predicate ``edge``
 where the argument is a tuple ``(A,B)``. The edges will be directed
 when creating a ``digraph`` and not directed one created a ``graph``.
 
-.. rubric:: *Example 1 (continuation)*
-    :name: example-1-continuation
+.. admonition:: Example 1 (continuation)
 
-::
+    .. code:: prolog
 
-    edge((john,jane)).
+        edge((john,jane)).
 
-.. figure:: ../../examples/doc/example1/example1.1.png
+    .. figure:: ../../examples/doc/example1/example1.1.png
 
 Multiple edges
 --------------
@@ -45,28 +44,26 @@ Multiple edges
 To generate multiple edges between nodes, the edge will be defined with a tuple of size three: ``(A,B,N)``.
 In this case, an edge between ``A`` and ``B`` will be identified by ``N``.
 
-.. rubric:: *Example 1 (continuation)*
-    :name: example-1-continuation-2
+.. admonition:: Example 1 (continuation)
 
-::
+    .. code:: prolog
 
-    node(joe).
-    edge((john,joe,1)).
-    edge((john,joe,2)).
+        node(joe).
+        edge((john,joe,1)).
+        edge((john,joe,2)).
 
-.. figure:: ../../examples/doc/example1/example1.11.png
+    .. figure:: ../../examples/doc/example1/example1.11.png
 
 Graphs
 ======
 
 A graph is defined using predicate ``graph/1``.
 
-.. rubric:: *Example*
-    :name: example
+.. admonition:: Example
 
-::
+    .. code:: prolog
 
-       graph(family).
+        graph(family).
 
 Multiple graphs
 ---------------
@@ -80,29 +77,28 @@ graph in the second argument.
     single argument are assigned to the default graph called
     ``default``. A different graph can be defined as the default as an option.
 
-.. rubric:: *Example 2*
-    :name: example-2
+.. admonition:: Example 2
 
-::
+    .. code:: prolog
 
-    graph(toms_family).
-    graph(bills_family).
-    node(tom, toms_family).
-    node(max, toms_family).
-    edge((tom, max), toms_family).
-    node(bill, bills_family).
-    node(jen, bills_family).
-    edge((bill, jen), bills_family).
+        graph(toms_family).
+        graph(bills_family).
+        node(tom, toms_family).
+        node(max, toms_family).
+        edge((tom, max), toms_family).
+        node(bill, bills_family).
+        node(jen, bills_family).
+        edge((bill, jen), bills_family).
 
-.. list-table:: 
+    .. list-table:: 
 
-    * - .. figure:: ../../examples/doc/example2/toms_family.png
+        * - .. figure:: ../../examples/doc/example2/toms_family.png
 
-           *Graph toms_family*
+            *Graph toms_family*
 
-      - .. figure:: ../../examples/doc/example2/bills_family.png
-
-           *Graph bills_family*
+          - .. figure:: ../../examples/doc/example2/bills_family.png
+            
+            *Graph bills_family*
 
 .. note:: The creation of multiple graphs is especially useful for representing a dynamic domain where we need a different visualization for each time step
 
@@ -113,20 +109,19 @@ Subgraphs
 Subgraphs can be defined by adding a parent graph as a second
 argument to the ``graph`` predicate. Then, nodes and edges can be assigned to a subgraph or a graph in the same way.
 
-.. rubric:: *Example 3*
-    :name: example-3
+.. admonition:: Example 3
 
-::
+    .. code:: prolog
 
-    graph(house).
-    graph(bathroom, house).
-    graph(bedroom, house).
-    node(toilet,bathroom).
-    node(bed,bedroom).
-    node(desk,bedroom).
-    edge((toilet,bed),house).
+        graph(house).
+        graph(bathroom, house).
+        graph(bedroom, house).
+        node(toilet,bathroom).
+        node(bed,bedroom).
+        node(desk,bedroom).
+        edge((toilet,bed),house).
 
-.. figure:: ../../examples/doc/example3/house.png
+    .. figure:: ../../examples/doc/example3/house.png
 
 Attributes
 ==========
@@ -149,24 +144,23 @@ specified by name-value pairs to the element.
   
    * ``ATTR_VALUE``: The value of the graphviz attribute
 
-.. rubric:: *Example 3 (continuation)*
-    :name: example-3-continuation
+.. admonition:: Example 3 (continuation)
 
-::
+    .. code:: prolog
 
-    attr(graph, house, label, "Tom's House").
-    attr(graph, bathroom, style, dotted).
-    attr(graph, bathroom, label, "Bathroom").
-    attr(graph, bedroom, style, dotted).
-    attr(graph, bedroom, label, "Bedroom").
-    attr(graph_nodes, house, style, filled).
-    attr(graph_nodes, house, color, cyan).
-    attr(node, toilet, shape, circle).
-    attr(node, bed, shape, square).
-    attr(node, desk, shape, square).
-    attr(edge, (toilet,bed), color, red).
+        attr(graph, house, label, "Tom's House").
+        attr(graph, bathroom, style, dotted).
+        attr(graph, bathroom, label, "Bathroom").
+        attr(graph, bedroom, style, dotted).
+        attr(graph, bedroom, label, "Bedroom").
+        attr(graph_nodes, house, style, filled).
+        attr(graph_nodes, house, color, cyan).
+        attr(node, toilet, shape, circle).
+        attr(node, bed, shape, square).
+        attr(node, desk, shape, square).
+        attr(edge, (toilet,bed), color, red).
 
-.. figure:: ../../examples/doc/example3/house2.png
+    .. figure:: ../../examples/doc/example3/house2.png
 
 
 .. note:: To edit the attributes of the default graph one must use the default name as element id.
@@ -174,17 +168,16 @@ specified by name-value pairs to the element.
 .. note:: If an attribute name appears more than once all occurrences will be concatenated.
 
 
-.. rubric:: *Example 1 (continuation)*
-    :name: example-1-continuation-1
+.. admonition:: Example 1 (continuation)
 
-::
+    .. code:: prolog
 
-    attr(graph, default, label, "Does' family").
-    attr(graph_nodes, default, style, filled).
-    attr(node, john, label, "John Doe").
-    attr(node, jane, label, "Jane Doe").
+        attr(graph, default, label, "Does' family").
+        attr(graph_nodes, default, style, filled).
+        attr(node, john, label, "John Doe").
+        attr(node, jane, label, "Jane Doe").
 
-.. figure:: ../../examples/doc/example1/example1.2.png
+    .. figure:: ../../examples/doc/example1/example1.2.png
 
 
 Template attribute
@@ -206,17 +199,16 @@ As a result, the value of label will be ``"<<b>Michel Scott</b>>"``.
 Moreover, this label corresponds to an `HTML-Like label <https://graphviz.org/doc/info/shapes.html#html>`__, since it is encosed by ``<>``. 
 Particularly, the tag ``<b>`` used in this label will make the font boldface as seen in the figure bellow.
 
-.. rubric:: *Example 4*
-    :name: example-4
+.. admonition:: Example 4
 
-::
+    .. code:: prolog
 
-    node(mike).
-    attr(node, mike, label, "<<b>{{name}} {{lastname}}</b>>").
-    attr(node, mike, (label,name), "Michel").
-    attr(node, mike, (label,lastname), "Scott").
+        node(mike).
+        attr(node, mike, label, "<<b>{{name}} {{lastname}}</b>>").
+        attr(node, mike, (label,name), "Michel").
+        attr(node, mike, (label,lastname), "Scott").
 
-.. figure:: ../../examples/doc/example4/example4-1.png
+    .. figure:: ../../examples/doc/example4/example4-1.png
 
 
 If no template is provided, the default template will simply concatenate all variable values in order. 
@@ -227,16 +219,15 @@ and the filter operation ``dictsort`` to iterate over the items in ``data`` afte
 In the example below, no template is provided for attribute ``label`` of node ``jim``.
 Therefore the value will be ``HalpertJim``, as variable names are ordered in an ascendent fashion.
 
-.. rubric:: *Example 4 (continuation)*
-    :name: example-4-continuation
+.. admonition:: Example 4 (continuation)
 
-::
+    .. code:: prolog
 
-    node(jim).
-    attr(node, jim, (label,name), "Jim").
-    attr(node, jim, (label,lastname), "Halpert").
+        node(jim).
+        attr(node, jim, (label,name), "Jim").
+        attr(node, jim, (label,lastname), "Halpert").
 
-.. figure:: ../../examples/doc/example4/example4-2.png
+    .. figure:: ../../examples/doc/example4/example4-2.png
 
 Attribute names can also be tuples of size three: ``(ATTR_NAME, VARIABLE, KEY)``.
 In this case the ``VRIABLE`` will be a dictionary where the key ``KEY`` has value  ``ATTR_VALUE``. 
@@ -244,34 +235,32 @@ In the example below, the variable ``name`` will have as value the dictionary ``
 This dictionary can then be accessed in the template using ``{{name['first']}}`` and ``{{name['second']}}``
 
 
-.. rubric:: *Example 4 (continuation)*
-    :name: example-4-continuation2
+.. admonition:: Example 4 (continuation)
 
-::
-    
-    node(pam).
-    attr(node, pam, label, "<{{name['first']}} {{name['second']}} <b>{{lastname}}</b>>").
-    attr(node, pam, (label,name,first), "Pamela").
-    attr(node, pam, (label,name,second), "Morgan").
-    attr(node, pam, (label,lastname), "Beesly").
+    .. code:: prolog
+        
+        node(pam).
+        attr(node, pam, label, "<{{name['first']}} {{name['second']}} <b>{{lastname}}</b>>").
+        attr(node, pam, (label,name,first), "Pamela").
+        attr(node, pam, (label,name,second), "Morgan").
+        attr(node, pam, (label,lastname), "Beesly").
 
-.. figure:: ../../examples/doc/example4/example4-3.png
+    .. figure:: ../../examples/doc/example4/example4-3.png
 
 Similarly dictionary variables can be iterated in the template like the example below. 
 In this case we iterate through the key-value pairs in ``name`` in no specific order. 
 
-.. rubric:: *Example 4 (continuation)*
-    :name: example-4-continuation3
+.. admonition:: Example 4 (continuation)
 
-::
-    
-    node(angela).
-    attr(node, angela, label, "<{% for k, n in name.items() %}{{n}} {% endfor %}<b>{{lastname}}</b>>").
-    attr(node, angela, (label,name,1), "Angela").
-    attr(node, angela, (label,name,2), "Noelle").
-    attr(node, angela, (label,lastname), "Martin").
+    .. code:: prolog
+        
+        node(angela).
+        attr(node, angela, label, "<{% for k, n in name.items() %}{{n}} {% endfor %}<b>{{lastname}}</b>>").
+        attr(node, angela, (label,name,1), "Angela").
+        attr(node, angela, (label,name,2), "Noelle").
+        attr(node, angela, (label,lastname), "Martin").
 
-.. figure:: ../../examples/doc/example4/example4-4.png
+    .. figure:: ../../examples/doc/example4/example4-4.png
 
 
 .. warning::

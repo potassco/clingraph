@@ -12,7 +12,7 @@ Special integration for `clingo <https://potassco.org/clingo/>`_ includes the cr
 
 The command line usage is described below. However, the latest available options can be found by running:
 
-.. code:: shell
+.. code:: console
 
    $ clingraph --help
 
@@ -24,34 +24,36 @@ The input can be loaded from multiple files and standard input, following our :r
 Any additional predicates will be ignored.
 Additionally, a single JSON file can be provided instead, with the structure of clingos json output format with `--outf=2`. More details can be found in :ref:`clingo integration<Clingo integration>`
 
-Consider the file `example1.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example1/example1.lp>`_
+.. admonition:: Example
 
-.. include:: ../../examples/doc/example1/example1.lp
-  :literal:
+  Consider the `example1.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example1/example1.lp>`_
+
+  .. include:: ../../examples/doc/example1/example1.lp
+    :literal:
 
 
-- **Load from a file**
+  - **Load from a file**
 
-.. code:: shell
+  .. code:: console
 
-  $ clingraph example1.lp
+    $ clingraph example1.lp
 
-- **Load from from stdin**
+  - **Load from from stdin**
 
-.. code:: shell
+  .. code:: console
 
-  $ cat example1.lp | clingraph
+    $ cat example1.lp | clingraph
 
-.. code:: shell
+  .. code:: console
 
-  node(john,default).
-  node(jane,default).
-  attr(node,jane,(label,-1),"Jane Doe").
-  attr(node,john,(label,-1),"John Doe").
-  attr(graph,default,(label,-1),"Does family").
-  attr(graph_nodes,default,(style,-1),filled).
-  edge((john,jane),default).
-  graph(default). 
+    node(john,default).
+    node(jane,default).
+    attr(node,jane,(label,-1),"Jane Doe").
+    attr(node,john,(label,-1),"John Doe").
+    attr(graph,default,(label,-1),"Does family").
+    attr(graph_nodes,default,(style,-1),filled).
+    edge((john,jane),default).
+    graph(default). 
 
   
 Output
@@ -68,92 +70,101 @@ Clingraph provides four types of outputs
   - ``animate``: Generates the graphviz objects and creates an animation in gif format
 
 
-Consider the file `example2.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example2/example2.lp>`_
+.. admonition:: Example
 
-.. include:: ../../examples/doc/example2/example2.lp
-  :literal:
+  Consider the `example2.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example2/example2.lp>`_
+
+  .. include:: ../../examples/doc/example2/example2.lp
+    :literal:
 
 - **Facts output** ``out=facts``
 
 The output is a string containing the facts for all graphs provided that are part of the syntax, after preprocessing
 
-.. code:: shell
+.. admonition:: Example
 
-  $ clingraph example2.lp --out=facts
+  .. code:: console
 
-.. code:: shell
+    $ clingraph example2.lp --out=facts
 
-  node(tom,toms_family).
-  node(max,toms_family).
-  node(bill,bills_family).
-  node(jen,bills_family).
-  graph(toms_family).
-  graph(bills_family).
-  edge((tom,max),toms_family).
-  edge((bill,jen),bills_family).
+  .. code:: console
+
+    node(tom,toms_family).
+    node(max,toms_family).
+    node(bill,bills_family).
+    node(jen,bills_family).
+    graph(toms_family).
+    graph(bills_family).
+    edge((tom,max),toms_family).
+    edge((bill,jen),bills_family).
 
 - **Dot output** ``out=dot``
 
 The output is a string containing the graph in `DOT language <https://en.wikipedia.org/wiki/DOT_(graph_description_language)>`_
 
-.. code:: shell
+.. admonition:: Example
 
-  $ clingraph example2.lp --out=dot
+  .. code:: console
 
-.. code:: shell
+    $ clingraph example2.lp --out=dot
 
-  graph toms_family {
-    tom
-    max
-    tom -- max
-  }
+  .. code:: console
 
-  graph bills_family {
-    bill
-    jen
-    bill -- jen
-  }
+    graph toms_family {
+      tom
+      max
+      tom -- max
+    }
+
+    graph bills_family {
+      bill
+      jen
+      bill -- jen
+    }
 
 Output can also be saved in an individual files per graph with argument ``--save``.
 The file is saved in directory ``--dir`` and using the name formatting ``--name-format``.
 
-.. code:: shell
+.. admonition:: Example
 
-  $ clingraph example2.lp --out=dot --save --dir='out' --name-format='new_version_{graph_name}'
+  .. code:: console
 
-.. code:: shell
+    $ clingraph example2.lp --out=dot --save --dir='out' --name-format='new_version_{graph_name}'
 
-  File saved in out/new_version_toms_family.dot
-  File saved in out/new_version_bills_family.dot
+  .. code:: console
+
+    File saved in out/new_version_toms_family.dot
+    File saved in out/new_version_bills_family.dot
 
 
 - **Render output** ``out=render``
 
 The graphs will be rendered and saved in files with a given format and engine
 
-.. code:: shell
+.. admonition:: Example
 
-  $ clingraph example2.lp --out=render --format=png
+  .. code:: console
 
-.. code:: shell
+    $ clingraph example2.lp --out=render --format=png
 
-  Image saved in out/toms_family.png
-  Image saved in out/bills_family.png
+  .. code:: console
 
-.. list-table:: 
+    Image saved in out/toms_family.png
+    Image saved in out/bills_family.png
 
-    * - .. figure:: ../../examples/doc/example2/toms_family.png
+  .. list-table:: 
 
-          ``out/toms_family.png``
+      * - .. figure:: ../../examples/doc/example2/toms_family.png
 
-      - .. figure:: ../../examples/doc/example2/bills_family.png
+            ``out/toms_family.png``
 
-          ``out/bills_family.png``
+        - .. figure:: ../../examples/doc/example2/bills_family.png
+
+            ``out/bills_family.png``
 
 - **Animate output** ``out=animate``
 
 Generates an animation with the graph rendering. The order of the images can be provided with argument ``--sort`` based on the name.
-
   - ``asc-str``: Sort ascendent based on the graph name as a string
   - ``asc-int``: Sort ascendent based on the graph name as an integer
   - ``desc-str``: Sort descendent based on the graph name as a string
@@ -162,15 +173,17 @@ Generates an animation with the graph rendering. The order of the images can be 
 
 Additionally the number of frames per second can be set with ``--fps``.
 
-.. code:: shell
+.. admonition:: Example
 
-  $ clingraph example2.lp --out=animate --sort=desc --name-format=families_gif
+  .. code:: console
 
-.. code:: shell
+    $ clingraph example2.lp --out=animate --sort=desc --name-format=families_gif
 
-  Image saved in out/images/gif_image_toms_family_0.png
-  Image saved in out/images/gif_image_bills_family_0.png
-  Gif saved in out/families_gif.gif
+  .. code:: console
+
+    Image saved in out/images/gif_image_toms_family_0.png
+    Image saved in out/images/gif_image_bills_family_0.png
+    Gif saved in out/families_gif.gif
 
 - **Latex output** ``out=tex``
 
@@ -180,19 +193,21 @@ See the :ref:`latex integration section<latex integration>`.
 Partial output
 ++++++++++++++
 
-Graphs can be selected by name to work only with a subset of the output
+Graphs can be selected by name to work only with a subset of the output using argument `--selected-graphs`
 
-.. code:: shell
+.. admonition:: Example
 
-  $ clingraph example2.lp --out=dot --select-graph=toms_family
+  .. code:: console
 
-.. code:: shell
+    $ clingraph example2.lp --out=dot --select-graph=toms_family
 
-  graph toms_family {
-    tom
-    max
-    tom -- max
-  }
+  .. code:: console
+
+    graph toms_family {
+      tom
+      max
+      tom -- max
+    }
 
 
 Clingo integration
@@ -202,23 +217,25 @@ These features allow the usage of logic programs with rules to define the visual
 This is done in integration with clingo, letting the user handle multiple stable models.
 
 
-.. note:: 
+.. tip:: 
   **Good practices**
 
   We advice the user to keep the visualization encoding separate from the encodings used to solve the problem.
   This visualization encoding can include rules but no choices, those should be handled in the encoding.
 
-Consider the encoding `example5_encoding.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example5/example5_encoding.lp>`_ 
-that has two stable models.
+.. admonition:: Example
 
-.. include:: ../../examples/doc/example5/example5_encoding.lp
-  :literal:
+  Consider the encoding `example5_encoding.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example5/example5_encoding.lp>`_ 
+  that has two stable models.
 
-And a different file `example5_viz.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example5/example5_viz.lp>`_ 
-for the visualization encoding.
+  .. include:: ../../examples/doc/example5/example5_encoding.lp
+    :literal:
 
-.. include:: ../../examples/doc/example5/example5_viz.lp
-  :literal:
+  And a different file `example5_viz.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example5/example5_viz.lp>`_ 
+  for the visualization encoding.
+
+  .. include:: ../../examples/doc/example5/example5_viz.lp
+    :literal:
 
 Piping json output
 ++++++++++++++++++
@@ -229,98 +246,106 @@ Piping json output
 
 - Run clingo to obtain the two stable models formatted as json with option ``--outf=2``
 
-.. code:: shell
+.. admonition:: Example
 
-  $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2
+  .. code:: console
+
+    $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2
 
 
-.. code:: shell
-    
-  {
-    "Solver": "clingo version 5.5.2",
-    "Input": [
-      "examples/doc/example5/example5_encoding.lp","examples/doc/example5/example5_viz.lp"
-    ],
-    "Call": [
-      {
-        "Witnesses": [
-          {
-            "Value": [
-              "node(a)", "person(a)", "attr(node,a,color,blue)"
-            ]
-          },
-          {
-            "Value": [
-              "node(b)", "person(b)", "attr(node,b,color,red)"
-            ]
-          }
-        ]
+  .. code:: console
+      
+    {
+      "Solver": "clingo version 5.5.2",
+      "Input": [
+        "examples/doc/example5/example5_encoding.lp","examples/doc/example5/example5_viz.lp"
+      ],
+      "Call": [
+        {
+          "Witnesses": [
+            {
+              "Value": [
+                "node(a)", "person(a)", "attr(node,a,color,blue)"
+              ]
+            },
+            {
+              "Value": [
+                "node(b)", "person(b)", "attr(node,b,color,red)"
+              ]
+            }
+          ]
+        }
+      ],
+      "Result": "SATISFIABLE",
+      "Models": {
+        "Number": 2,
+        "More": "no"
+      },
+      "Calls": 1,
+      "Time": {
+        "Total": 0.001,
+        "Solve": 0.000,
+        "Model": 0.000,
+        "Unsat": 0.000,
+        "CPU": 0.001
       }
-    ],
-    "Result": "SATISFIABLE",
-    "Models": {
-      "Number": 2,
-      "More": "no"
-    },
-    "Calls": 1,
-    "Time": {
-      "Total": 0.001,
-      "Solve": 0.000,
-      "Model": 0.000,
-      "Unsat": 0.000,
-      "CPU": 0.001
     }
-  }
 
 
 - Pipe clingo's json output to clingraph
 
-.. code:: shell
+.. admonition:: Example
 
-  $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2 | clingraph --out=dot
+  .. code:: console
+
+    $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2 | clingraph --out=dot
 
 
-.. code:: shell
-    
-  WARNING:  - Outputing multiple models in stdout.
-  graph default {
-    a [color=blue]
-  }
+  .. code:: console
+      
+    WARNING:  - Outputing multiple models in stdout.
+    graph default {
+      a [color=blue]
+    }
 
-  graph default {
-    b [color=red]
-  }
+    graph default {
+      b [color=red]
+    }
 
 - Load a json file 
 
-.. code:: shell
+.. admonition:: Example
 
-  $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2 > out/example5.json ; clingraph out/example5.json --out=dot
+  .. code:: console
+
+    $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2 > out/example5.json ; clingraph out/example5.json --out=dot
 
 
-.. code:: shell
-    
-  WARNING:  - Outputing multiple models in stdout.
-  graph default {
-    a [color=blue]
-  }
+  .. code:: console
+      
+    WARNING:  - Outputing multiple models in stdout.
+    graph default {
+      a [color=blue]
+    }
 
-  graph default {
-    b [color=red]
-  }
+    graph default {
+      b [color=red]
+    }
 
 - Select a single model using the model number starting with index 0
 
-.. code:: shell
+.. admonition:: Example
 
-  $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2 | clingraph --out=dot --select-model=1
+  .. code:: console
+
+    $ clingo example5_encoding.lp example5_viz.lp -n0 --outf=2 | clingraph --out=dot --select-model=1
 
 
-.. code:: shell
-    
-  graph default {
-    b [color=red]
-  }
+  .. code:: console
+      
+    graph default {
+      b [color=red]
+    }
 
 
 Define the visualization encoding
@@ -334,26 +359,28 @@ Furthermore, the functions defined in :ref:`ClingraphContext <Clingo Utils>` wil
 .. warning:: 
   The visualization encoding should not include any choices, only the first stable model will be considered.
 
-
-.. code:: shell
-
-  $ clingo example5_encoding.lp -n0 --outf=2 | clingraph --viz-encoding example5_viz.lp --out=render --format=png
+.. admonition:: Example
 
 
-.. code:: shell
-    
-  Image saved in out/0/default.png
-  Image saved in out/1/default.png
+  .. code:: console
 
-.. list-table:: 
+    $ clingo example5_encoding.lp -n0 --outf=2 | clingraph --viz-encoding example5_viz.lp --out=render --format=png
 
-    * - .. figure:: ../../examples/doc/example5/default_1.png
 
-          ``out/0/default.png``
+  .. code:: console
+      
+    Image saved in out/0/default.png
+    Image saved in out/1/default.png
 
-      - .. figure:: ../../examples/doc/example5/default_0.png
+  .. list-table:: 
 
-          ``out/1/default.png``
+      * - .. figure:: ../../examples/doc/example5/default_1.png
+
+            ``out/0/default.png``
+
+        - .. figure:: ../../examples/doc/example5/default_0.png
+
+            ``out/1/default.png``
 
 
 
@@ -366,40 +393,42 @@ The integration generates latex code for the graphs using the `dot2tex <https://
 
 .. warning:: To use math notation (``$``) in labels, we advise the user to use the ``texlbl`` special attribute for the latex label instead of the normal ``label`` attribute. This will avoid problems with the escape characters. Note that edges require a ``label`` attribute to be defined (even if it is empty) in order for the ``texlbl`` attribute to have an effect. Additionally, the backslash ``\`` must be escaped.
 
+.. admonition:: Example
 
-Consider the file `example6.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example6/example6.lp>`_
+  Consider the `example6.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example6/example6.lp>`_
 
-.. include:: ../../examples/doc/example6/example6.lp
-  :literal:
+  .. include:: ../../examples/doc/example6/example6.lp
+    :literal:
 
 
 Run cligraph to obtain the latex file using the output option ``--out=tex``. 
 The optional parameters in ``--tex-param`` are passed to `dot2tex <https://dot2tex.readthedocs.io/en/latest/usage_guide.html>`_.
 This parameter should be a string ``arg_name=arg_value``.
 
-.. code:: shell
-
-  $ clingraph example6.lp --out=tex --tex-param="crop=True" --save
-
 Then, the compilation can be done using a package like ``pdflatex``
 
-.. code:: shell
+.. admonition:: Example
 
-  File saved in out/default.tex
+  .. code:: console
 
-.. code:: shell
+    $ clingraph example6.lp --out=tex --tex-param="crop=True" --save
 
-  $ pdflatex out/default.tex ; open default.pdf
+  .. code:: console
 
+    File saved in out/default.tex
 
-We can compare the two outputs using ``--out=tex`` and ``--out=render``:
+  .. code:: console
 
-.. list-table:: 
+    $ pdflatex out/default.tex ; open default.pdf
 
-    * - .. figure:: ../../examples/doc/example6/default.png
+  We can compare the two outputs using ``--out=tex`` and ``--out=render``:
 
-           *Graph rendered by graphviz* ``--out=render``
+  .. list-table:: 
 
-      - .. figure:: ../../examples/doc/example6/latex.png
+      * - .. figure:: ../../examples/doc/example6/default.png
 
-           *Graph compiled by latex* ``--out=tex``
+            *Graph rendered by graphviz* ``--out=render``
+
+        - .. figure:: ../../examples/doc/example6/latex.png
+
+            *Graph compiled by latex* ``--out=tex``
