@@ -5,7 +5,10 @@ Graphs are defined via facts using predicates ``node``, ``edge``,
 ``graph`` and ``attr``. 
 
 
-.. note:: A custom prefix for the predicate names can be defined to avoid clashes with other existing predicates. 
+.. note:: 
+
+    A custom prefix for the predicate names can be defined to avoid clashes with other existing predicates. 
+    This is done via command line argument ``--prefix``.
 
 Nodes
 =====
@@ -130,6 +133,15 @@ The attributes of an element (graph, node or edge) are defined using
 predicate ``attr``. This predicate will add any attributes accepted
 by graphviz (`see here <https://graphviz.org/doc/info/attrs.html>`__)
 specified by name-value pairs to the element.
+
+.. note::
+
+    Notice that the graphviz documentation specifies which attribute are available for which elements.
+    Also, in the bottom it states the engine that needs to be used.
+    
+    For instance, attribute ``pos``, is only avaliable for engines `neato` and `fdp`.
+    Therfore, one of these engines needs to be selected with with argument ``--engine``.
+
 
 *  ``attr(ELEMENT_TYPE, ELEMENT_ID, ATTR_NAME, ATTR_VALUE).``
 
