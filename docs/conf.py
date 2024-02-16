@@ -12,18 +12,28 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+
+sys.path.insert(0, os.path.abspath(".."))
 # sys.path.append(os.path.join(os.path.abspath(os.pardir)))
-autodoc_mock_imports = ["clingo","clorm","networkx","graphviz","jsonschema","imageio","dot2tex","pandoc"]
+autodoc_mock_imports = [
+    "clingo",
+    "clorm",
+    "networkx",
+    "graphviz",
+    "jsonschema",
+    "imageio",
+    "dot2tex",
+    "pandoc",
+]
 
 # -- Project information -----------------------------------------------------
 
-project = 'clingraph'
-copyright = '2022, Susana Hahn'
-author = 'Susana Hahn'
+project = "clingraph"
+copyright = "2022, Susana Hahn"
+author = "Susana Hahn"
 
 # The full version, including alpha/beta/rc tags
-release = '1.0'
+release = "1.0"
 
 
 # -- General configuration ---------------------------------------------------
@@ -32,19 +42,18 @@ release = '1.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'nbsphinx',
+    "nbsphinx",
     "sphinx.ext.extlinks",
     "sphinx.ext.mathjax",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
-    'sphinx.ext.autodoc',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.autosectionlabel',
-    'sphinx.ext.intersphinx',
-    'furo.sphinxext',
+    "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.autosectionlabel",
+    "sphinx.ext.intersphinx",
+    "furo.sphinxext",
     "sphinx_copybutton",
-    # "sphinx_design",
-    # "sphinx_inline_tabs"
+    "myst_parser",
 ]
 
 
@@ -53,12 +62,12 @@ napoleon_use_admonition_for_examples = False
 napoleon_use_admonition_for_references = True
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for domain files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -66,12 +75,12 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'furo'
+html_theme = "furo"
 
 html_title = "clingraph"
 
 html_theme_options = {
-#    'analytics_id': 'UA-XXXXXXX-1',  #  Provided by Google in your dashboard
+    #    'analytics_id': 'UA-XXXXXXX-1',  #  Provided by Google in your dashboard
     "light_logo": "logo-light-mode.png",
     "dark_logo": "logo-dark-mode.png",
     # 'style_external_links': False,
@@ -92,19 +101,28 @@ html_theme_options = {
             """,
             "class": "",
         },
-    ]
+    ],
 }
 
 html_css_files = [
-    'css/custom.css',
+    "css/custom.css",
 ]
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
-add_module_names = False #Class names without full module path
+# -- Options for Markdown files ----------------------------------------------
+#
+
+myst_enable_extensions = [
+    "colon_fence",
+    "deflist",
+]
+myst_heading_anchors = 3
+
+add_module_names = False  # Class names without full module path
 
 copybutton_prompt_text = r">>> |\.\.\. |\$ |In \[\d*\]: | {2,5}\.\.\.: | {5,8}: "
 copybutton_prompt_is_regexp = True
