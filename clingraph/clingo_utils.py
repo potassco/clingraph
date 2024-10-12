@@ -1,18 +1,21 @@
 """
 Functions used for the clingo integration
 """
+
 import json
 import logging
 import jsonschema
+import base64
 from clingo.control import Control
 from clingo.script import enable_python
-from clingo.symbol import String
+from clingo.symbol import String, SymbolType
 from jsonschema import validate
 from .orm import Factbase
 from .exceptions import InvalidSyntaxJSON, InvalidSyntax
 
 enable_python()
-log = logging.getLogger('custom')
+log = logging.getLogger("custom")
+
 
 class ClingraphContext:
     """
@@ -20,7 +23,7 @@ class ClingraphContext:
     passed in the command line via option `--viz-encoding`
     """
 
-    def pos(self, x,y,scale=1):
+    def pos(self, x, y, scale=1):
         """
         Position in the form of a tuple
 
@@ -31,8 +34,8 @@ class ClingraphContext:
             (clingo.Symbol.String) position as a string of form (x,y)!
         """
         scale = float(str(scale).strip('"'))
-        x = float(str(x))*scale
-        y = float(str(y))*scale
+        x = float(str(x)) * scale
+        y = float(str(y)) * scale
         return String(f"{x},{y}!")
 
     def concat(self, *args):
@@ -44,7 +47,7 @@ class ClingraphContext:
         Returns:
             (clingo.Symbol.String) The string concatenating all symbols
         """
-        return String(''.join([str(x).strip('"') for x in args]))
+        return String("".join([str(x).strip('"') for x in args]))
 
     def format(self, s, *args):
         """
@@ -52,11 +55,19 @@ class ClingraphContext:
 
         Args:
             s (clingo.Symbol.String): The string to format, for example "{0} and {1}"
-            args: All symbols that can be accessed by the position starting in 0
+            args: All symbols that can be accessed by the position starting in 0.
+            If there is a single tuple as an argument, then its arguments are considered one by one.
         Returns:
             (clingo.Symbol.String) The string concatenating all symbols
         """
-        args_str = [str(v).strip('"') for v in args]
+        if (
+            len(args) == 1
+            and args[0].type == SymbolType.Function
+            and args[0].name == ""
+        ):
+            args_str = [str(v).strip('"') for v in args[0].arguments]
+        else:
+            args_str = [str(v).strip('"') for v in args]
         return String(s.string.format(*args_str))
 
     def stringify(self, s, capitalize=False):
@@ -69,7 +80,7 @@ class ClingraphContext:
             (clingo.Symbol.String) The string
         """
         val = str(s).strip('"')
-        val = val.replace('_',' ')
+        val = val.replace("_", " ")
         if capitalize:
             val = val[0].upper() + val[1:]
         return String(val)
@@ -84,8 +95,7 @@ class ClingraphContext:
             (clingo.Symbol.String) The string with the cluster name
         """
         val = str(s).strip('"')
-        return String("cluster_"+val)
-
+        return String("cluster_" + val)
 
     def html_escape(self, s):
         """
@@ -98,11 +108,26 @@ class ClingraphContext:
         """
 
         return String(
-            str(s).strip('"')
-                .replace('&', '&amp;')
-                .replace('"', '&quot;')
-                .replace('<', '&lt;')
-                .replace('>', '&gt;'))
+            str(s)
+            .strip('"')
+            .replace("&", "&amp;")
+            .replace('"', "&quot;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+        )
+
+    def decodeB64(self, s):
+        """
+        Decodes a base 64 string
+
+        Args:
+            s (clingo.Symbol.String): A string in base 64
+        Returns:
+            (clingo.Symbol.String): The string decoded
+        """
+        s = str(s)
+        decoded = base64.b64decode(s).decode("ascii")
+        return String(decoded)
 
     def svg_init(self, property_name, property_value):
         """
@@ -149,7 +174,7 @@ class ClingraphContext:
         element = str(element).strip('"')
         property_name = str(property_name).strip('"')
         property_value = str(property_value).strip('"')
-        s=String(f"{event}___{element}___{property_name}___{property_value} ")
+        s = String(f"{event}___{element}___{property_name}___{property_value} ")
         return s
 
     def color(self, option, opacity=None):
@@ -175,7 +200,7 @@ class ClingraphContext:
             "yellow": "#FFAB00",
             "danger": "#FF5630",
             "red": "#FF5630",
-            "light": "#F4F5F7"
+            "light": "#F4F5F7",
         }
         if option not in colors:
             return String("#000000")
@@ -195,26 +220,25 @@ class ClingraphContext:
 
         return String("Helvetica Neue")
 
-
-
     def __getattr__(self, name):
         # pylint: disable=import-outside-toplevel
 
         import __main__
+
         return getattr(__main__, name)
 
 
 clingo_json_schema = {
     "type": "object",
-    "required": ["Call","Result"],
-    "properties":{
+    "required": ["Call", "Result"],
+    "properties": {
         "Call": {
-            "type" : "array",
+            "type": "array",
         },
-        "Result":{
+        "Result": {
             "type": "string",
-        }
-    }
+        },
+    },
 }
 
 
@@ -235,14 +259,20 @@ def parse_clingo_json(json_str):
     try:
         j = json.loads(json_str.encode())
         validate(instance=j, schema=clingo_json_schema)
-        if j['Result'] == 'UNSATISFIABLE':
-            log.warning("Passing an unsatisfiable instance in the JSON. This wont produce any results")
+        if j["Result"] == "UNSATISFIABLE":
+            log.warning(
+                "Passing an unsatisfiable instance in the JSON. This wont produce any results"
+            )
 
         if len(j["Call"]) > 1:
-            log.warning("Calls will multiple theads from clingo are not supported by clingraph")
+            log.warning(
+                "Calls will multiple theads from clingo are not supported by clingraph"
+            )
 
         if not "Witnesses" in j["Call"][0]:
-            log.warning("No Witnesses (stable models) in the JSON output, no output will be produced by clingraph")
+            log.warning(
+                "No Witnesses (stable models) in the JSON output, no output will be produced by clingraph"
+            )
             witnesses = []
         else:
             witnesses = j["Call"][0]["Witnesses"]
@@ -255,10 +285,12 @@ def parse_clingo_json(json_str):
         return models_prgs
 
     except json.JSONDecodeError as e:
-        raise InvalidSyntax('The json can not be read.',str(e)) from None
+        raise InvalidSyntax("The json can not be read.", str(e)) from None
     except jsonschema.exceptions.ValidationError as e:
-        raise InvalidSyntaxJSON('The json does not have the expected structure. Make sure you used the -outf=2 option in clingo.',str(e)) from None
-
+        raise InvalidSyntaxJSON(
+            "The json does not have the expected structure. Make sure you used the -outf=2 option in clingo.",
+            str(e),
+        ) from None
 
 
 def _get_json(args, stdin):
@@ -320,14 +352,15 @@ SVG_SCRIPT = """
                     elem.addEventListener(event, function() {
                         console.log(event)
                         local_event = event;
-                        class_name = local_event + "_" + elem.id;
-                        var children = Object.values(document.getElementsByClassName(class_name));
+                        elem_id = elem.id.split(' ').join('');
+                        class_name = local_event + "___" + elem_id;
+                        var children = elements.filter(el => Array.from(el.classList).some(cls => cls.startsWith(class_name)));
                         children.forEach(c => {
                             c.classList.forEach(c_elem =>{
                                 c_vals = c_elem.split('___')
                                 if (c_vals.length == 4){
                                     if (c_vals[0]==local_event){
-                                        if(c_vals[1]==elem.id){
+                                        if(c_vals[1]==elem_id){
                                             property = c_vals[2]
                                             property_val = c_vals[3]
                                             c.style[property]=property_val
@@ -348,6 +381,7 @@ SVG_SCRIPT = """
 </svg>
 """
 
+
 def add_svg_interaction_to_string(s):
     """
     Adds the svg interaction script to string representation of the svg image
@@ -355,10 +389,11 @@ def add_svg_interaction_to_string(s):
     Args:
         s [str]: the svg string
     """
-    s = s.replace("#111111","currentcolor")
+    s = s.replace("#111111", "currentcolor")
     s = s[:-8]
-    s+= SVG_SCRIPT
+    s += SVG_SCRIPT
     return s
+
 
 def add_svg_interaction(paths):
     """
@@ -373,11 +408,12 @@ def add_svg_interaction(paths):
         if not path_dic:
             continue
         for path in path_dic.values():
-            with open(path, 'r', encoding='UTF-8') as f:
+            with open(path, "r", encoding="UTF-8") as f:
                 s = f.read()
                 s = add_svg_interaction_to_string(s)
-            with open(path, 'w', encoding='UTF-8') as f:
+            with open(path, "w", encoding="UTF-8") as f:
                 f.write(s)
+
 
 ADD_IDS_PRG = """
 #defined edge/2.
@@ -394,6 +430,7 @@ attr(graph,ID,id,ID):-graph(ID).
 attr(graph,ID,id,ID):-graph(ID,_).
 """
 
+
 def add_elements_ids(ctl):
     """
     Adds a program to the control that will set the ids of the elements to the id attribute
@@ -401,41 +438,42 @@ def add_elements_ids(ctl):
         ctl Clingo.Control: The clingo control object that is used
     """
 
-    ctl.add("base",[],ADD_IDS_PRG)
+    ctl.add("base", [], ADD_IDS_PRG)
 
 
-def _get_fbs_from_encoding(args,stdin,prgs_from_json):
+def _get_fbs_from_encoding(args, stdin, prgs_from_json):
     """
     Obtains the factbase by running clingo to compute the stable models
     of a visualization encoding
     """
     fbs = []
+
     def add_fb_model(m):
-        fbs.append(Factbase.from_model(m,
-                    prefix=args.prefix,
-                    default_graph=args.default_graph))
+        fbs.append(
+            Factbase.from_model(m, prefix=args.prefix, default_graph=args.default_graph)
+        )
 
     cl_args = ["-n1"]
     if args.seed is not None:
-        cl_args.append(f'--seed={args.seed}')
+        cl_args.append(f"--seed={args.seed}")
     if prgs_from_json is not None:
         for prg in prgs_from_json:
             ctl = Control(cl_args)
             ctl.load(args.viz_encoding.name)
-            ctl.add("base",[],prg)
-            if args.format == 'svg':
+            ctl.add("base", [], prg)
+            if args.format == "svg":
                 add_elements_ids(ctl)
-            ctl.ground([("base", [])],ClingraphContext())
+            ctl.ground([("base", [])], ClingraphContext())
             ctl.solve(on_model=add_fb_model)
     else:
         ctl = Control(cl_args)
         ctl.load(args.viz_encoding.name)
-        ctl.add("base",[],stdin)
-        if args.format == 'svg':
+        ctl.add("base", [], stdin)
+        if args.format == "svg":
             add_elements_ids(ctl)
         for f in args.files:
             ctl.load(f.name)
-        ctl.ground([("base", [])],ClingraphContext())
+        ctl.ground([("base", [])], ClingraphContext())
         ctl.solve(on_model=add_fb_model)
 
     return fbs
