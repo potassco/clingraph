@@ -8,8 +8,8 @@ This interactivity, will be single shot, which means that the svg file will be g
 
     **Command line**
 
-    This functionality is limited to the command line using the integration with *clingo* with the ``--viz-encoding`` parameter.
-
+    For the interaction to work, the argument ``id`` must be provided explicitly, equal to the node/edge ID. With a rule such as ``attr(node,X,id,X):-node(X).``.
+    When *clingraph* is used in integration with *clingo* with the ``--viz-encoding`` without a custom prefix, these rules are automatically added for nodes and edges.
  
 Interaction
 ===========
@@ -74,7 +74,7 @@ API usage
 
 For API usage, the :ref:`ClingraphContext` should be provided. Additionally, the following functions must be called by hand:
 
-- ``add_elements_ids``: with the Control object before calling clingo.
+- ``add_elements_ids``: with the Control object before calling clingo. 
 - ``add_svg_interaction``: with the svg paths after rendering. 
 
 See the API Documentation of :ref:`Clingo Utils` for details.
@@ -92,6 +92,12 @@ See the API Documentation of :ref:`Clingo Utils` for details.
         graphs = compute_graphs(fbs)
         paths = render(graphs,directory ='out',format='svg')
         add_svg_interaction(paths)
+
+.. warning::
+
+    For the interaction to work, the argument ``id`` must be provided explicitly, equal to the node/edge ID. With a rule such as ``attr(node,X,id,X):-node(X).``.
+    These rules are by the ``add_elements_ids`` function. If a prefix is used these rules must be added to the encoding by hand.
+ 
 
 Limitations
 ===========
