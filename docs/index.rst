@@ -14,7 +14,7 @@ The package also contains special features for integration with `clingo <https:/
 
    **Publication**
 
-   Check out our `paper <https://arxiv.org/pdf/2303.10118.pdf>`_. This work was published in LPNMR22 where it recived the "Best student paper award".
+   Check out our `paper <https://arxiv.org/pdf/2303.10118.pdf>`_. This work was published in LPNMR22 where it received the "Best student paper award".
 
 
 **Here is a motivation example:**
