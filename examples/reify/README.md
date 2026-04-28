@@ -1,8 +1,9 @@
 ### Reified format
 
-Shows the reification output of gringo 
+Shows the reification output of gringo
 
 **Features used:**
+
 - Load from clingo
 - Select graph
 - View
@@ -14,6 +15,7 @@ Then we call clingraph with our visualization encoding
 `clingo examples/reify/program.lp --output=reify | clingraph --dir='out/reify' --format=png --select-model=0 --out=render --view --viz-encoding=examples/reify/viz.lp`
 
 #### Program:
+
 ```
 #theory theory{
     term {
@@ -34,4 +36,3 @@ Then we call clingraph with our visualization encoding
 #### Output:
 
 ![](default.png)
-

@@ -56,7 +56,7 @@ attr(node, atom_tuple(E), shape, tab):- node(atom_tuple(E)).
 node(literal_tuple(I)) :- literal_tuple(I).
 attr(node, literal_tuple(E), shape, tab):- node(literal_tuple(E)).
 
-% Internal atoms 
+% Internal atoms
 
 
 node(rule(H,B)):-rule(H,B).
@@ -168,4 +168,3 @@ edge((theory_atom(E,S,ET,ID_G,ID_S),SN)):-theory_atom(E,S,ET,ID_G,ID_S), theory_
 attr(edge,(theory_atom(E,S,ET,ID_G,ID_S),SN),label,right):-theory_atom(E,S,ET,ID_G,ID_S), theory_any_symbol(ID_S,SN).
 edge((theory_atom(E,S,ET,ID_G,ID_S),SG)):-theory_atom(E,S,ET,ID_G,ID_S), theory_any_symbol(ID_G,SG).
 attr(edge,(theory_atom(E,S,ET,ID_G,ID_S),SG),label,guard):-theory_atom(E,S,ET,ID_G,ID_S), theory_any_symbol(ID_G,SG).
-

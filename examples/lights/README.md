@@ -1,8 +1,9 @@
-### Lights 
+### Lights
 
 Draws the lights of a house using subgraphs
 
 **Features used:**
+
 - Subgraphs
 - Load from file
 - Select graph

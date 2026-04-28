@@ -2,17 +2,18 @@
 Clingraph functionality
 """
 
-from ast import parse
-import sys
 import argparse
-import textwrap
 import importlib.metadata
-from .graphviz import compute_graphs, dot, render
-from .logger import setup_logger_str, COLORS
-from .orm import Factbase
-from .utils import write, apply
-from .exceptions import InvalidSyntaxJSON, InvalidSyntax
+import sys
+import textwrap
+from ast import parse
+
 from .clingo_utils import _get_fbs_from_encoding, _get_json, add_svg_interaction
+from .exceptions import InvalidSyntax, InvalidSyntaxJSON
+from .graphviz import compute_graphs, dot, render
+from .logger import COLORS, setup_logger_str
+from .orm import Factbase
+from .utils import apply, write
 
 try:
     VERSION = importlib.metadata.version("clingraph")

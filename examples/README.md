@@ -1,7 +1,11 @@
-# Clingraph Examples 
-Our **[examples folder](.)** shows how to use the range of functionalities in different applications. 
+# Clingraph Examples
 
-- :turtle: Examples used in the [documentation](https://clingraph.readthedocs.io/en/latest/index.html) ([doc](doc))
+Our **[examples folder](.)** shows how to use the range of functionalities in
+different applications.
+
+- :turtle: Examples used in the
+  [documentation](https://clingraph.readthedocs.io/en/latest/index.html)
+  ([doc](doc))
   - Attribute definition ([example1](doc/example1))
   - Multi graphs ([example2](doc/example2))
   - Subgraphs ([example3](doc/example3))
@@ -9,76 +13,100 @@ Our **[examples folder](.)** shows how to use the range of functionalities in di
   - Clingo integration with multi model ([example5](doc/example5))
   - Latex integration ([example6](doc/example6))
 - :turtle: Simple ([color](color), [cube](cube), [lights](lights))
-- :rabbit2: Clingo integration ([sudoku](sudoku), [reify](reify), [transition_system](transition_system))
+- :rabbit2: Clingo integration ([sudoku](sudoku), [reify](reify),
+  [transition_system](transition_system))
   - Absolute positioning
   - Legends
   - Latex integration
   - HTML labels
-- :rabbit2: Dynamic applications ([asprilo](asprilo), [elevator](elevator), [minotaur](minotaur))
+- :rabbit2: Dynamic applications ([asprilo](asprilo), [elevator](elevator),
+  [minotaur](minotaur))
   - Clingo integration
   - Multi graphs
   - Animation
-- :rabbit2: SVG interaction ([tree](tree), [family_tree](family_tree), [queens_interactive](queens_interactive), [minesweeper](minesweeper)),  [traveling_sales_person_clickable](traveling_sales_person_clickable)), 
+- :rabbit2: SVG interaction ([tree](tree), [family_tree](family_tree),
+  [queens_interactive](queens_interactive), [minesweeper](minesweeper)),
+  [traveling_sales_person_clickable](traveling_sales_person_clickable)),
   - Interactivity using svg
 
-----
-## Simple 
+______________________________________________________________________
+
+## Simple
 
 #### Coloring
+
 ![](./color/default.png)
 
 #### Lights
+
 ![](./lights/house_1.png)
 
-----
-## Clingo integration 
+______________________________________________________________________
+
+## Clingo integration
 
 #### Sudoku
+
 ![](./sudoku/model_0.png)
 
 #### Transition System
+
 ![](./transition_system/system.png)
 
 #### Reify
+
 ![](./reify/theory-label.png)
 
 #### UML Class Diagram
+
 ![](./uml_class/default.png)
 
-----
+______________________________________________________________________
+
 ## Dynamic applications
 
 #### Minotaur
+
 ![](./minotaur/minotaur.gif)
 
 #### Elevator
+
 ![](./elevator/movie.gif)
 
 #### Asprilo
+
 ![](./asprilo/movie.gif)
 
-----
+______________________________________________________________________
+
 ## SVG interaction
 
 #### Tree
 
-![](./tree_expandable/1-tree.png) ![](./tree_expandable/2-tree.png) ![](./tree_expandable/3-tree.png) ![](./tree_expandable/4-tree.png)
+![](./tree_expandable/1-tree.png) ![](./tree_expandable/2-tree.png)
+![](./tree_expandable/3-tree.png) ![](./tree_expandable/4-tree.png)
 
+#### Queens interactive
 
-#### Queens interactive 
-![](./queens_interactive/queens-1.png) ![](./queens_interactive/queens-2.png) ![](./queens_interactive/queens-3.png) 
+![](./queens_interactive/queens-1.png) ![](./queens_interactive/queens-2.png)
+![](./queens_interactive/queens-3.png)
 
 #### Minesweeper
+
 ![](./minesweeper/default1.png)
 
 #### Family Tree
+
 ![](./family_tree/default.png)
 
-----
+______________________________________________________________________
+
 ## Other
 
 #### Propagator
+
 ![](./propagator/movie.gif)
 
 #### Abstract syntax tree
+
 ![](./ast/default.png)

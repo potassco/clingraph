@@ -2,8 +2,9 @@
 Graphviz integration to generate gifs
 """
 
-import os
 import logging
+import os
+
 from .graphviz import render
 
 try:

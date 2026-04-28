@@ -5,15 +5,18 @@ Test Graphviz
 # pylint: disable=missing-function-docstring
 # pylint: disable=too-many-statements
 import os
-from graphviz import Graph, Digraph
+
 from clingo import Control
+from graphviz import Digraph, Graph
+
 from clingraph import Factbase
-from clingraph.graphviz import compute_graphs, dot, render
+from clingraph.clingo_utils import ClingraphContext, add_elements_ids, add_svg_interaction
 from clingraph.gif import save_gif
+from clingraph.graphviz import compute_graphs, dot, render
 from clingraph.tex import tex
 from clingraph.utils import write
-from clingraph.clingo_utils import add_elements_ids, add_svg_interaction, ClingraphContext
-from .utils import get_example_file, clean_out
+
+from .utils import clean_out, get_example_file
 
 
 def test_compute_graphs():

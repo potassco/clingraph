@@ -16,4 +16,3 @@ attr(node,(X,T),fontcolor,red):-floor(X),time(T),called(X,T).
 attr(node,(X,T),color,green):-floor(X),time(T),served(X,T).
 
 edge(((X,T),(X+1,T)),T):-floor(X),floor(X+1),time(T).
-

@@ -3,6 +3,7 @@
 Intra logistics robotics
 
 **Features used:**
+
 - Clingo integration
 - Multi model
 - Model selection

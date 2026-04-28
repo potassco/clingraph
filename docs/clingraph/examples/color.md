@@ -4,7 +4,7 @@
 - Clingo integration
 - Multi model
 - Rendering
-- Model selection 
+- Model selection
 - View
 
 ```console

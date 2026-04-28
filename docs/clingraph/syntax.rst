@@ -2,12 +2,12 @@ Syntax
 ######
 
 Graphs are defined via facts using predicates ``node``, ``edge``,
-``graph`` and ``attr``. 
+``graph`` and ``attr``.
 
 
-.. note:: 
+.. note::
 
-    A custom prefix for the predicate names can be defined to avoid clashes with other existing predicates. 
+    A custom prefix for the predicate names can be defined to avoid clashes with other existing predicates.
     This is done via command line argument ``--prefix``.
 
 Nodes
@@ -70,11 +70,11 @@ A graph is defined using predicate ``graph/1``.
 
 Multiple graphs
 ---------------
-    
+
 Multiple graphs can be defined within the same set of facts.
 Each of them will generate a different graph. In order to assign a
 node or edge to a specific graph we add the identifier of the
-graph in the second argument. 
+graph in the second argument.
 
 .. warning:: All nodes and edges defined with a
     single argument are assigned to the default graph called
@@ -93,14 +93,14 @@ graph in the second argument.
         node(jen, bills_family).
         edge((bill, jen), bills_family).
 
-    .. list-table:: 
+    .. list-table::
 
         * - .. figure:: ../../examples/doc/example2/toms_family.png
 
             *Graph toms_family*
 
           - .. figure:: ../../examples/doc/example2/bills_family.png
-            
+
             *Graph bills_family*
 
 .. note:: The creation of multiple graphs is especially useful for representing a dynamic domain where we need a different visualization for each time step
@@ -138,7 +138,7 @@ specified by name-value pairs to the element.
 
     Notice that the graphviz documentation specifies which attribute are available for which elements.
     Also, in the bottom it states the engine that needs to be used.
-    
+
     For instance, attribute ``pos``, is only avaliable for engines `neato` and `fdp`.
     Therfore, one of these engines needs to be selected with with argument ``--engine``.
 
@@ -151,9 +151,9 @@ specified by name-value pairs to the element.
      nodes/edges of a graph identified with ``ELEMENT_ID``.
 
    * ``ELEMENT_ID``: The identifier of the element
-  
+
    * ``ATTR_NAME``: The name of the graphviz attribute
-  
+
    * ``ATTR_VALUE``: The value of the graphviz attribute
 
 .. admonition:: Example 3 (continuation)
@@ -195,20 +195,20 @@ specified by name-value pairs to the element.
 Template attribute
 ------------------
 
-Attributes can also be formatted using templates with `Jinja <https://jinja.palletsprojects.com/en/3.1.x/>`__ 
-(See the template syntax `here <https://jinja.palletsprojects.com/en/3.1.x/templates/>`__ ). 
-The template is defined as any other value before: when the ``ATTR_NAME`` is a constant, 
+Attributes can also be formatted using templates with `Jinja <https://jinja.palletsprojects.com/en/3.1.x/>`__
+(See the template syntax `here <https://jinja.palletsprojects.com/en/3.1.x/templates/>`__ ).
+The template is defined as any other value before: when the ``ATTR_NAME`` is a constant,
 the ``ATTR_VALUE`` will be considered a template.
-The template is then rendered using the variables provided in additional ``attr`` predicates, 
-where the name ``ATTR_NAME`` is a tuple ``(ATTR_NAME, VARIABLE)`` 
-and the corresponding ``ATTR_VALUE`` is the value of the given variable. 
-If multiple occurrences of a variable name appear, then the latest appearance will overwrite any previous ones. 
+The template is then rendered using the variables provided in additional ``attr`` predicates,
+where the name ``ATTR_NAME`` is a tuple ``(ATTR_NAME, VARIABLE)``
+and the corresponding ``ATTR_VALUE`` is the value of the given variable.
+If multiple occurrences of a variable name appear, then the latest appearance will overwrite any previous ones.
 
 We can see an example bellow, where the value of attribute ``label`` is template ``"<<b>{{name}} {{lastname}}</b>>"``
-in which variables enclosed under ``{{ }}``` will be substituted by those provided in the other predicates. 
+in which variables enclosed under ``{{ }}``` will be substituted by those provided in the other predicates.
 The next lines give values to such variables by using the tuples ``(label,name)`` and ``(label,lastname)`` as attribute names.
 As a result, the value of label will be ``"<<b>Michel Scott</b>>"``.
-Moreover, this label corresponds to an `HTML-Like label <https://graphviz.org/doc/info/shapes.html#html>`__, since it is encosed by ``<>``. 
+Moreover, this label corresponds to an `HTML-Like label <https://graphviz.org/doc/info/shapes.html#html>`__, since it is encosed by ``<>``.
 Particularly, the tag ``<b>`` used in this label will make the font boldface as seen in the figure bellow.
 
 .. admonition:: Example 4
@@ -223,8 +223,8 @@ Particularly, the tag ``<b>`` used in this label will make the font boldface as 
     .. figure:: ../../examples/doc/example4/example4-1.png
 
 
-If no template is provided, the default template will simply concatenate all variable values in order. 
-This is done using the special variable ``data`` which is a dictionary containing all defined variables. 
+If no template is provided, the default template will simply concatenate all variable values in order.
+This is done using the special variable ``data`` which is a dictionary containing all defined variables.
 The default template: ``{% for k,v in data | dictsort %}{{v}}{% endfor %}`` uses the ``for`` statement,
 and the filter operation ``dictsort`` to iterate over the items in ``data`` after sorting.
 
@@ -242,7 +242,7 @@ Therefore the value will be ``HalpertJim``, as variable names are ordered in an 
     .. figure:: ../../examples/doc/example4/example4-2.png
 
 Attribute names can also be tuples of size three: ``(ATTR_NAME, VARIABLE, KEY)``.
-In this case the ``VRIABLE`` will be a dictionary where the key ``KEY`` has value  ``ATTR_VALUE``. 
+In this case the ``VRIABLE`` will be a dictionary where the key ``KEY`` has value  ``ATTR_VALUE``.
 In the example below, the variable ``name`` will have as value the dictionary ``{'first':'Pamela', 'second':'Morgan'}```.
 This dictionary can then be accessed in the template using ``{{name['first']}}`` and ``{{name['second']}}``
 
@@ -250,7 +250,7 @@ This dictionary can then be accessed in the template using ``{{name['first']}}``
 .. admonition:: Example 4 (continuation)
 
     .. code:: prolog
-        
+
         node(pam).
         attr(node, pam, label, "<{{name['first']}} {{name['second']}} <b>{{lastname}}</b>>").
         attr(node, pam, (label,name,first), "Pamela").
@@ -259,13 +259,13 @@ This dictionary can then be accessed in the template using ``{{name['first']}}``
 
     .. figure:: ../../examples/doc/example4/example4-3.png
 
-Similarly dictionary variables can be iterated in the template like the example below. 
-In this case we iterate through the key-value pairs in ``name`` in no specific order. 
+Similarly dictionary variables can be iterated in the template like the example below.
+In this case we iterate through the key-value pairs in ``name`` in no specific order.
 
 .. admonition:: Example 4 (continuation)
 
     .. code:: prolog
-        
+
         node(angela).
         attr(node, angela, label, "<{% for k, n in name.items() %}{{n}} {% endfor %}<b>{{lastname}}</b>>").
         attr(node, angela, (label,name,1), "Angela").
@@ -277,20 +277,19 @@ In this case we iterate through the key-value pairs in ``name`` in no specific o
 
 .. warning::
 
-    Notice that if no attribute predicates with name ``(label,name,_)`` are provided, then the variable name will be undefined and the operation ``name.items()`` will throw an error. 
+    Notice that if no attribute predicates with name ``(label,name,_)`` are provided, then the variable name will be undefined and the operation ``name.items()`` will throw an error.
     To avoid this, one can add a statement in the template to use the empty dictionary as default value: ``{% set name = name|default({}) %}``
 
-.. warning:: 
+.. warning::
 
     All variable names are transformed into strings (unlike key names which keep their type).
     Although the variable names can be things other than strings, such as constants or tuples, these type of values wont be accessible in the template directly but through the ``data`` variable.
     For instance in predicate ``attr(node, n, (label,1), a)`` the variable ``1`` is assigned value ``a``.
-    Notice that ``1`` is not really a variable that can be accessed via ``{{1}}`` since this would be the number 1 rather than the variable. 
-    Therefore, these variables should be accessed via the ``data`` dictionary like ``{{data['1']}}``. 
+    Notice that ``1`` is not really a variable that can be accessed via ``{{1}}`` since this would be the number 1 rather than the variable.
+    Therefore, these variables should be accessed via the ``data`` dictionary like ``{{data['1']}}``.
 
 
-.. note:: 
+.. note::
 
-    Template strings might become large, however, in clingo one can not split a string into multiple lines. 
-    To overcome the difficulty of working with single line strings, one can take advantage of the built in ``@concat`` :ref:`function <Clingo Utils>` to separate the template into multiple arguments in multiple lines. 
-
+    Template strings might become large, however, in clingo one can not split a string into multiple lines.
+    To overcome the difficulty of working with single line strings, one can take advantage of the built in ``@concat`` :ref:`function <Clingo Utils>` to separate the template into multiple arguments in multiple lines.

@@ -1840,7 +1840,7 @@
 
 <script>
       <script type="text/javascript">
-        
+
         var edges = Object.values(document.getElementsByClassName('edge'));
         var nodes = Object.values(document.getElementsByClassName('node'));
         var elements = edges.concat(nodes);
@@ -1881,8 +1881,8 @@
                                 }
                             })
                         })
-                        
-                        
+
+
                     })
                 })
             });
@@ -1891,4 +1891,3 @@
 
 </script>
 </svg>
-

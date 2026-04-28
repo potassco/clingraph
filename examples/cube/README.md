@@ -1,6 +1,7 @@
 ### Cube
 
 **Features used:**
+
 - Piped from clingo as list of facts
 - Simple dot output that can be piped to another thing
 

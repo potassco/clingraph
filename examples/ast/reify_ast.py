@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 
+import sys
+from typing import Optional, Union
+
 from clingo.ast import AST, ASTSequence, Location, Position, parse_files
 from clingo.symbol import Symbol
-from clorm import Predicate, IntegerField, ConstantField, StringField, combine_fields, refine_field, FactBase
-from typing import Optional, Union
-import sys
+from clorm import ConstantField, FactBase, IntegerField, Predicate, StringField, combine_fields, refine_field
 
 PREFIX = "ast_"
+
 
 class Node(Predicate):
     id = IntegerField
@@ -16,6 +18,7 @@ class Node(Predicate):
     class Meta:
         name = PREFIX + "node"
 
+
 class Edge(Predicate):
     id = (IntegerField, IntegerField)
     key = refine_field(ConstantField, ["key"])
@@ -24,14 +27,17 @@ class Edge(Predicate):
     class Meta:
         name = PREFIX + "edge"
 
+
 class ReifiedAST:
     def __init__(self):
         self.__node_count = 1
         self.__statement_count = 0
-        self.__factbase = FactBase([
-            Node(0, "type", "ASTSequence"),
-            Node(0, "level", 0),
-        ])
+        self.__factbase = FactBase(
+            [
+                Node(0, "type", "ASTSequence"),
+                Node(0, "level", 0),
+            ]
+        )
 
     def __str__(self):
         return self.__factbase.asp_str()
@@ -41,7 +47,7 @@ class ReifiedAST:
         node: Union[AST, ASTSequence, Location, None, Symbol, int, str],
         parent_id: int = 0,
         parent_key: Optional[int] = None,
-        level: int = 1
+        level: int = 1,
     ):
         # Create an identifier for the new node
         node_id = self.__node_count
@@ -50,7 +56,7 @@ class ReifiedAST:
         # Derive the key, if necessary
         if parent_key is None:
             parent_key = self.__statement_count
-            self.__statement_count +=1
+            self.__statement_count += 1
 
         # Add the edge
         edge_id = (parent_id, node_id)
@@ -74,7 +80,7 @@ class ReifiedAST:
         elif isinstance(node, Location):
             self.__factbase.add(Node(node_id, "type", "Location"))
             self.__factbase.add(Node(node_id, "level", level))
-            items = [('begin', node.begin), ("end", node.end)]
+            items = [("begin", node.begin), ("end", node.end)]
 
         elif node is None:
             self.__factbase.add(Node(node_id, "type", "None"))
@@ -83,7 +89,7 @@ class ReifiedAST:
         elif isinstance(node, Position):
             self.__factbase.add(Node(node_id, "type", "Position"))
             self.__factbase.add(Node(node_id, "level", level))
-            items = [('column', node.column), ('filename', node.filename), ('line', node.line)]
+            items = [("column", node.column), ("filename", node.filename), ("line", node.line)]
 
         elif isinstance(node, Symbol):
             self.__factbase.add(Node(node_id, "type", "Symbol"))
@@ -105,7 +111,7 @@ class ReifiedAST:
 
         # Recursively add descendants
         for key, val in items:
-            self.add_node(val, parent_id=node_id, parent_key=key, level=level+1)
+            self.add_node(val, parent_id=node_id, parent_key=key, level=level + 1)
 
 
 rast = ReifiedAST()

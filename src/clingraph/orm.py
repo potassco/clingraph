@@ -3,11 +3,14 @@ Defines an ORM for clingraphs using clorm
 """
 
 import logging
-from jinja2 import Template
+
 import clorm
-from clorm import Predicate, RawField, ComplexTerm, refine_field, ConstantField, Raw
-from clorm import FactBase as ClormFactBase
 from clingo.symbol import Function, String
+from clorm import ComplexTerm, ConstantField
+from clorm import FactBase as ClormFactBase
+from clorm import Predicate, Raw, RawField, refine_field
+from jinja2 import Template
+
 from .exceptions import InvalidSyntax
 from .utils import pythonify_symbol, stringify_symbol
 

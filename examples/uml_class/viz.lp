@@ -3,40 +3,40 @@ uml_class_name(Class,@stringify(Class,true)):-uml_class(Class).
 
 
 % Defaults
-uml_class_name_i(Class,Class):- 
-    uml_class(Class), 
+uml_class_name_i(Class,Class):-
+    uml_class(Class),
     not uml_class_name(Class,_).
-uml_class_name_i(Class,Name):- 
+uml_class_name_i(Class,Name):-
     uml_class_name(Class,Name).
-uml_class_type_i(Class,concrete):- 
+uml_class_type_i(Class,concrete):-
     uml_class(Class),
     not uml_class_type(Class,_).
-uml_class_type_i(Class,Type):- 
+uml_class_type_i(Class,Type):-
     uml_class_type(Class,Type).
-uml_attr_name_i(Class,Attr,Attr):- 
-    uml_attr(Class,Attr), 
+uml_attr_name_i(Class,Attr,Attr):-
+    uml_attr(Class,Attr),
     not uml_attr_name(Class,Attr,_).
-uml_attr_name_i(Class,Attr,Name):- 
+uml_attr_name_i(Class,Attr,Name):-
     uml_attr_name(Class,Attr,Name).
-uml_attr_visibility_i(Class,Attr,none):- 
+uml_attr_visibility_i(Class,Attr,none):-
     uml_attr(Class,Attr),
      not uml_attr_visibility(Class,Attr,_).
-uml_attr_visibility_i(Class,Attr,Vis):- 
+uml_attr_visibility_i(Class,Attr,Vis):-
     uml_attr_visibility(Class,Attr,Vis).
-uml_op_name_i(Class,Op,Op):- 
-    uml_op(Class,Op), 
+uml_op_name_i(Class,Op,Op):-
+    uml_op(Class,Op),
     not uml_op_name(Class,Op,_).
-uml_op_name_i(Class,Op,Name):- 
+uml_op_name_i(Class,Op,Name):-
     uml_op_name(Class,Op,Name).
-uml_op_visibility_i(Class,Op,none):- 
+uml_op_visibility_i(Class,Op,none):-
     uml_op(Class,Op),
      not uml_op_visibility(Class,Op,_).
-uml_op_visibility_i(Class,Op,Vis):- 
+uml_op_visibility_i(Class,Op,Vis):-
     uml_op_visibility(Class,Op,Vis).
-uml_op_args_i(Class,Op,()):- 
+uml_op_args_i(Class,Op,()):-
     uml_op(Class,Op),
      not uml_op_args(Class,Op,_).
-uml_op_args_i(Class,Op,Args):- 
+uml_op_args_i(Class,Op,Args):-
     uml_op_args(Class,Op,Args).
 
 visibility_symbol(protected,"#").
@@ -151,17 +151,17 @@ attr(edge,(Class1,Class2,Assoc), P, @concat("<<TABLE BORDER='0'>",
     uml_assoc(Class1,Class2,Assoc),
     edge_property(P).
 
-assoc_label((Class1,Class2,Assoc),Class3,min,Min) :- 
+assoc_label((Class1,Class2,Assoc),Class3,min,Min) :-
     uml_assoc_cadinality(Class1,Class2,Assoc,Class3,Min,Max).
-assoc_label((Class1,Class2,Assoc),Class3,sep,"...") :- 
+assoc_label((Class1,Class2,Assoc),Class3,sep,"...") :-
     uml_assoc_cadinality(Class1,Class2,Assoc,Class3,Min,Max), Min!=Max.
-assoc_label((Class1,Class2,Assoc),Class3,sep,"") :- 
+assoc_label((Class1,Class2,Assoc),Class3,sep,"") :-
     uml_assoc_cadinality(Class1,Class2,Assoc,Class3,Min,Min).
-assoc_label((Class1,Class2,Assoc),Class3,max,Max) :- 
+assoc_label((Class1,Class2,Assoc),Class3,max,Max) :-
     uml_assoc_cadinality(Class1,Class2,Assoc,Class3,Min,Max),Min!=Max.
-assoc_label((Class1,Class2,Assoc),Class3,max,"") :- 
+assoc_label((Class1,Class2,Assoc),Class3,max,"") :-
     uml_assoc_cadinality(Class1,Class2,Assoc,Class3,Max,Max).
-assoc_label((Class1,Class2,Assoc),Class3,name,Name) :- 
+assoc_label((Class1,Class2,Assoc),Class3,name,Name) :-
     uml_assoc_name(Class1,Class2,Assoc,Class3,Name).
 
 attr(edge,(Class1,Class2,Assoc),(taillabel,Name),Value) :- assoc_label((Class1,Class2,Assoc),Class1,Name,Value).

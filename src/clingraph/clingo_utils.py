@@ -2,16 +2,18 @@
 Functions used for the clingo integration
 """
 
+import base64
 import json
 import logging
-import base64
+
 import jsonschema
 from clingo.control import Control
 from clingo.script import enable_python
 from clingo.symbol import String, SymbolType
 from jsonschema import validate
+
+from .exceptions import InvalidSyntax, InvalidSyntaxJSON
 from .orm import Factbase
-from .exceptions import InvalidSyntaxJSON, InvalidSyntax
 
 enable_python()
 log = logging.getLogger("custom")
@@ -321,7 +323,7 @@ def _get_json(args, stdin):
             return prg_list
         except InvalidSyntaxJSON as e:
             raise e from None
-        except InvalidSyntax as e:
+        except InvalidSyntax:
             return None
 
 
