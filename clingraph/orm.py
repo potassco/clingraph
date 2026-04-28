@@ -1,6 +1,7 @@
 """
-    Defines an ORM for clingraphs using clorm
+Defines an ORM for clingraphs using clorm
 """
+
 import logging
 from jinja2 import Template
 import clorm
@@ -10,18 +11,19 @@ from clingo.symbol import Function, String
 from .exceptions import InvalidSyntax
 from .utils import pythonify_symbol, stringify_symbol
 
-log = logging.getLogger('custom')
+log = logging.getLogger("custom")
 
 
-if hasattr(clorm.orm.symbols_facts, 'NonFactError'):
-    NonFactError = clorm.orm.symbols_facts.NonFactError # NOLINT
+if hasattr(clorm.orm.symbols_facts, "NonFactError"):
+    NonFactError = clorm.orm.symbols_facts.NonFactError  # NOLINT
 else:
     NonFactError = NotImplementedError
 
-if hasattr(clorm.orm.symbols_facts, 'FactParserError'):
-    FactParserError = clorm.orm.symbols_facts.FactParserError # NOLINT
+if hasattr(clorm.orm.symbols_facts, "FactParserError"):
+    FactParserError = clorm.orm.symbols_facts.FactParserError  # NOLINT
 else:
     FactParserError = NotImplementedError
+
 
 class AttrID(ComplexTerm):
     # pylint: disable=missing-class-docstring
@@ -32,6 +34,7 @@ class AttrID(ComplexTerm):
     class Meta:
         is_tuple = True
 
+
 class AttrIDSugar(ComplexTerm):
     # pylint: disable=missing-class-docstring
     attr_name = ConstantField
@@ -41,19 +44,21 @@ class AttrIDSugar(ComplexTerm):
         is_tuple = True
 
 
-ElementType = refine_field(ConstantField,
-                           ["graph", "node", "edge", "graph_nodes", "graph_edges"])
+ElementType = refine_field(
+    ConstantField, ["graph", "node", "edge", "graph_nodes", "graph_edges"]
+)
 
 
-class Factbase():
+class Factbase:
     """
     Stores facts that are accepted by clingraphs syntax.
     It performs a preprocessing of the facts to unify them, and
     uses clorm as ORM to store and query the facts.
     """
+
     # pylint: disable=too-many-instance-attributes
 
-    def __init__(self, prefix: str = "", default_graph:str ="default"):
+    def __init__(self, prefix: str = "", default_graph: str = "default"):
         """
         Defines the factbase behavior based on the prefix for the predicates and
         the name of the deafult graph
@@ -64,33 +69,34 @@ class Factbase():
                 all elements with arity 1 will be assigned to this graph
 
         """
+
         # pylint: disable=missing-class-docstring
         class Graph(Predicate):
             id = RawField
 
             class Meta:
-                name = prefix+"graph"
+                name = prefix + "graph"
 
         class SubGraph(Predicate):
             id = RawField
             graph = RawField
 
             class Meta:
-                name = prefix+"graph"
+                name = prefix + "graph"
 
         class Node(Predicate):
             id = RawField
             graph = RawField
 
             class Meta:
-                name = prefix+"node"
+                name = prefix + "node"
 
         class Edge(Predicate):
             id = RawField
             graph = RawField
 
             class Meta:
-                name = prefix+"edge"
+                name = prefix + "edge"
 
         class Attr(Predicate):
             element_type = ElementType
@@ -99,7 +105,7 @@ class Factbase():
             attr_value = RawField
 
             class Meta:
-                name = prefix+"attr"
+                name = prefix + "attr"
 
         class AttrSugarSimple(Predicate):
             element_type = ElementType
@@ -108,7 +114,7 @@ class Factbase():
             attr_value = RawField
 
             class Meta:
-                name = prefix+"attr"
+                name = prefix + "attr"
 
         class AttrSugarDouble(Predicate):
             element_type = ElementType
@@ -117,19 +123,20 @@ class Factbase():
             attr_value = RawField
 
             class Meta:
-                name = prefix+"attr"
+                name = prefix + "attr"
 
         class NodeSugar(Predicate):
             id = RawField
 
             class Meta:
-                name = prefix+"node"
+                name = prefix + "node"
 
         class EdgeSugar(Predicate):
             id = RawField
 
             class Meta:
-                name = prefix+"edge"
+                name = prefix + "edge"
+
         # pylint: disable=invalid-name
 
         self.Graph = Graph
@@ -147,7 +154,7 @@ class Factbase():
         self.prefix = prefix
 
     @classmethod
-    def from_string(cls, string, prefix: str = "", default_graph:str ="default" ):
+    def from_string(cls, string, prefix: str = "", default_graph: str = "default"):
         """
         Creates a :py:class:`Factbase` from a string
 
@@ -166,7 +173,7 @@ class Factbase():
         return fb
 
     @classmethod
-    def from_model(cls, model, prefix: str = "", default_graph:str ="default" ):
+    def from_model(cls, model, prefix: str = "", default_graph: str = "default"):
         """
         Creates a  :py:class:`Factbase` from a clingo model
 
@@ -191,11 +198,14 @@ class Factbase():
         """
         The list of all unifiers
         """
-        main_unifiers = [self.Graph, self.SubGraph,
-                         self.Node, self.Edge, self.Attr]
-        sugar_unifiers = [self.NodeSugar, self.EdgeSugar,
-                        self.AttrSugarSimple, self.AttrSugarDouble]
-        return main_unifiers+sugar_unifiers
+        main_unifiers = [self.Graph, self.SubGraph, self.Node, self.Edge, self.Attr]
+        sugar_unifiers = [
+            self.NodeSugar,
+            self.EdgeSugar,
+            self.AttrSugarSimple,
+            self.AttrSugarDouble,
+        ]
+        return main_unifiers + sugar_unifiers
 
     def _get_element_class(self, element_type):
         """
@@ -223,20 +233,22 @@ class Factbase():
         Raises:
             :py:class:`InvalidSyntax`: If the input are not facts
         """
-        #pylint: disable=duplicate-except
+        # pylint: disable=duplicate-except
 
         try:
-            fb = clorm.parse_fact_string(program, self._unifiers,raise_nonfact=True)
+            fb = clorm.parse_fact_string(program, self._unifiers, raise_nonfact=True)
             self.add_fb(fb)
         except NonFactError as e:
             msg = "The input string contains a complex structure that is not a fact."
-            raise InvalidSyntax(msg,str(e)) from None
+            raise InvalidSyntax(msg, str(e)) from None
         except FactParserError as e:
             msg = "The input string contains a complex structure that is not a fact."
-            raise InvalidSyntax(msg,str(e)) from None
+            raise InvalidSyntax(msg, str(e)) from None
         except RuntimeError as e:
-            msg = "Syntactic error the input string can't be read as facts. \n" + program
-            raise InvalidSyntax(msg,str(e)) from None
+            msg = (
+                "Syntactic error the input string can't be read as facts. \n" + program
+            )
+            raise InvalidSyntax(msg, str(e)) from None
 
     def add_fact_file(self, file):
         """
@@ -248,19 +260,19 @@ class Factbase():
         Raises:
             :py:class:`InvalidSyntax`: If the input are not facts
         """
-        #pylint: disable=duplicate-except
+        # pylint: disable=duplicate-except
         try:
-            fb = clorm.parse_fact_files([file], self._unifiers,raise_nonfact=True)
+            fb = clorm.parse_fact_files([file], self._unifiers, raise_nonfact=True)
             self.add_fb(fb)
         except NonFactError as e:
             msg = "The file contains a complex structure that is not a fact."
-            raise InvalidSyntax(msg,str(e)) from None
+            raise InvalidSyntax(msg, str(e)) from None
         except FactParserError as e:
             msg = "The input file contains a complex structure that is not a fact."
-            raise InvalidSyntax(msg,str(e)) from None
+            raise InvalidSyntax(msg, str(e)) from None
         except RuntimeError as e:
             msg = "Syntactic error the file, can't be read as facts."
-            raise InvalidSyntax(msg,str(e)) from None
+            raise InvalidSyntax(msg, str(e)) from None
 
     def add_model(self, model):
         """
@@ -291,13 +303,15 @@ class Factbase():
             name = attr.attr_id
             var = String("__")
             key = String("__")
-            new_attr_id = AttrID(attr_name=name,
-                            attr_variable=Raw(var),
-                            attr_key=Raw(key))
-            e = self.Attr(element_type=attr.element_type,
-                          element_id=attr.element_id,
-                          attr_value=attr.attr_value,
-                          attr_id=new_attr_id)
+            new_attr_id = AttrID(
+                attr_name=name, attr_variable=Raw(var), attr_key=Raw(key)
+            )
+            e = self.Attr(
+                element_type=attr.element_type,
+                element_id=attr.element_id,
+                attr_value=attr.attr_value,
+                attr_id=new_attr_id,
+            )
             fb.remove(attr)
             fb.add(e)
 
@@ -309,27 +323,28 @@ class Factbase():
             var = attr_id.attr_variable
             key = String("__")
             # print((name,var,key))
-            new_attr_id = AttrID(attr_name=name,
-                            attr_variable=var,
-                            attr_key=Raw(key))
-            e = self.Attr(element_type=attr.element_type,
-                          element_id=attr.element_id,
-                          attr_value=attr.attr_value,
-                          attr_id=new_attr_id)
+            new_attr_id = AttrID(attr_name=name, attr_variable=var, attr_key=Raw(key))
+            e = self.Attr(
+                element_type=attr.element_type,
+                element_id=attr.element_id,
+                attr_value=attr.attr_value,
+                attr_id=new_attr_id,
+            )
             # print(e)
             # print()
             fb.remove(attr)
             fb.add(e)
 
         basic_element_classes = [
-            (self.NodeSugar, self.Node), (self.EdgeSugar, self.Edge)]
+            (self.NodeSugar, self.Node),
+            (self.EdgeSugar, self.Edge),
+        ]
         using_default = False
         for C_Sugar, C in basic_element_classes:
             q = fb.query(C_Sugar)
             for node in set(q.all()):
                 using_default = True
-                e = C(id=node.id,
-                      graph=Raw(Function(self.default_graph)))
+                e = C(id=node.id, graph=Raw(Function(self.default_graph)))
                 fb.remove(node)
                 fb.add(e)
         if using_default:
@@ -347,7 +362,6 @@ class Factbase():
 
         return self.fb.asp_str()
 
-
     def get_all_graphs(self):
         """
         Gets a list if the identifiers for all the graphs
@@ -358,9 +372,11 @@ class Factbase():
         q = self.fb.query(self.Graph).select(self.Graph.id)
         graph_ids = list(q.all())
         if len(graph_ids) == 0:
-            log.warning("No graphs were defined in the code. Perhaps a missing `graph` predicate.")
+            log.warning(
+                "No graphs were defined in the code. Perhaps a missing `graph` predicate."
+            )
         q = self.fb.query(self.SubGraph).select(self.SubGraph.id)
-        graph_ids = graph_ids+list(q.all())
+        graph_ids = graph_ids + list(q.all())
         return graph_ids
 
     def get_parent_graph(self, graph_id):
@@ -422,11 +438,16 @@ class Factbase():
             (`dic`) A dictionary with attribute names as key and  attribute values as values.
         """
         q = self.fb.query(self.Attr)
-        q = q.where(self.Attr.element_type == element_type,
-                    self.Attr.element_id == element_id)
+        q = q.where(
+            self.Attr.element_type == element_type, self.Attr.element_id == element_id
+        )
         # pylint: disable=no-member
         q = q.group_by(self.Attr.attr_id.attr_name)
-        q = q.select(self.Attr.attr_id.attr_variable, self.Attr.attr_id.attr_key, self.Attr.attr_value)
+        q = q.select(
+            self.Attr.attr_id.attr_variable,
+            self.Attr.attr_id.attr_key,
+            self.Attr.attr_value,
+        )
         attrs = {}
         for name, list_opts in q.all():
 
@@ -439,38 +460,48 @@ class Factbase():
                 val = pythonify_symbol(val.symbol)
                 key = pythonify_symbol(key.symbol)
 
-                is_template = var=="__"
+                is_template = var == "__"
                 if is_template:
                     if custom_template:
                         template = template + str(val)
                     else:
                         template = str(val)
-                    custom_template= True
+                    custom_template = True
                     continue
 
-                is_dict = key!="__"
+                is_dict = key != "__"
                 if is_dict:
                     if var not in data:
-                        data[var]={}
+                        data[var] = {}
                     if key in data[var]:
-                        log.warning("Entry (%s,%s,%s) repeated on element %s. Duplicates will be ignored",name,var,key,element_id)
-                    data[var][key]= val
+                        log.warning(
+                            "Entry (%s,%s,%s) repeated on element %s. Duplicates will be ignored",
+                            name,
+                            var,
+                            key,
+                            element_id,
+                        )
+                    data[var][key] = val
                     continue
 
                 if var in data:
-                    log.warning("Entry (%s,%s) repeated on element %s. Duplicates will be ignored",name,var,element_id)
+                    log.warning(
+                        "Entry (%s,%s) repeated on element %s. Duplicates will be ignored",
+                        name,
+                        var,
+                        element_id,
+                    )
 
-                data[var]=val
+                data[var] = val
 
             if isinstance(template, str):
-                log.debug("Formatting template %s with data %s",template,data)
-                s = Template(template).render(data,data = data)
+                # log.debug("Formatting template %s with data %s",template,data)
+                s = Template(template).render(data, data=data)
             else:
                 s = template
             attrs[str(name)] = str(s)
 
-
-            if str(name)=='texlbl': #Used for latex
-                attrs[str(name)] = attrs[str(name)].replace('\\\\','\\')
+            if str(name) == "texlbl":  # Used for latex
+                attrs[str(name)] = attrs[str(name)].replace("\\\\", "\\")
 
         return attrs
