@@ -3,6 +3,7 @@
 This example renders clingo's abstract syntax tree.
 
 **Features used:**
+
 - Rendering
 - Templates
 

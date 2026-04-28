@@ -2,8 +2,9 @@
 Utils functions used across the project
 """
 
-import os
 import logging
+import os
+
 from clingo.symbol import SymbolType
 
 log = logging.getLogger("custom")

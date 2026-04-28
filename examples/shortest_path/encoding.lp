@@ -1,6 +1,6 @@
 % Instance
 start(a). end(g).
-city(a). city(b). city(c). city(d). 
+city(a). city(b). city(c). city(d).
 city(e). city(f). city(g).
 road(a,b,3). road(a,c,4).
 road(b,c,1). road(b,d,1).

@@ -14,15 +14,15 @@ This interactivity, will be single shot, which means that the svg file will be g
 Interaction
 ===========
 
-Interaction can be defined for any element using the attribute ``class``. This attribute is mapped into a css class for which functionality will be internally provided. The ``class`` value will be a string based on the event, the element in which the event is triggered, a css style property, and the corresponding value. To generate this string we provide the following python function: 
+Interaction can be defined for any element using the attribute ``class``. This attribute is mapped into a css class for which functionality will be internally provided. The ``class`` value will be a string based on the event, the element in which the event is triggered, a css style property, and the corresponding value. To generate this string we provide the following python function:
 
 
 ``@svg(Event,ElementID,PropertyName,PropertyValue)``
 
 - *Event*: The available events are "click","mouseenter","mouseleave" and "contextmenu". Where contextmenu is the right click event
 - *Element*: The id of the element in which the event is performed
-- *PropertyName*: The name of a css style property to be set 
-- *PropertyValue*: The value of the css property 
+- *PropertyName*: The name of a css style property to be set
+- *PropertyValue*: The value of the css property
 
 .. admonition:: Example
 
@@ -31,7 +31,7 @@ Interaction can be defined for any element using the attribute ``class``. This a
     .. code:: prolog
 
         node(1..4). edge((1,2..3)). edge((3,4)).
-        attr(node,N2,class,@svg(click,N1,visibility,visible)):-edge((N1,N2)).    
+        attr(node,N2,class,@svg(click,N1,visibility,visible)):-edge((N1,N2)).
 
 Initial style
 =============
@@ -44,14 +44,14 @@ Initial svg style can be set using the function ``@svg_init(PropertyName,Propert
 
     .. code:: prolog
 
-        attr(node,N,class,@svg_init(visibility,hidden)):-node(N), N!=1.  
+        attr(node,N,class,@svg_init(visibility,hidden)):-node(N), N!=1.
 
 
 Available styles
 ================
 
-.. warning:: 
-  SVGs are exported using html group tags ``<g>``. All properties will be set on the group, this means that properties of elements inside the group will not be overwritten. We alleviate this issue exclusively for changing colors as seen below. 
+.. warning::
+  SVGs are exported using html group tags ``<g>``. All properties will be set on the group, this means that properties of elements inside the group will not be overwritten. We alleviate this issue exclusively for changing colors as seen below.
 
 
 **Setting a color**
@@ -63,7 +63,7 @@ As mentioned above, some properties, like `fillcolor` will not be overwritten by
     Change the color on hover
 
     .. code:: prolog
-        
+
         attr(node,N,style,filled):-node(N).
         attr(node,N,fillcolor,@svg_color()):-node(N).
         attr(node,N,class,@svg(mouseenter,N,color,green)):-node(N).
@@ -74,8 +74,8 @@ API usage
 
 For API usage, the :ref:`ClingraphContext` should be provided. Additionally, the following functions must be called by hand:
 
-- ``add_elements_ids``: with the Control object before calling clingo. 
-- ``add_svg_interaction``: with the svg paths after rendering. 
+- ``add_elements_ids``: with the Control object before calling clingo.
+- ``add_svg_interaction``: with the svg paths after rendering.
 
 See the API Documentation of :ref:`Clingo Utils` for details.
 
@@ -103,8 +103,8 @@ Limitations
 ===========
 
 - Labels are not linked to a style and therefore can't be changed interactively. A way around this is to create multiple layers of nodes with the same position and change their visibility. See the `minesweeper.lp <https://github.com/potassco/clingraph/blob/master/examples/minesweeper>`_ example on this approach.
-- The layering on nodes and edges can't be controlled. Which means we won't know which elements will be on top. 
-- Properties are set on group elements and are not overwritten in the children. 
+- The layering on nodes and edges can't be controlled. Which means we won't know which elements will be on top.
+- Properties are set on group elements and are not overwritten in the children.
 - The position of the elements is fixed, therefore expanding the size of the image on demand is not possible. Instead, the visibility of the elements can be changed, but the position will be the same.
 
 

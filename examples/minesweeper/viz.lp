@@ -1,7 +1,7 @@
 
 % ---- Auxiliary predicates
-color(1,blue). color(2,green). color(3,red). color(4,blue4). 
-color(5,brown4). color(6,orange). color(7,yellow). color(8,pink). 
+color(1,blue). color(2,green). color(3,red). color(4,blue4).
+color(5,brown4). color(6,orange). color(7,yellow). color(8,pink).
 
 opens(C,C):-cell(C).
 opens(C,C'):-cell(C),mine(C),cell(C').
@@ -29,12 +29,12 @@ attr(node,N,fontname,"Copperplate") :- node(N).
 attr(node,C,color,"gray35"):-node(C).
 attr(node,C,penwidth,2):-node(C).
 
-% Pos 
+% Pos
 attr(node,(X,Y),pos,@pos(X,Y,"0.5")):-cell((X,Y)).
 attr(node,hide((X,Y)),pos,@pos(X,Y,"0.5")):-cell((X,Y)).
 attr(node,flag((X,Y)),pos,@pos(X,Y,"0.5")):-cell((X,Y)).
 
-% Label 
+% Label
 attr(node,C,label,"⚈"):-mine(C).
 attr(node,C,label,N):-count(C,N),not mine(C),N!=0.
 attr(node,C,label,""):-count(C,0),not mine(C).

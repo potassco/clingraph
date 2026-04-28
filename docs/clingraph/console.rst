@@ -6,8 +6,8 @@ The graphs can then be printed as a dot string, rendered, converted into a gif o
 
 Special integration for `clingo <https://potassco.org/clingo/>`_ includes the creation of graphs from multiple stable models using clingos’ json output format.
 
-.. note:: 
-  For advanced examples on how to use the command line see our `examples folder  <https://github.com/potassco/clingraph/tree/master/examples>`_. 
+.. note::
+  For advanced examples on how to use the command line see our `examples folder  <https://github.com/potassco/clingraph/tree/master/examples>`_.
   Each subfolder contains a README explaining how to run the example.
 
 The command line usage is described below. However, the latest available options can be found by running:
@@ -53,9 +53,9 @@ Additionally, a single JSON file can be provided instead, with the structure of 
     attr(graph,default,(label,-1),"Does family").
     attr(graph_nodes,default,(style,-1),filled).
     edge((john,jane),default).
-    graph(default). 
+    graph(default).
 
-  
+
 Output
 ======
 
@@ -152,7 +152,7 @@ The graphs will be rendered and saved in files with a given format and engine
     Image saved in out/toms_family.png
     Image saved in out/bills_family.png
 
-  .. list-table:: 
+  .. list-table::
 
       * - .. figure:: ../../examples/doc/example2/toms_family.png
 
@@ -213,11 +213,11 @@ Graphs can be selected by name to work only with a subset of the output using ar
 Clingo integration
 ==================
 
-These features allow the usage of logic programs with rules to define the visualization. 
+These features allow the usage of logic programs with rules to define the visualization.
 This is done in integration with clingo, letting the user handle multiple stable models.
 
 
-.. tip:: 
+.. tip::
   **Good practices**
 
   We advice the user to keep the visualization encoding separate from the encodings used to solve the problem.
@@ -225,13 +225,13 @@ This is done in integration with clingo, letting the user handle multiple stable
 
 .. admonition:: Example
 
-  Consider the encoding `example5_encoding.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example5/example5_encoding.lp>`_ 
+  Consider the encoding `example5_encoding.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example5/example5_encoding.lp>`_
   that has two stable models.
 
   .. include:: ../../examples/doc/example5/example5_encoding.lp
     :literal:
 
-  And a different file `example5_viz.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example5/example5_viz.lp>`_ 
+  And a different file `example5_viz.lp <https://github.com/potassco/clingraph/blob/master/examples/doc/example5/example5_viz.lp>`_
   for the visualization encoding.
 
   .. include:: ../../examples/doc/example5/example5_viz.lp
@@ -240,7 +240,7 @@ This is done in integration with clingo, letting the user handle multiple stable
 Piping json output
 ++++++++++++++++++
 
-.. warning:: 
+.. warning::
   This integration only supports special characters in strings, such as escaped quotes ``attr(node,a,label,"Quotes\"")``, when using ``clingo >= 5.5.2``.
 
 
@@ -254,7 +254,7 @@ Piping json output
 
 
   .. code:: console
-      
+
     {
       "Solver": "clingo version 5.5.2",
       "Input": [
@@ -302,7 +302,7 @@ Piping json output
 
 
   .. code:: console
-      
+
     WARNING:  - Outputing multiple models in stdout.
     graph default {
       a [color=blue]
@@ -312,7 +312,7 @@ Piping json output
       b [color=red]
     }
 
-- Load a json file 
+- Load a json file
 
 .. admonition:: Example
 
@@ -322,7 +322,7 @@ Piping json output
 
 
   .. code:: console
-      
+
     WARNING:  - Outputing multiple models in stdout.
     graph default {
       a [color=blue]
@@ -342,7 +342,7 @@ Piping json output
 
 
   .. code:: console
-      
+
     graph default {
       b [color=red]
     }
@@ -351,12 +351,12 @@ Piping json output
 Define the visualization encoding
 +++++++++++++++++++++++++++++++++
 
-The visualization encoding can also be provided as a separate argument ``--viz-encoding``. 
-This allows for integration projects using more complex scripts or applications. 
+The visualization encoding can also be provided as a separate argument ``--viz-encoding``.
+This allows for integration projects using more complex scripts or applications.
 When passing a json as input, the visualization facts will be obtained by running clingo with the visualization encoding for each stable model.
 Furthermore, the functions defined in :ref:`ClingraphContext <Clingo Utils>` will be available for usage withing the encoding preceded by ``@``.
 
-.. warning:: 
+.. warning::
   The visualization encoding should not include any choices, only the first stable model will be considered.
 
 .. admonition:: Example
@@ -368,11 +368,11 @@ Furthermore, the functions defined in :ref:`ClingraphContext <Clingo Utils>` wil
 
 
   .. code:: console
-      
+
     Image saved in out/0/default.png
     Image saved in out/1/default.png
 
-  .. list-table:: 
+  .. list-table::
 
       * - .. figure:: ../../examples/doc/example5/default_1.png
 
@@ -401,7 +401,7 @@ The integration generates latex code for the graphs using the `dot2tex <https://
     :literal:
 
 
-Run cligraph to obtain the latex file using the output option ``--out=tex``. 
+Run cligraph to obtain the latex file using the output option ``--out=tex``.
 The optional parameters in ``--tex-param`` are passed to `dot2tex <https://dot2tex.readthedocs.io/en/latest/usage_guide.html>`_.
 This parameter should be a string ``arg_name=arg_value``.
 
@@ -423,7 +423,7 @@ Then, the compilation can be done using a package like ``pdflatex``
 
   We can compare the two outputs using ``--out=tex`` and ``--out=render``:
 
-  .. list-table:: 
+  .. list-table::
 
       * - .. figure:: ../../examples/doc/example6/default.png
 

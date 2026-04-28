@@ -3,9 +3,10 @@
 A dynamic application of an elevator serving floors
 
 **Features used:**
+
 - Multi model
 - Multi graph
-- Model selection 
+- Model selection
 - Gif generation
 - Gif special parameter
 

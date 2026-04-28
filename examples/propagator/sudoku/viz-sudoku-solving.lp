@@ -16,7 +16,7 @@ attr(graph,I,margin,"0,0"):- _step_type(T,I).
 attr(graph, I, nodesep, 1):-graph(I).
 attr(graph, I, newrank, true):-graph(I).
 
-% Graph label 
+% Graph label
 % attr(graph,I,fontsize,40):- _step_type(T,I).
 % attr(graph,I,(label,0),@concat("(",I,") ")):- _step_type(T,I).
 % attr(graph,I,(label,1),T):- _step_type(T,I).
@@ -45,7 +45,7 @@ attr(node, pos(X,Y), label, @concat("<<table BORDER='0'>",
                                        " BORDER='{{",border,"[",V,"]}}'>",
                                       "{{",value,"[",V,"]}}",
                                 "</td></tr></table>>")):-
-  _true(sudoku(X,Y,V)), not  _true(initial(X,Y,_)). 
+  _true(sudoku(X,Y,V)), not  _true(initial(X,Y,_)).
 
 % Cells with multiple options
 attr(node, pos(X,Y), label, @concat("<<table BORDER='0'>",
@@ -64,10 +64,10 @@ attr(node, pos(X,Y), label, @concat("<<table BORDER='0'>",
                                 "<td BGCOLOR='{{color[8]}}{{opacity[8]}}' BORDER='{{border[8]}}'>{{value[8]}}</td>",
                                 "<td BGCOLOR='{{color[9]}}{{opacity[9]}}' BORDER='{{border[9]}}'>{{value[9]}}</td>",
                               "</tr>",
-                              "</table>>")):- 
+                              "</table>>")):-
   _true(pos(X,Y)), not  _true(initial(X,Y,_)), not _true(sudoku(X,Y,_)).
 
-% --- Label values for replacement 
+% --- Label values for replacement
 
 % Changes shown with opacity
 attr(node, pos(X,Y), (label,opacity,V), 25):- not _change(sudoku(X,Y,V)), not _decide(sudoku(X,Y,V),_), _true(sudoku(X,Y,V)).

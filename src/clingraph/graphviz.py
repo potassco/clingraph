@@ -2,11 +2,13 @@
 Graphviz functionality
 """
 
-import os
 import logging
+import os
+
 import networkx as nx
-from graphviz import Graph, Digraph
 from clingo.symbol import SymbolType
+from graphviz import Digraph, Graph
+
 from .utils import apply
 
 log = logging.getLogger("custom")

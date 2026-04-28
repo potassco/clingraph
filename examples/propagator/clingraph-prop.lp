@@ -89,5 +89,3 @@ def main(prg):
         render(d,format='pdf',engine='neato')
     save_gif(all_graphs,engine='neato',fps='0.5')
 #end.
-
-

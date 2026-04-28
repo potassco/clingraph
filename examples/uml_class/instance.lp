@@ -57,5 +57,3 @@ uml_assoc_cadinality(car,seat,car_seat,car,1,1).
 uml_assoc_cadinality(car,seat,car_seat,seat,1,"*").
 uml_assoc_name(car,seat,car_seat,seat,seats).
 uml_assoc_name(car,seat,car_seat,car,car).
-
-

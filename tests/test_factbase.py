@@ -5,9 +5,10 @@ Test  the Factbase
 # pylint: disable=missing-function-docstring
 import pytest
 from clingo import Control
-from clingraph.orm import Factbase
+
 from clingraph.clingo_utils import parse_clingo_json
 from clingraph.exceptions import InvalidSyntax
+from clingraph.orm import Factbase
 
 from .utils import get_example_file, get_example_str, make_file
 
