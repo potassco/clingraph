@@ -27,15 +27,18 @@ format = ["black", "isort", "autoflake"]
 lint_pylint = ["pylint"]
 typecheck = ["types-setuptools", "mypy"]
 test = ["coverage[toml]", "pytest", "pytest-cov"]
-# doc = ["mkdocs", "mkdocs-material", "mkdocstrings[python]", "mkdoclingo"]
 doc = [
-    "nbsphinx",
+    "nbsphinx>=0.8.8",
     "sphinx",
     "furo",
     "sphinx_inline_tabs",
     "sphinx_copybutton",
     "myst-parser",
-]
+    "sphinx-rtd-theme==0.5.2",
+    "pypandoc",
+    "imageio",
+    "jinja2>=3.0.3",
+] # doc = ["mkdocs", "mkdocs-material", "mkdocstrings[python]", "mkdoclingo"]
 tex = ["dot2tex"]
 gif = ["imageio==2.28", "pillow"]
 dev = ["clingraph[test,typecheck,lint_pylint]"]
