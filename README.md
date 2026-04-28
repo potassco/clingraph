@@ -1,6 +1,6 @@
 # clingraph
 
-A **declarative visualizer for graphs** defined as a set of facts. The graphs are generated using [graphviz](https://graphviz.org) but are defined via fixed predicates that can be computed from logic programs. 
+A **declarative visualizer for graphs** defined as a set of facts. The graphs are generated using [graphviz](https://graphviz.org) but are defined via fixed predicates that can be computed from logic programs.
 
 ***Graph defined by facts***
 ```prolog
@@ -13,7 +13,7 @@ attr(node,clingraph,style,filled).
 
 Clingraph also contains **special features** for integration with **[clingo](https://potassco.org/clingo/)**, as well as for generating **latex** code and **gifs**!
 
-Check out our paper **[here](https://arxiv.org/pdf/2303.10118.pdf)**. This work was published in LPNMR22 where it recived the *"Best student paper award"*.
+Check out our paper **[here](https://arxiv.org/pdf/2303.10118.pdf)**. This work was published in LPNMR22 where it received the *"Best student paper award"*.
 
 ### Usage
 
@@ -24,7 +24,7 @@ Try clingraph via [command line](https://clingraph.readthedocs.io/en/latest/clin
 
 ### Examples
 
-Our **[examples folder](https://github.com/potassco/clingraph/tree/master/examples)** shows how to use the range of functionalities in different applications. 
+Our **[examples folder](https://github.com/potassco/clingraph/tree/master/examples)** shows how to use the range of functionalities in different applications.
 
 - Examples used in the documentation ([doc](https://github.com/potassco/clingraph/tree/master/examples/doc))
   - *Attribute definition* ([example1](https://github.com/potassco/clingraph/tree/master/examples/doc/example1))
@@ -49,8 +49,13 @@ Our **[examples folder](https://github.com/potassco/clingraph/tree/master/exampl
 
 ## Installation
 
-### Requirements
+To install the project, run
 
-- Python (version 3.8, 3.9, or 3.10)
+```bash
+pip install .
+```
 
-For instructions to install from source, pip and conda see our [documentation page](https://clingraph.readthedocs.io/en/latest/clingraph/installation.html).
+Notice that graphviz needs to be installed on your system. You can find instructions to do so [here](https://graphviz.org/download/).
+
+For detailed instructions to install from source and pip see our [documentation page](https://clingraph.readthedocs.io/en/latest/clingraph/installation.html).
+
