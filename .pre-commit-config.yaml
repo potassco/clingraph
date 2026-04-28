@@ -1,0 +1,35 @@
+repos:
+  - repo: https://github.com/myint/autoflake
+    rev: v2.3.1
+    hooks:
+    - id: autoflake
+      args: ["--in-place",  "--imports=clingraph", "--ignore-init-module-imports", "--remove-unused-variables"]
+      exclude: ^.github/
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+    - id: end-of-file-fixer
+    - id: trailing-whitespace
+      exclude: ^.github/
+
+  - repo: https://github.com/pycqa/isort
+    rev: 7.0.0
+    hooks:
+      - id: isort
+        exclude: ^.github/
+
+  - repo: https://github.com/psf/black
+    rev: 25.9.0
+    hooks:
+    - id: black
+      exclude: ^.github/
+
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 1.0.0
+    hooks:
+    - id: mdformat
+      args: ["--wrap", "79"]
+      exclude: ^docs/
+      additional_dependencies:
+      - mdformat-gfm

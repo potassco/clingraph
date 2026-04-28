@@ -1,0 +1,131 @@
+site_name: clingraph
+site_url: https://potassco.org/clingraph
+site_description:
+repo_name: potassco/clingraph
+repo_url: https://github.com/potassco/clingraph
+copyright: Copyright &copy; 2024 Potassco
+
+extra_css:
+  - _custom/css/extra.css
+  - _custom/css/mkdocstrings.css
+  - _custom/css/mkdoclingo.css
+
+extra_javascript:
+  - _custom/javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+theme:
+  name: material
+  logo: assets/images/potassco-logo.svg
+  custom_dir: docs/_custom/overrides
+  favicon: assets/images/potassco-logo-dark.svg
+  features:
+    - header.autohide
+    - navigation.instant
+    - navigation.tracking
+    # - navigation.sections
+    - navigation.indexes
+    - content.code.annotate
+    # - toc.integrate
+    - toc.follow
+    - navigation.path
+    # - navigation.top
+    - navigation.tabs
+    - content.code.copy
+    - content.tooltips
+    # - navigation.instant.preview
+    # - navigation.expand
+  icon:
+    repo: fontawesome/brands/github
+    admonition:
+      quote: material/file-code-outline
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+      primary: custom #, [red, pink, purple, deep, purple, indigo, blue, light blue, cyan, teal, green, light green, lime, yellow, amber, orange, deep orange, brown, grey, blue, grey, black, white]
+      accent: indigo # [red, pink, purple, deep, purple, indigo, blue, light, blue, cyan, teal, green, light, green, lime, yellow, amber, orange, deep orange]
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom #, [red, pink, purple, deep, purple, indigo, blue, light blue, cyan, teal, green, light green, lime, yellow, amber, orange, deep orange, brown, grey, blue, grey, black, white]
+      accent: indigo # [red, pink, purple, deep, purple, indigo, blue, light, blue, cyan, teal, green, light, green, lime, yellow, amber, orange, deep orange]
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/potassco/clingraph
+    - icon: potassco-logo
+      link: https://potassco.org
+  generator: false
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.keys
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      options:
+        custom_icons:
+          - _custom/overrides/.icons
+  - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
+  - pymdownx.snippets
+  - pymdownx.arithmatex:
+      generic: true
+  - toc:
+      permalink: true
+  - footnotes
+
+plugins:
+  - search
+  - autorefs
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          inventories:
+            - https://docs.python.org/3/objects.inv
+          options:
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            show_signature_annotations: true
+            show_source: false
+            extra:
+              signature_cross_references: true
+              show_inherited_detail: true
+              show_inherited_detail_toc: true
+              show_inherited_detail_tree: true
+
+nav:
+  - Home: index.md
+  - Getting Started: getting_started.md
+  - Examples: examples/index.md
+  - Reference:
+      - reference/index.md
+      - Problem: reference/problem/index.md
+      - Encodings: reference/encodings/index.md
+      - API: reference/api/index.md
+  - Community:
+      - community/index.md
+      - Help: community/help.md
+      - Changes: community/CHANGES.md
+      - Contributing: community/CONTRIBUTING.md
+      - Development: community/DEVELOPMENT.md
+      - Deployment: community/DEPLOYMENT.md
