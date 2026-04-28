@@ -13,6 +13,7 @@ from .utils import pythonify_symbol, stringify_symbol
 
 log = logging.getLogger("custom")
 
+# pylint: disable=abstract-method
 
 if hasattr(clorm.orm.symbols_facts, "NonFactError"):
     NonFactError = clorm.orm.symbols_facts.NonFactError  # NOLINT

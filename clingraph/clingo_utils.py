@@ -4,8 +4,8 @@ Functions used for the clingo integration
 
 import json
 import logging
-import jsonschema
 import base64
+import jsonschema
 from clingo.control import Control
 from clingo.script import enable_python
 from clingo.symbol import String, SymbolType
@@ -128,7 +128,7 @@ class ClingraphContext:
             .replace(":", "&#58;")
         )
 
-    def decodeB64(self, s):
+    def decodeB64(self, s): # pylint: disable=invalid-name
         """
         Decodes a base 64 string
 
