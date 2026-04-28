@@ -49,6 +49,18 @@ class ClingraphContext:
         """
         return String("".join([str(x).strip('"') for x in args]))
 
+    def replace(self, value, old, new):
+        """
+        Replaces all occurrences of old by new in the given value
+        Args:
+            value (clingo.Symbol.String): The string where the replacement is done
+            old (clingo.Symbol.String): The substring to be replaced
+            new (clingo.Symbol.String): The substring to replace with
+        """
+        return String(
+            str(value).strip('"').replace(str(old).strip('"'), str(new).strip('"'))
+        )
+
     def format(self, s, *args):
         """
         Formats the string with the given arguments
@@ -106,7 +118,6 @@ class ClingraphContext:
         Returns:
             (clingo.Symbol.String) The string with the replacements
         """
-
         return String(
             str(s)
             .strip('"')
@@ -114,6 +125,7 @@ class ClingraphContext:
             .replace('"', "&quot;")
             .replace("<", "&lt;")
             .replace(">", "&gt;")
+            .replace(":", "&#58;")
         )
 
     def decodeB64(self, s):
