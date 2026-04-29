@@ -35,3 +35,7 @@ build
 _build
 _autosummary
 site
+
+.ipynb_checkpoints
+
+*out
