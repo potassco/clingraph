@@ -421,6 +421,7 @@ def main():
 
     if any("default" in graph and len(graph) > 1 for graph in graphs):
         log.warning(
+
             "Some nodes/edges were assigned to the 'default' graph, since no graph was defined in their last argument, "
             "but other graphs were also defined."
             "Make sure this is intended and not a missing argument in the facts defining the nodes and edges.",
