@@ -415,8 +415,16 @@ def main():
 
     ######## Compute graphs
     graphs = compute_graphs(fbs, graphviz_type=args.type, seed=args.seed)
+
     if args.select_graph is not None:
         graphs = [{g_name: g for g_name, g in graph.items() if g_name in args.select_graph} for graph in graphs]
+
+    if any("default" in graph and len(graph) > 1 for graph in graphs):
+        log.warning(
+            "Some nodes/edges were assigned to the 'default' graph, since no graph was defined in their last argument, "
+            "but other graphs were also defined."
+            "Make sure this is intended and not a missing argument in the facts defining the nodes and edges.",
+        )
 
     def out_str(t, g_name, p):
         s = f"{COLORS['BLUE']}->{COLORS['NORMAL']} {t} for graph {COLORS['YELLOW']}{g_name}{COLORS['NORMAL']},"
