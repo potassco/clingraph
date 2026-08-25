@@ -34,24 +34,3 @@ can be set up using the following commands:
 python -m pipx install pre-commit
 pre-commit install
 ```
-
-## Documentation
-
-Make sure the documentation dependencies for the project are properly installed
-with
-
-```bash
-pip install .[doc]
-```
-
-To run the documentation locally use the following command and click the
-provided link to open it in the browser.
-
-```bash
-mkdocs serve
-```
-
-[editable]: https://setuptools.pypa.io/en/latest/userguide/development_mode.html
-[nox]: https://nox.thea.codes/en/stable/index.html
-[pipx]: https://pypa.github.io/pipx/
-[pre]: https://pre-commit.com/
