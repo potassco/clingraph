@@ -21,6 +21,7 @@ log = logging.getLogger("custom")
 
 # pylint: disable=too-many-positional-arguments
 # pylint: disable=too-many-locals
+# pylint: disable=too-many-branches
 def save_gif(graphs, directory="out", name_format="movie", engine="dot", fps=1, sort="asc-str"):
     """
     Generates a gif for the given graphs
@@ -65,11 +66,15 @@ def save_gif(graphs, directory="out", name_format="movie", engine="dot", fps=1, 
             try:
                 keys.sort(key=l_key, reverse=l_reverse)
                 ordered_keys = keys
-            except ValueError:
-                raise ValueError(
-                    f"Cannot sort graph names: {keys} as type {sort[-3:]} which was set as the sort method.\n"
-                    f"If not all graph names are {sort[-3:]}, use another order instead."
+            except ValueError as exc:
+                log.error(
+                    "Cannot sort graph names: %s as type %s which was set as the sort method.\n"
+                    "If not all graph names are %s, use another order instead.",
+                    keys,
+                    sort[-3:],
+                    sort[-3:],
                 )
+                raise exc
         else:
             ordered_keys = sort.split(",")
             for k in ordered_keys:

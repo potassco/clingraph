@@ -1,6 +1,10 @@
 # Changes
 
-## v1.2.3
+## v1.2.5
+
+- Improved error messages when using default graph
+
+## v1.2.4
 
 - Updated clorm to display better error message when parsing a non-fact file.
   Now it suggests to use the --viz argument to run clingo.
