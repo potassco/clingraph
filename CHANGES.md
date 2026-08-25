@@ -1,5 +1,10 @@
 # Changes
 
+## v1.2.3
+
+- Updated clorm to display better error message when parsing a non-fact file. Now it suggests to use the --viz argument to run clingo.
+
+
 ## v1.2.0
 
 ```

@@ -269,7 +269,10 @@ class Factbase:
             msg = "The file contains a complex structure that is not a fact."
             raise InvalidSyntax(msg, str(e)) from None
         except FactParserError as e:
-            msg = "The input file contains a complex structure that is not a fact."
+            msg = (
+                "The input file contains a complex structure that is not a fact."
+                "If you want to use a program with rules, do it with the --viz argument to run clingo."
+            )
             raise InvalidSyntax(msg, str(e)) from None
         except RuntimeError as e:
             msg = "Syntactic error the file, can't be read as facts."

@@ -27,7 +27,7 @@ def lint_pylint(session):
     Run pylint.
     """
     session.install("-e", ".[lint_pylint,test]")
-    session.run("pylint", "clingraph", "tests")
+    session.run("pylint", "src/clingraph", "tests")
 
 
 # @nox.session
