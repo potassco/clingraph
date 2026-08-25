@@ -62,8 +62,14 @@ def save_gif(graphs, directory="out", name_format="movie", engine="dot", fps=1, 
         ]:
             l_key = str if sort[-3:] == "str" else int
             l_reverse = sort[:3] == "desc"
-            keys.sort(key=l_key, reverse=l_reverse)
-            ordered_keys = keys
+            try:
+                keys.sort(key=l_key, reverse=l_reverse)
+                ordered_keys = keys
+            except ValueError:
+                raise ValueError(
+                    f"Cannot sort graph names: {keys} as type {sort[-3:]} which was set as the sort method.\n"
+                    f"If not all graph names are {sort[-3:]}, use another order instead."
+                )
         else:
             ordered_keys = sort.split(",")
             for k in ordered_keys:
